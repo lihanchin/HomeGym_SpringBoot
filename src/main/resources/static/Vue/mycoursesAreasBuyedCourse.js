@@ -1,0 +1,63 @@
+new Vue({
+    el:"#app",
+    data:{
+        buyedCourse:[
+            {
+                img:"https://fakeimg.pl/400x300/",
+                star:3,
+                courseName:"tabata爆汗核心健身",
+                typeTag:"上半身",
+                locationTag:"腿部",
+                coachingName:"Jack",
+                courseContent:"運動能促進有「快樂荷爾蒙」之稱的多巴胺分泌。即使只是運動10分鐘，都能讓疲憊的大腦重新變得敏銳",
+                courseUrl:"./purchasedCourse.html",
+            },
+            {
+                img:"https://fakeimg.pl/400x300/",
+                star:1,
+                courseName:"tabata爆汗核心健身",
+                typeTag:"全身",
+                locationTag:"上胸部",
+                coachingName:"Jack",
+                courseContent:"運動能促進之稱的多巴胺分泌。即使只是運動10分鐘，都能讓疲憊的大腦重新變得敏銳",
+                courseUrl:"./purchasedCourse.html",
+            },
+            {
+                img:"https://fakeimg.pl/400x300/",
+                star:3,
+                courseName:"tabata爆汗核心健身",
+                typeTag:"上半身",
+                locationTag:"臀部",
+                coachingName:"Abby",
+                courseContent:"運動能促進有「快樂荷爾蒙」之稱的多巴胺分泌。即使只是運動10分鐘，都能讓疲憊的大腦重新變得敏銳",
+                courseUrl:"./purchasedCourse.html",
+            },
+            {
+                img:"https://fakeimg.pl/400x300/",
+                star:5,
+                courseName:"tabata爆汗核心健身",
+                typeTag:"下半身",
+                locationTag:"腿部",
+                coachingName:"Jason",
+                courseContent:"運動能促進有「快樂荷爾蒙」之稱的多巴胺分泌。即使只是運動10分之稱的多巴胺分泌。即使只是運動10分之稱的多巴胺分泌。即使只是運動10分鐘，都能讓疲憊的大腦重新變得敏銳",
+                courseUrl:"./purchasedCourse.html",
+            },
+            {
+                img:"https://fakeimg.pl/400x300/",
+                star:5,
+                courseName:"tabata爆汗核心健身",
+                typeTag:"全身",
+                locationTag:"腿部",
+                coachingName:"John",
+                courseContent:"運動能促進有「快樂荷爾蒙」之稱的多巴胺分泌。即使只是運動10分鐘，都能讓疲憊的大腦重新變得敏銳",
+                courseUrl:"./purchasedCourse.html",
+            },
+
+        ]   
+    },
+    mounted() {
+        axios.get("http://localhost:3000/buyedCourse").then((res) =>{ //mycoursesAreasBuyedCourseDate.json
+            this.buyedCourse = res.data
+        })
+    },
+});
