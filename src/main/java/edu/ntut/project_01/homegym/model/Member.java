@@ -18,7 +18,7 @@ public class Member {
     private String email;
     private String password;
     private String phone;
-    private String birthday;
+    private java.sql.Date birthday;
     //可能要加外鍵 coach身份 此處為多方
     @CreatedDate
     private Date createDate;
@@ -63,11 +63,11 @@ public class Member {
         this.phone = phone;
     }
 
-    public String getBirthday() {
+    public java.sql.Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(java.sql.Date birthday) {
         this.birthday = birthday;
     }
 }
