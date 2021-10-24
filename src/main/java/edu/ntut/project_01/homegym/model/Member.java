@@ -1,11 +1,13 @@
 package edu.ntut.project_01.homegym.model;
 
-import org.hibernate.annotations.GeneratorType;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date   ;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -18,10 +20,21 @@ public class Member {
     private String email;
     private String password;
     private String phone;
-    private java.sql.Date birthday;
-    //可能要加外鍵 coach身份 此處為多方
+    private Date birthday;
     @CreatedDate
     private Date createDate;
+
+    //可能要加外鍵 coach身份 此處為一方
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private Set<Video> courses = new HashSet<>();
+
+    //教練身份判斷欄位（目前想法是註冊時input hidden 放入０/null）
+    @OneToOne(cascade =CascadeType.PERSIST)
+    @JoinColumn
+    private Coach coach;
+
+    public Member() {
+    }
 
     public Integer getId() {
         return id;
@@ -63,11 +76,35 @@ public class Member {
         this.phone = phone;
     }
 
-    public java.sql.Date getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(java.sql.Date birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Coach getCoach() {
+        return coach;
+    }
+
+    public void setCoach(Coach coach) {
+        this.coach = coach;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Set<Video> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Video> courses) {
+        this.courses = courses;
     }
 }
