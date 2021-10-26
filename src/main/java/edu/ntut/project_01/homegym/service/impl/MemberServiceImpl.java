@@ -55,6 +55,9 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Member> login(String mail, String password) {
         Member member = memberRepository.findMemberByEmail(mail);
         if (member != null) {
+            if(member.getStatus()==0){
+                throw new LoginException("帳號尚未驗證");
+            }
             if (password.equals(member.getPassword())) {
                 return ResponseEntity.status(HttpStatus.OK).body(member);
             } else {
