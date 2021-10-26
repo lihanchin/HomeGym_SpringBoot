@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 public interface MemberService {
     //註冊
     ResponseEntity<String> createMember(Member member);
-    //登入
 
+    //驗證
+    ResponseEntity<String> updateStatus(String code);
+
+    //登入
+    ResponseEntity<Member> login(String mail, String password);
 
 }

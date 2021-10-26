@@ -3,8 +3,12 @@ package edu.ntut.project_01.homegym;
 import edu.ntut.project_01.homegym.model.Video;
 import edu.ntut.project_01.homegym.repository.VideoRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,11 +17,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeGymApplicationTests {
     @Autowired
     private VideoRepository videoRepository;
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Test
     void contextLoads() {
@@ -63,5 +71,25 @@ class HomeGymApplicationTests {
         videoRepository.saveAll(vbList);
         System.out.println("程式結束(Done...!!)");
     }
+
+
+    @Test
+    public void sendSimpleMail() throws Exception {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("homegym_ntut_pj01@outlook.com");
+        message.setTo("zhps7239@yahoo.com.tw");
+        message.setSubject("主旨：JavaMail測試！！！！");
+        message.setText("內容：這是一封測試信件，恭喜您成功發送了唷");
+
+        mailSender.send(message);
+    }
+
+
+    @Test
+    public void UTest() {
+            UUID uuid = UUID.randomUUID();
+            System.out.println(uuid);
+        }
+
 
 }

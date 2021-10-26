@@ -19,7 +19,18 @@ public class IndexController {
         return memberService.createMember(member);
     }
 
-       //註冊資料傳來非Json值
+    @GetMapping("/memberSave/memberVerification")
+    public ResponseEntity<String>  updateMemberStatus(@RequestParam String code){
+        return memberService.updateStatus(code);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Member> memberLogin(@RequestBody Member member){
+        String email = member.getEmail();
+        String password = member.getPassword();
+        return memberService.login(email,password);
+    }
+    //註冊資料傳來非Json值
 //    @PostMapping("/memberSave")
 //    public Member insert(@RequestParam Map<String, String> param, Model model){
 //        Member member = new Member();
