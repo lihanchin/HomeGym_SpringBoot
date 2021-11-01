@@ -53,7 +53,7 @@ public class IndexController {
 
     //註冊(加入Security)
     @PostMapping("/registrations")
-    public ResponseEntity<String> registrations(@RequestBody Member member) {
+    public ResponseEntity<Member> registrations(@RequestBody Member member) {
         return authService.register(member);
     }
 
@@ -61,6 +61,11 @@ public class IndexController {
     @GetMapping("/registration/memberVerification")
     public ResponseEntity<String> updateMemberStatus(@RequestParam String code) {
         return memberService.updateStatus(code);
+    }
+
+    @GetMapping("/registration/memberVerification/sendAgain/{memberId}")
+    public ResponseEntity<String> sendVerificationAgain(@PathVariable Integer memberId) {
+        return authService.resendMail(memberId);
     }
 
     //登入(加入Security)

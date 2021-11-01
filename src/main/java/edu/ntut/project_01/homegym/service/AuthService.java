@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
     //註冊
-    ResponseEntity<String> register(Member member);
+    ResponseEntity<Member> register(Member member);
     //登入
     ResponseEntity<String> login(String username, String password);
+    //重寄驗證信
+    ResponseEntity<String> resendMail(Integer memberId);
 }

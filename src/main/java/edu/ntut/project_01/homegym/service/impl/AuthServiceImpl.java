@@ -1,5 +1,6 @@
 package edu.ntut.project_01.homegym.service.impl;
 
+import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.exception.category.RegistrationException;
 import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
 import edu.ntut.project_01.homegym.model.Member;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Transactional
@@ -47,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<String> register(Member member) {
+    public ResponseEntity<Member> register(Member member) {
         if (!memberRepository.existsMemberByEmail(member.getEmail())) {
             final String rawPassword = member.getPassword();
             member.setPassword(passwordEncoder.encode(rawPassword));
@@ -55,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
             member.setCode(UUID.randomUUID().toString());
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
-            return ResponseEntity.ok().body("註冊成功");
+            return ResponseEntity.ok().body(member);
         }
         throw new RegistrationException("此帳號已被使用");
     }
@@ -73,5 +75,18 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok().body(jwt);
         }
         throw new VerificationMailException("您的帳號尚未驗證");
+    }
+
+    @Override
+    public ResponseEntity<String> resendMail(Integer memberId) {
+        Optional<Member> member = memberRepository.findMemberByMemberId(memberId);
+        if(member.isPresent()){
+            if(member.get().getStatus() != 1) {
+                mailUtil.sendMail(member.get().getCode(), member.get().getEmail());
+                return ResponseEntity.ok().body("驗證信已重新寄出");
+            }
+            throw  new VerificationMailException("您信箱已驗證通過，無需再次驗證");
+        }
+        throw new MemberNotExistException("查無此會員，故無法重寄驗證信");
     }
 }
