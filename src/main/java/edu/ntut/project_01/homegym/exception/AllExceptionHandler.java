@@ -1,8 +1,6 @@
 package edu.ntut.project_01.homegym.exception;
 
-import edu.ntut.project_01.homegym.exception.category.LoginException;
-import edu.ntut.project_01.homegym.exception.category.RegistrationException;
-import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
+import edu.ntut.project_01.homegym.exception.category.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +24,18 @@ public class AllExceptionHandler {
     //401
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<String> handle(LoginException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
+    //401
+    @ExceptionHandler(TokenValidationException.class)
+    public ResponseEntity<String> handle(TokenValidationException  exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
+    //404
+    @ExceptionHandler(MemberNotExistException.class)
+    public ResponseEntity<String> handle(MemberNotExistException  exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -14,15 +16,15 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer videoId;
-    private String name;	//課程名
+    private String course;
+    private String videoName;	//課程名
     @Lob
     private char[] videoInfo;	//課程資訊
     private String category; //課程類別
     private String partOfBody; //不確定會用數字還是字串來設定  //運動部位
-    @Lob
-    private byte[] videoImage;	//影片圖片
+    private String videoImage;	//影片圖片
     @CreatedDate
-    private Date time;	//上傳時間
+    private Date uploadTime;	//上傳時間
     private Integer price; //Integer or Double 	//課程價格
     private String equipment; //器材
     private String level; //適合的層級
@@ -30,17 +32,13 @@ public class Video {
     private	Integer checked; //審核狀態（未審核/已審核）
     private Date checkTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_memberId")
-    private Member member;
 
-    public Member getMember() {
-        return member;
-    }
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "video")
+    private Set<Member> members = new HashSet<>();
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+    @ManyToOne
+    @JoinColumn
+    private Coach coach;
 
     public Video() {
     }
@@ -53,12 +51,20 @@ public class Video {
         this.videoId = videoId;
     }
 
-    public String getName() {
-        return name;
+    public String getCourse() {
+        return course;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getVideoName() {
+        return videoName;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
     }
 
     public char[] getVideoInfo() {
@@ -85,20 +91,20 @@ public class Video {
         this.partOfBody = partOfBody;
     }
 
-    public byte[] getVideoImage() {
+    public String getVideoImage() {
         return videoImage;
     }
 
-    public void setVideoImage(byte[] videoImage) {
+    public void setVideoImage(String videoImage) {
         this.videoImage = videoImage;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getUploadTime() {
+        return uploadTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setUploadTime(Date uploadTime) {
+        this.uploadTime = uploadTime;
     }
 
     public Integer getPrice() {
@@ -147,5 +153,21 @@ public class Video {
 
     public void setCheckTime(Date checkTime) {
         this.checkTime = checkTime;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
+    }
+
+    public Coach getCoach() {
+        return coach;
+    }
+
+    public void setCoach(Coach coach) {
+        this.coach = coach;
     }
 }
