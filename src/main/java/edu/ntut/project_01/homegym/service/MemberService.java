@@ -5,13 +5,12 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface MemberService {
-    //註冊
+    //註冊(舊版)
     ResponseEntity<String> createMember(Member member);
 
-    //驗證
+    //驗證(舊版)
     ResponseEntity<String> updateStatus(String code);
 
-    //登入
+    //登入(舊版)
     ResponseEntity<Member> login(String mail, String password);
-
 }

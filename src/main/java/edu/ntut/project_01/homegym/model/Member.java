@@ -6,9 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -16,38 +14,46 @@ import java.util.Set;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer memberId;
     private String name;
     private String email;
     private String password;
     private String phone;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private java.sql.Date birthday;
     @Column(columnDefinition = "TINYINT(1)")
+    //前端input hidden name:status    value:0
     private Integer status;
     private String code;
+    //前端input hidden name:role  value:會員
     private String role;
-    private String memberImg;
+    @Lob
+    private byte[] memberImage;
     @CreatedDate
     private Date createDate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private Set<Video> courses = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "member_courses",
+            joinColumns = {
+                    @JoinColumn(name = "MEMBER_ID", nullable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "COURSE_ID", nullable = false)}
+    )
+    private Set<Video> video = new HashSet<>();
 
-    //教練身份判斷欄位（目前想法是註冊時input hidden 放入０/null）
-//    @OneToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "fk_coachId")
-//    private Coach coach;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn
+    private Coach coach;
 
     public Member() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getMemberId() {
+        return memberId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
     }
 
     public String getName() {
@@ -90,30 +96,6 @@ public class Member {
         this.birthday = birthday;
     }
 
-//    public Coach getCoach() {
-//        return coach;
-//    }
-//
-//    public void setCoach(Coach coach) {
-//        this.coach = coach;
-//    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Set<Video> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Video> courses) {
-        this.courses = courses;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -128,5 +110,45 @@ public class Member {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public byte[] getMemberImage() {
+        return memberImage;
+    }
+
+    public void setMemberImage(byte[] memberImage) {
+        this.memberImage = memberImage;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Set<Video> getVideo() {
+        return video;
+    }
+
+    public void setVideo(Set<Video> video) {
+        this.video = video;
+    }
+
+    public Coach getCoach() {
+        return coach;
+    }
+
+    public void setCoach(Coach coach) {
+        this.coach = coach;
     }
 }
