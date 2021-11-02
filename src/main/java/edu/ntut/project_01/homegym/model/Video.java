@@ -17,15 +17,15 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer videoId;
     private String course;
-    private String videoName;	//課程名
+    private String videoName; //課程名
     @Lob
-    private char[] videoInfo;	//課程資訊
+    private char[] videoInfo; //課程資訊
     private String category; //課程類別
-    private String partOfBody; //不確定會用數字還是字串來設定  //運動部位
+    private String partOfBody; //運動部位
     private String videoImage;	//影片圖片
     @CreatedDate
     private Date uploadTime;	//上傳時間
-    private Integer price; //Integer or Double 	//課程價格
+    private Integer price; //課程價格
     private String equipment; //器材
     private String level; //適合的層級
     private Integer pass; //課程是否審核成功

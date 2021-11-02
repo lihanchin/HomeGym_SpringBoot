@@ -77,7 +77,7 @@ class HomeGymApplicationTests {
 
 
     @Test
-    public void sendSimpleMail() throws Exception {
+    public void sendSimpleMail() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("homegym_ntut_pj01@outlook.com");
         message.setTo("zhps7239@yahoo.com.tw");
@@ -116,6 +116,12 @@ class HomeGymApplicationTests {
         Calendar calendar = Calendar.getInstance(Locale.CHINESE);
         System.out.println(now);
         System.out.println(calendar.getTime());
+    }
+
+    @Test
+    public void getAllCoursesTotalPage() {
+        int size =29;
+        System.out.println((int)Math.ceil(videoRepository.findAll().size()/(double)size));
     }
 
 }
