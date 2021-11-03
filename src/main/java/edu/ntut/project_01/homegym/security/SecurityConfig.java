@@ -42,7 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/registration/**",
                         "/login",
                         "/store",
-                        "/store/**").permitAll()
+                        "/store/**",
+                        "/hello",
+                        "/test/buySoomething").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

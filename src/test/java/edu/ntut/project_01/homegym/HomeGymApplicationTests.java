@@ -123,5 +123,4 @@ class HomeGymApplicationTests {
         int size =29;
         System.out.println((int)Math.ceil(videoRepository.findAll().size()/(double)size));
     }
-
 }
