@@ -146,7 +146,7 @@
 2021-11-03 13:07:43,273 DEBUG org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler [restartedMain] Creating new EntityManager for shared EntityManager invocation
 2021-11-03 13:07:43,343 DEBUG org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler [restartedMain] Creating new EntityManager for shared EntityManager invocation
 2021-11-03 13:07:43,372 DEBUG org.springframework.beans.CachedIntrospectionResults [restartedMain] Not strongly caching class [edu.ntut.project_01.homegym.model.Member] because it is not cache-safe
-2021-11-03 13:07:43,399 DEBUG org.springframework.beans.CachedIntrospectionResults [restartedMain] Not strongly caching class [edu.ntut.project_01.homegym.model.Video] because it is not cache-safe
+2021-11-03 13:07:43,399 DEBUG org.springframework.beans.CachedIntrospectionResults [restartedMain] Not strongly caching class [edu.ntut.project_01.homegym.model.Course] because it is not cache-safe
 2021-11-03 13:07:43,407 DEBUG org.springframework.beans.CachedIntrospectionResults [restartedMain] Not strongly caching class [edu.ntut.project_01.homegym.model.Coach] because it is not cache-safe
 2021-11-03 13:07:43,416 DEBUG org.springframework.data.repository.core.support.RepositoryFactorySupport [restartedMain] Initializing repository instance for edu.ntut.project_01.homegym.repository.MemberRepository…
 2021-11-03 13:07:43,434 DEBUG org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler [restartedMain] Creating new EntityManager for shared EntityManager invocation
@@ -253,7 +253,7 @@
 2021-11-03 13:07:43,899 DEBUG org.springframework.beans.factory.support.DefaultSingletonBeanRegistry [restartedMain] Creating shared instance of singleton bean 'courseServiceImpl'
 2021-11-03 13:07:43,900 DEBUG org.springframework.beans.factory.support.DefaultSingletonBeanRegistry [restartedMain] Creating shared instance of singleton bean 'videoRepository'
 2021-11-03 13:07:43,903 DEBUG org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler [restartedMain] Creating new EntityManager for shared EntityManager invocation
-2021-11-03 13:07:43,904 DEBUG org.springframework.data.repository.core.support.RepositoryFactorySupport [restartedMain] Initializing repository instance for edu.ntut.project_01.homegym.repository.VideoRepository…
+2021-11-03 13:07:43,904 DEBUG org.springframework.data.repository.core.support.RepositoryFactorySupport [restartedMain] Initializing repository instance for edu.ntut.project_01.homegym.repository.CourseRepository…
 2021-11-03 13:07:43,905 DEBUG org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler [restartedMain] Creating new EntityManager for shared EntityManager invocation
 2021-11-03 13:07:43,917 DEBUG org.springframework.data.repository.core.support.RepositoryFactorySupport [restartedMain] Finished creation of repository instance for {}.
 2021-11-03 13:07:43,927 DEBUG org.springframework.core.env.PropertySourcesPropertyResolver [restartedMain] Found key 'course.countsPerPage' in PropertySource 'Config resource 'class path resource [application.properties]' via location 'optional:classpath:/'' with value of type String

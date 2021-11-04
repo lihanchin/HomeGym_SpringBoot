@@ -14,30 +14,52 @@ import java.util.Set;
 @Table(name = "coach")
 public class Coach {
     @Id
+    @Column(name = "coach_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer coachId;
     private String experience;
     private String certification;
     private String skill;
+    @Column(name = "coach_image")
     private String coachImage;
+    @Column(name = "coach_info")
     private String coachInfo;
     //需要隱藏欄位
     @Column(columnDefinition = "TINYINT(1)")
     private Integer suspension;
     private String account;
     private String checked;
+    @Column(name = "check_time")
     private Date checkTime;
     private String pass;
     @CreatedDate
+    @Column(name = "apply_time")
     private Date applyTime;
 
     @OneToOne(mappedBy = "coach")
     private Member member;
 
-    @OneToMany(mappedBy = "coach", cascade = { CascadeType.PERSIST })
-    private Set<Video> courses = new HashSet<>();
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Course> courses = new HashSet<>();
 
     public Coach() {
+    }
+
+    public Coach(Integer coachId, String experience, String certification, String skill, String coachImage, String coachInfo, Integer suspension, String account, String checked, Date checkTime, String pass, Date applyTime, Member member, Set<Course> courses) {
+        this.coachId = coachId;
+        this.experience = experience;
+        this.certification = certification;
+        this.skill = skill;
+        this.coachImage = coachImage;
+        this.coachInfo = coachInfo;
+        this.suspension = suspension;
+        this.account = account;
+        this.checked = checked;
+        this.checkTime = checkTime;
+        this.pass = pass;
+        this.applyTime = applyTime;
+        this.member = member;
+        this.courses = courses;
     }
 
     public Integer getCoachId() {
@@ -144,11 +166,11 @@ public class Coach {
         this.member = member;
     }
 
-    public Set<Video> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(Set<Video> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 }
