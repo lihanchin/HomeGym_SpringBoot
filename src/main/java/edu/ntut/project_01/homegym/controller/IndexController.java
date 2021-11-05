@@ -60,7 +60,7 @@ public class IndexController {
     //驗證
     @GetMapping("/registration/memberVerification")
     public ResponseEntity<String> updateMemberStatus(@RequestParam String code) {
-        return memberService.updateStatus(code);
+        return authService.updateStatus(code);
     }
 
     @GetMapping("/registration/memberVerification/sendAgain/{memberId}")

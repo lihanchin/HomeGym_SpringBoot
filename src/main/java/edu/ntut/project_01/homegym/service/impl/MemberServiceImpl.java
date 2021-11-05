@@ -7,12 +7,15 @@ import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
+import edu.ntut.project_01.homegym.util.JwtUtil;
 import edu.ntut.project_01.homegym.util.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +28,18 @@ public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
     private MailUtil mailUtil;
+    private JwtUtil jwtUtil;
+    private PasswordEncoder passwordEncoder;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Value("${jwt.tokenHead}")
+    private String tokenHeader;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, MailUtil mailUtil) {
+    public MemberServiceImpl(MemberRepository memberRepository, MailUtil mailUtil, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.mailUtil = mailUtil;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -43,24 +52,6 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
             return ResponseEntity.status(HttpStatus.OK).body("Success");
-        }
-    }
-
-    @Override
-    public ResponseEntity<String> updateStatus(String code) {
-        Optional<Member> member = memberRepository.findMemberByCode(code);
-
-        if (member.isPresent()) {
-            if (member.get().getStatus() == 0) {
-                member.get().setStatus(1);
-                memberRepository.save(member.get());
-                logger.info("會員帳號驗證通過！");
-                return ResponseEntity.status(HttpStatus.OK).body("驗證通過，歡迎使用HomeGym");
-            } else {
-                throw new VerificationMailException("此帳號已驗證通過");
-            }
-        } else {
-            throw new MemberNotExistException("用戶不存在");
         }
     }
 
@@ -79,6 +70,30 @@ public class MemberServiceImpl implements MemberService {
         } else {
             throw new LoginException("帳號、密碼有誤");
         }
+    }
+
+    @Override
+    public ResponseEntity<String> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck) {
+
+        if (authorizationHeader != null && authorizationHeader.startsWith(tokenHeader)) {
+            String jwt = authorizationHeader.substring(7);
+            String username = jwtUtil.extractUsername(jwt);
+            logger.info("UserName: " + username);
+            Optional<Member> member = memberRepository.findMemberByEmail(username);
+            if (member.isPresent()) {
+                if (passwordEncoder.matches(oldPassword,member.get().getPassword())) {
+                    if (newPassword.equals(newPasswordCheck)) {
+                        member.get().setPassword(passwordEncoder.encode(newPassword));
+                        memberRepository.save(member.get());
+                        return ResponseEntity.ok().body("密碼更改成功");
+                    }
+                    return ResponseEntity.badRequest().body("密碼與確認密碼不相符");
+                }
+                return ResponseEntity.badRequest().body("原密碼輸入錯誤，請重新輸入原密碼");
+            }
+            return ResponseEntity.badRequest().body("會員不存在");
+        }
+        throw new LoginException("尚未取得授權");
     }
 
 }

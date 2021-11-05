@@ -8,6 +8,8 @@ public interface AuthService {
     ResponseEntity<Member> register(Member member);
     //登入
     ResponseEntity<String> login(String username, String password);
+    //驗證
+    ResponseEntity<String> updateStatus(String code);
     //重寄驗證信
     ResponseEntity<String> resendMail(Integer memberId);
 }

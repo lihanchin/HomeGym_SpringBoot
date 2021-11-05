@@ -11,6 +11,7 @@ import edu.ntut.project_01.homegym.util.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,6 +61,24 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok().body(member);
         }
         throw new RegistrationException("此帳號已被使用");
+    }
+
+    @Override
+    public ResponseEntity<String> updateStatus(String code) {
+        Optional<Member> member = memberRepository.findMemberByCode(code);
+
+        if (member.isPresent()) {
+            if (member.get().getStatus() == 0) {
+                member.get().setStatus(1);
+                memberRepository.save(member.get());
+                logger.info("會員帳號驗證通過！");
+                return ResponseEntity.status(HttpStatus.OK).body("驗證通過，歡迎使用HomeGym");
+            } else {
+                throw new VerificationMailException("此帳號已驗證通過");
+            }
+        } else {
+            throw new MemberNotExistException("用戶不存在");
+        }
     }
 
     @Override

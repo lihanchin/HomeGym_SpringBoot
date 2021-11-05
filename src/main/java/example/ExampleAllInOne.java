@@ -1,6 +1,7 @@
 package example;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -138,7 +139,8 @@ public class ExampleAllInOne {
 		String orderId = uid.toString().replace("-","").substring(0,6);
 		AioCheckOutALL obj = new AioCheckOutALL();
 		obj.setMerchantTradeNo("HG"+orderId);
-		obj.setMerchantTradeDate(new Date(System.currentTimeMillis()).toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		obj.setMerchantTradeDate(sdf.format(new Date(System.currentTimeMillis())));
 		obj.setTotalAmount(price);
 		obj.setTradeDesc("HomeGym~~~");
 		obj.setItemName(orderItems);
