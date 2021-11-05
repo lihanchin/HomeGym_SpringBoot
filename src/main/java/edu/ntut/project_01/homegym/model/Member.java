@@ -36,20 +36,20 @@ public class Member {
     @Column(name = "create_time")
     private Date createTime;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     Set<Orders> orders = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<CourseComment> courseComments = new HashSet<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<FQA> fqas = new HashSet<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<FQAReply> fqaReplies = new HashSet<>();
 
     public Member() {

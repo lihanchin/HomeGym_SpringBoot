@@ -43,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login",
                         "/store",
                         "/store/**",
-                        "/hello",
                         "/test/buySoomething").permitAll()
                 .anyRequest().authenticated()
                 .and()

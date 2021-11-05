@@ -3,6 +3,7 @@ package edu.ntut.project_01.homegym;
 import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
+import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -34,46 +35,46 @@ class HomeGymApplicationTests {
     void contextLoads() {
     }
 
-//    @Test
-//    void insertTest(){
-//        List<Course> vbList;
-//        Course vb;
-//        String row;
-//        String[] col;
-//        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-//
-//        vbList = new ArrayList<>();
-//
-//        try (BufferedReader br = new BufferedReader(new FileReader("/Users/chin/Desktop/video.csv"))) {
-//            int times = 0;
-//            while ((row = br.readLine()) != null) {
-//                if (times != 0) {
-//                    vb = new Course();
-//                    col = row.split(",");
-//                    vb.setVideoName(col[1]);
-//                    vb.setVideoInfo((col[2]).toCharArray());
-//                    vb.setCategory(col[3]);
-//                    vb.setPartOfBody(col[4]);
-//                    try {
-//                        vb.setUploadTime(format.parse(col[6]));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    vb.setPrice(Integer.parseInt(col[7]));
-//                    vb.setEquipment(col[8]);
-//                    vb.setLevel(col[9]);
-//                    vb.setPass(Integer.parseInt(col[10]));
-//                    vb.setChecked(Integer.parseInt(col[11]));
-//                    vbList.add(vb);
-//                }
-//                times++;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        courseRepository.saveAll(vbList);
-//        System.out.println("程式結束(Done...!!)");
-//    }
+    @Test
+    void insertTest(){
+        List<Course> vbList;
+        Course vb;
+        String row;
+        String[] col;
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+
+        vbList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("/Users/chin/Desktop/video.csv"))) {
+            int times = 0;
+            while ((row = br.readLine()) != null) {
+                if (times != 0) {
+                    vb = new Course();
+                    col = row.split(",");
+                    vb.setCourseName(col[1]);
+                    vb.setCourseInfo((col[2]).toCharArray());
+                    vb.setCategory(col[3]);
+                    vb.setPartOfBody(col[4]);
+                    try {
+                        vb.setUploadTime(format.parse(col[6]));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    vb.setPrice(Integer.parseInt(col[7]));
+                    vb.setEquipment(col[8]);
+                    vb.setLevel(col[9]);
+                    vb.setPass(Integer.parseInt(col[10]));
+                    vb.setChecked(Integer.parseInt(col[11]));
+                    vbList.add(vb);
+                }
+                times++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        courseRepository.saveAll(vbList);
+        System.out.println("程式結束(Done...!!)");
+    }
 
 
     @Test
@@ -94,21 +95,21 @@ class HomeGymApplicationTests {
             System.out.println(uuid);
         }
 
-//    @Transactional
-//    @Test
-//    public void fkTest(){
-//        Optional<Member> member = memberRepository.findMemberByMemberId(2);
-////        System.out.println(member.getCoach().getExperience());
-//
-//        if(member.isPresent()){
-//            Set<Course> courses =member.get().getVideo();
-//            for(Course v : courses){
-//                System.out.println(v.getVideoName());
-//            }
-//        }else {
-//            throw new MemberNotExistException("用戶不存在");
-//        }
-//    }
+    @Transactional
+    @Test
+    public void fkTest(){
+        Optional<Member> member = memberRepository.findMemberByMemberId(2);
+//        System.out.println(member.getCoach().getExperience());
+
+        if(member.isPresent()){
+            Set<Orders> orders = member.get().getOrders();
+            for(Orders v : orders){
+                System.out.println(v.getCourses());
+            }
+        }else {
+            throw new MemberNotExistException("用戶不存在");
+        }
+    }
 
     @Test
     public void  testDATE(){
@@ -123,4 +124,5 @@ class HomeGymApplicationTests {
         int size =29;
         System.out.println((int)Math.ceil(courseRepository.findAll().size()/(double)size));
     }
+
 }
