@@ -36,7 +36,7 @@ class HomeGymApplicationTests {
     }
 
     @Test
-    void insertTest(){
+    void insertTest() {
         List<Course> vbList;
         Course vb;
         String row;
@@ -88,41 +88,38 @@ class HomeGymApplicationTests {
         mailSender.send(message);
     }
 
-
-    @Test
-    public void UTest() {
-            UUID uuid = UUID.randomUUID();
-            System.out.println(uuid);
-        }
-
     @Transactional
     @Test
-    public void fkTest(){
+    public void fkTest() {
         Optional<Member> member = memberRepository.findMemberByMemberId(2);
 //        System.out.println(member.getCoach().getExperience());
 
-        if(member.isPresent()){
+        if (member.isPresent()) {
             Set<Orders> orders = member.get().getOrders();
-            for(Orders v : orders){
+            for (Orders v : orders) {
                 System.out.println(v.getCourses());
             }
-        }else {
+        } else {
             throw new MemberNotExistException("用戶不存在");
         }
     }
 
+    @Transactional
     @Test
-    public void  testDATE(){
-        Date now = new Date(System.currentTimeMillis());
-        Calendar calendar = Calendar.getInstance(Locale.CHINESE);
-        System.out.println(now);
-        System.out.println(calendar.getTime());
-    }
-
-    @Test
-    public void getAllCoursesTotalPage() {
-        int size =29;
-        System.out.println((int)Math.ceil(courseRepository.findAll().size()/(double)size));
+    public void courseList() {
+        Optional<Member> member = memberRepository.findById(6);
+        Set<Course> myCourses;
+        if (member.isPresent()) {
+            Set<Orders> orders = member.get().getOrders();
+            myCourses = new HashSet<>();
+            for (Orders orderList : orders) {
+                Set<Course> courses = orderList.getCourses();
+                for (Course course : courses) {
+                    System.out.println(course.getCourseName());
+                    myCourses.add(course);
+                }
+            }
+        }
     }
 
 }

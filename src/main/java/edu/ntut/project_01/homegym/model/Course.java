@@ -1,5 +1,6 @@
 package edu.ntut.project_01.homegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -52,6 +53,7 @@ public class Course {
     private Set<FQA> fqas = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinTable(name = "orderItem",
             joinColumns = {
                     @JoinColumn(name = "course_id", nullable = false)},

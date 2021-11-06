@@ -2,6 +2,7 @@ package edu.ntut.project_01.homegym.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,6 +38,7 @@ public class Member {
     private Date createTime;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonIgnore
     Set<Orders> orders = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)

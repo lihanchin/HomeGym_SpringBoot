@@ -12,5 +12,4 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course,Integer> {
     Optional<List<Course>> findCourseByPartOfBody(String partOfBody);
     Page<Course> findByPartOfBody(String partOfBody, Pageable pageable);
-
 }

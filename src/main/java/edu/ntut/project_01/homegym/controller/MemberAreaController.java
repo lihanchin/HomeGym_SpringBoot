@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
-public class memberAreaController {
+public class MemberAreaController {
 
     @Value("${jwt.header}")
     private String HEADER;

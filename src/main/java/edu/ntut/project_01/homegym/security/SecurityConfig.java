@@ -36,14 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(
-                        "/",
-                        "/registrations",
-                        "/registration/**",
-                        "/login",
-                        "/store",
-                        "/store/**",
-                        "/test/buySoomething").permitAll()
+//                .antMatchers(
+//                        "/",
+//                        "/registrations",
+//                        "/registration/**",
+//                        "/login",
+//                        "/store",
+//                        "/store/**"
+//                ).permitAll()
+                .antMatchers("/**/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

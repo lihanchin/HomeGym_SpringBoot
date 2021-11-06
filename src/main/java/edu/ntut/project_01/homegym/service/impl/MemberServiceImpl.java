@@ -3,8 +3,9 @@ package edu.ntut.project_01.homegym.service.impl;
 import edu.ntut.project_01.homegym.exception.category.LoginException;
 import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.exception.category.RegistrationException;
-import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
+import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
+import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
@@ -19,8 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Transactional
 @Service
@@ -94,6 +94,38 @@ public class MemberServiceImpl implements MemberService {
             return ResponseEntity.badRequest().body("會員不存在");
         }
         throw new LoginException("尚未取得授權");
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId,Integer page,Integer size) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        List<Course> myCourses;
+        Map<String,Object> response;
+        Integer totalPage;
+        if(member.isPresent()){
+            Set<Orders> orders = member.get().getOrders();
+            myCourses = new ArrayList<>();
+            for (Orders orderList :orders){
+                Set<Course> courses = orderList.getCourses();
+                myCourses.addAll(courses);
+            }
+            totalPage = (int)Math.ceil(myCourses.size()/(double)size);
+            if(page <= totalPage){
+                List<Course> myCoursesPage = new ArrayList<>();
+                if(page==1){
+                    myCoursesPage = myCourses.subList(0,page*size-1);
+                }
+                if(page>1){
+                    myCoursesPage = myCourses.subList((page-1)*size,page*size-1);
+                }
+                response = new HashMap<>();
+                response.put("totalPage", totalPage);
+                response.put("myCoursesPage", myCoursesPage);
+                return ResponseEntity.ok().body(response);
+            }
+            throw new IllegalArgumentException("頁數不得大於總頁數");
+        }
+        throw new MemberNotExistException("查無此ID會員購買的課程");
     }
 
 }

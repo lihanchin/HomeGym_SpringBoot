@@ -27,10 +27,10 @@ public class StoreController {
 
     //進入商城
     @GetMapping("/store")
-    ResponseEntity<Map> showAllCourse() throws NullPointerException {
+    ResponseEntity<Map<String, Object>> showAllCourse() throws NullPointerException {
 
         final Integer page = 0;
-        Page showCourse = courseService.findAllCourse(page, size);
+        Page<Course> showCourse = courseService.findAllCourse(page, size);
         Map<String, Object> storeDetail = new HashMap<>();
         storeDetail.put("firstPage", showCourse.getContent());
         storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -40,7 +40,7 @@ public class StoreController {
 
     //商城分頁
     @GetMapping("/store/allCourse/")
-    ResponseEntity<Map> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
+    ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
 
         final Integer totalPage;
         Page<Course> showCourse;

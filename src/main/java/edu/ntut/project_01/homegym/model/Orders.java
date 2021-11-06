@@ -1,5 +1,6 @@
 package edu.ntut.project_01.homegym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,10 +28,12 @@ public class Orders {
     private Date orderTime;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
     public Orders() {
