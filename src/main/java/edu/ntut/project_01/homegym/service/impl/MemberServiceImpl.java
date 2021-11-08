@@ -1,5 +1,6 @@
 package edu.ntut.project_01.homegym.service.impl;
 
+import edu.ntut.project_01.homegym.exception.category.JwtException;
 import edu.ntut.project_01.homegym.exception.category.LoginException;
 import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.exception.category.RegistrationException;
@@ -7,6 +8,7 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
+import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
 import edu.ntut.project_01.homegym.util.MailUtil;
@@ -27,6 +29,7 @@ import java.util.*;
 public class MemberServiceImpl implements MemberService {
 
     private MemberRepository memberRepository;
+    private OrdersRepository ordersRepository;
     private MailUtil mailUtil;
     private JwtUtil jwtUtil;
     private PasswordEncoder passwordEncoder;
@@ -35,8 +38,9 @@ public class MemberServiceImpl implements MemberService {
     private String tokenHeader;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, MailUtil mailUtil, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    public MemberServiceImpl(MemberRepository memberRepository, OrdersRepository ordersRepository, MailUtil mailUtil, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.ordersRepository = ordersRepository;
         this.mailUtil = mailUtil;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
@@ -73,50 +77,53 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<String> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck) {
-
+    public ResponseEntity<Map<String , Object>> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck) {
+        Map<String , Object> response;
         if (authorizationHeader != null && authorizationHeader.startsWith(tokenHeader)) {
             String jwt = authorizationHeader.substring(7);
             String username = jwtUtil.extractUsername(jwt);
             logger.info("UserName: " + username);
             Optional<Member> member = memberRepository.findMemberByEmail(username);
             if (member.isPresent()) {
-                if (passwordEncoder.matches(oldPassword,member.get().getPassword())) {
+                if (passwordEncoder.matches(oldPassword, member.get().getPassword())) {
                     if (newPassword.equals(newPasswordCheck)) {
                         member.get().setPassword(passwordEncoder.encode(newPassword));
                         memberRepository.save(member.get());
-                        return ResponseEntity.ok().body("密碼更改成功");
+                        response = new HashMap<>();
+//                        response.put("member", memberRepository.findMemberByEmail(username).get());
+                        response.put("message","密碼更改成功");
+                        return ResponseEntity.ok().body(response);
                     }
-                    return ResponseEntity.badRequest().body("密碼與確認密碼不相符");
+                    throw new IllegalArgumentException("密碼與確認密碼不相符");
                 }
-                return ResponseEntity.badRequest().body("原密碼輸入錯誤，請重新輸入原密碼");
+                throw new IllegalArgumentException("原密碼輸入錯誤，請重新輸入原密碼");
             }
-            return ResponseEntity.badRequest().body("會員不存在");
+            throw new MemberNotExistException("會員不存在");
         }
-        throw new LoginException("尚未取得授權");
+        throw new LoginException("尚未登入取得授權");
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId,Integer page,Integer size) {
+    public ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size) {
         Optional<Member> member = memberRepository.findById(memberId);
         List<Course> myCourses;
-        Map<String,Object> response;
+        Map<String, Object> response;
         Integer totalPage;
-        if(member.isPresent()){
+        if (member.isPresent()) {
             Set<Orders> orders = member.get().getOrders();
             myCourses = new ArrayList<>();
-            for (Orders orderList :orders){
+            for (Orders orderList : orders) {
                 Set<Course> courses = orderList.getCourses();
                 myCourses.addAll(courses);
             }
-            totalPage = (int)Math.ceil(myCourses.size()/(double)size);
-            if(page <= totalPage){
+            totalPage = (int) Math.ceil(myCourses.size() / (double) size);
+            if (page <= totalPage) {
                 List<Course> myCoursesPage = new ArrayList<>();
-                if(page==1){
-                    myCoursesPage = myCourses.subList(0,page*size-1);
+                if (page == 1) {
+                    myCoursesPage = myCourses.subList(0, page * size - 1);
                 }
-                if(page>1){
-                    myCoursesPage = myCourses.subList((page-1)*size,page*size-1);
+                if (page > 1) {
+                    myCoursesPage = myCourses.subList((page - 1) * size, page * size - 1);
                 }
                 response = new HashMap<>();
                 response.put("totalPage", totalPage);
@@ -127,5 +134,25 @@ public class MemberServiceImpl implements MemberService {
         }
         throw new MemberNotExistException("查無此ID會員購買的課程");
     }
+
+    @Override
+    public Member findMemberByToken(String authorizationHeader) {
+        String jwt;
+        String memberEmail;
+        if (authorizationHeader != null && authorizationHeader.startsWith(tokenHeader)) {
+            jwt = authorizationHeader.substring(7);
+            memberEmail = jwtUtil.extractUsername(jwt);
+            logger.info("checking authentication " + memberEmail);
+            return memberRepository.findMemberByEmail(memberEmail).orElseThrow();
+        } throw new JwtException("尚未登入取得驗證");
+    }
+
+//    @Override
+//    public ResponseEntity<List<Orders>> findOrdersByOKStatus(Collection<String> status) {
+//        Optional<List<Orders>> okOrders = ordersRepository.findOrdersByOrderStatusIn(status);
+//        if (okOrders.isPresent() && okOrders.get().size() != 0) {
+//
+//        }
+//    }
 
 }

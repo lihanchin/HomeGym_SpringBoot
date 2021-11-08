@@ -2,6 +2,7 @@ package edu.ntut.project_01.homegym.controller;
 
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.service.CourseService;
+import org.hibernate.QueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,18 @@ import java.util.Map;
 @RestController
 public class StoreController {
 
-    @Autowired
-    private CourseService courseService;
 
+    private CourseService courseService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${course.countsPerPage}")
-    Integer size;
+    private Integer size;
 
-    //進入商城
+    @Autowired
+    public StoreController(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    //進入商城(OK)
     @GetMapping("/store")
     ResponseEntity<Map<String, Object>> showAllCourse() throws NullPointerException {
 
@@ -38,13 +43,21 @@ public class StoreController {
 
     }
 
-    //商城分頁
+    //商城分頁(OK)
     @GetMapping("/store/allCourse/")
     ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
 
-        final Integer totalPage;
+        Integer totalPage;
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
+
+        if( page == null && partOfBody == null){
+            showCourse = courseService.findAllCourse(0, size);
+            storeDetail = new HashMap<>();
+            storeDetail.put("currentPage", showCourse.getContent());
+            storeDetail.put("totalPage", showCourse.getTotalPages());
+            return ResponseEntity.ok().body(storeDetail);
+        }
 
         if (page != null && page > 0) {
             if (partOfBody == null) {
@@ -66,7 +79,7 @@ public class StoreController {
                     return ResponseEntity.ok().body(storeDetail);
                 }
             }
-            throw new NullPointerException("查無此頁面");
+            throw new QueryException("查無此頁面");
         } else {
             showCourse = courseService.findCourseByFilter(partOfBody, 0, size);
             storeDetail = new HashMap<>();

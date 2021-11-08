@@ -6,6 +6,7 @@ import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
+import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ class HomeGymApplicationTests {
     private CourseRepository courseRepository;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private OrdersRepository ordersRepository;
     @Autowired
     private JavaMailSender mailSender;
 
@@ -121,5 +124,20 @@ class HomeGymApplicationTests {
             }
         }
     }
+//    @Transactional
+//    @Test
+//    public void orderStatusOK(){
+//        Collection<String> status = new HashSet<>();
+//        status.add("付款完成");
+//        List<Orders> orders = ordersRepository.findOrdersByOrderStatusIn(status);
+//
+//        for (Orders o : orders){
+//            System.out.println("/////////////////////////////////////");
+//            System.out.println(o.getOrderId());
+//            System.out.println(o.getCourses());
+//            System.out.println(o.getMember().getMemberId());
+//            System.out.println("/////////////////////////////////////");
+//        }
+//    }
 
 }

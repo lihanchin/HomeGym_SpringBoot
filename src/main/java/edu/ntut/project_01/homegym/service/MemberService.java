@@ -2,6 +2,8 @@ package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
+import edu.ntut.project_01.homegym.model.Orders;
+import org.hibernate.criterion.Order;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -17,8 +19,14 @@ public interface MemberService {
     ResponseEntity<Member> login(String mail, String password);
 
     //更改密碼
-    ResponseEntity<String> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck);
+    ResponseEntity<Map<String , Object>> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck);
 
     //已購買課程
     ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size);
+
+    //已完成訂單
+//    ResponseEntity<List<Orders>> findOrdersByOKStatus(String status);
+
+    //找出會員資料
+    Member findMemberByToken(String authorizationHeader);
 }

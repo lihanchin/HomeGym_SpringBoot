@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Member> register(Member member) {
+    public ResponseEntity<Map<String, Object>> register(Member member) {
+        Map<String, Object> memberInfo = new HashMap<>();
         if (!memberRepository.existsMemberByEmail(member.getEmail())) {
             final String rawPassword = member.getPassword();
             member.setPassword(passwordEncoder.encode(rawPassword));
@@ -58,7 +61,8 @@ public class AuthServiceImpl implements AuthService {
             member.setCode(UUID.randomUUID().toString());
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
-            return ResponseEntity.ok().body(member);
+            memberInfo.put("memberId", memberRepository.findMemberByEmail(member.getEmail()).orElseThrow().getMemberId());
+            return ResponseEntity.ok().body(memberInfo);
         }
         throw new RegistrationException("此帳號已被使用");
     }
@@ -82,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<String> login(String username, String password) {
+    public ResponseEntity<Map<String,Object>> login(String username, String password) {
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -91,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
         if(userDetails.isEnabled()){
             final String jwt = jwtUtil.generateToken(userDetails);
             logger.info("JWT: " + jwt);
-            return ResponseEntity.ok().body(jwt);
+            return ResponseEntity.ok().body(jwtUtil.extractLoginResponse(jwt));
         }
         throw new VerificationMailException("您的帳號尚未驗證");
     }

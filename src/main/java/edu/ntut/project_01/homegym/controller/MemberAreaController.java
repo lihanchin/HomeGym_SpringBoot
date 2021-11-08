@@ -20,9 +20,9 @@ public class MemberAreaController {
     @Autowired
     private MemberService memberService;
 
-    //更改密碼
-    @PostMapping("memberArea/changePassword")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String,String> oldAndNewPassword, HttpServletRequest httpServletRequest){
+    //更改密碼(OK)
+    @PostMapping("/memberArea/changePassword")
+    public ResponseEntity<Map<String,Object>> changePassword(@RequestBody Map<String,String> oldAndNewPassword, HttpServletRequest httpServletRequest){
         String authorizationHeader = httpServletRequest.getHeader(HEADER);
         String oldPassword = oldAndNewPassword.get("oldPassword");
         String newPassword = oldAndNewPassword.get("newPassword");
@@ -30,4 +30,7 @@ public class MemberAreaController {
 
         return memberService.changePassword(authorizationHeader,oldPassword,newPassword,newPasswordCheck);
     }
+
+    //我的訂單
+
 }

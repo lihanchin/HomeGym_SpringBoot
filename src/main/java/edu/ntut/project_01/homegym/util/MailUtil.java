@@ -20,7 +20,7 @@ public class MailUtil {
 
     public void sendMail(String code, String memberEmail){
 
-        verifiedPath = "http://localhost:8080/registration/memberVerification?code="+code;
+        verifiedPath = "http://localhost:8080/registrations/memberVerification?code="+code;
 
         message = new SimpleMailMessage();
         message.setFrom("homegym_ntut_pj01@outlook.com");

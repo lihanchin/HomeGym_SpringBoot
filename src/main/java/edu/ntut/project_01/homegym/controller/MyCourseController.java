@@ -28,7 +28,7 @@ public class MyCourseController {
         this.memberService = memberService;
     }
 
-    //已買課程分頁
+    //已買課程分頁(OK)
     @GetMapping("/myCourse/allCourse/{memberId}")
     ResponseEntity<Map<String, Object>> myCourse(@PathVariable Integer memberId, @RequestParam(required = false) Integer page) {
         if (page != null) {
