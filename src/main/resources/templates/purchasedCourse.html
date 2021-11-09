@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厝動HomeGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/all.min.css">
+</head>
+<body>
+    
+    <div id="app">
+
+        <!-- 導覽列 10/3更新-->
+        <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary">
+            <div class="container-fluid">
+                <div class="navbar-brand d-flex align-items-center">
+                    <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+                    <a class="text-white" href="./index.html">厝動 HomeGym</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <form class="d-flex ms-auto position-relative col-4">
+                        <input class="form-control" type="text" placeholder="關鍵字搜尋" aria-label="default input example"> 
+                        <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" aria-hidden="true"></i>
+                    </form>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                        <div id="marker"></div>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3 text-white" aria-current="page" href="./shopping.html"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                            商城</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link ms-3 text-white" href="shoppingCart.html"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                            購物車</a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width:400px;min-height:100px;" id="dropdown-menu">
+                                <div class="px-3 py-2 " id="menu">
+                                    <!-- 動態新增 -->
+                                </div>   
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link ms-3 dropdown dropdown-toggle text-white" id="mycourse_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-window-maximize text-white" aria-hidden="true"></i>
+                                我的課程</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="mycourse_areas_dropdown">
+                                    <li><a class="dropdown-item" href="./mycoursesAreasBuyedCourse.html">已買課程</a></li>
+                                    <li><a class="dropdown-item" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>
+                                    <li><a class="dropdown-item" href="./myFitnessPlan.html">健身計畫</a></li>
+                                    <li><a class="dropdown-item start_btn" href="#" data-bs-toggle="modal" data-bs-target="#quiz_info">健身知識</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <img class="ms-4 rounded-circle" src="https://fakeimg.pl/50x50/" alt="...">
+                        <li class="nav-item me-4">
+                            <div class="top ms-3">
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊</a>
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
+                            </div>
+                            <div class="buttom text-center ms-3 dropdown">
+                                <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
+                                    <li><a class="dropdown-item" href="./memberAreasIntroduction.html">會員中心</a></li>
+                                    <li><a class="dropdown-item" href="./memberAreasApplicationCoach.html">成為教練</a></li>
+                                    <li><a class="dropdown-item" href="./coachingAreasIntroduction.html">教練專區</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <!-- 課程 -->
+        <section class="course mt-5 mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-11 m-auto">
+                        <h3>課程名稱</h3>
+                        <video class="w-100" src="./video/video.mp4" controls></video>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        
+        <!-- 課程說明、課程評論 -->
+        <section class="course_explanation">
+            <div class="container">
+                <!-- 導覽分頁按鈕 -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="course_explanation_tab" data-bs-toggle="tab" data-bs-target="#course_explanation" type="button" role="tab" aria-controls="home" aria-selected="true">課程說明</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="course_comment_tab" data-bs-toggle="tab" data-bs-target="#course_comment" type="button" @click="" role="tab" aria-controls="profile" aria-selected="false">課程評論</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="course_fqa_tab" data-bs-toggle="tab" data-bs-target="#course_fqa" type="button" role="tab" aria-controls="profile" aria-selected="false">FQA</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <!-- 課程說明 -->
+                    <div class="tab-pane fade show active mb-6" id="course_explanation" role="tabpanel" aria-labelledby="course_explanation_tab">
+                        <div class="col-10 m-auto pt-5">
+                            <div class="m-2">
+                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>器材需求</h5>
+                                <p>{{course.equipment}}</p>
+                            </div>
+                            <div class="m-2">
+                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程適合程度</h5>
+                                <p>{{course.level}}</p>
+                            </div>
+                            <div class="m-2">
+                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程介紹</h5>
+                                <p>{{course.courseInfo}}</p>
+                            </div>
+                            <div class="m-2">
+                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>教練簡介</h5>
+                                <div class="row align-items-center">
+                                    <div class="col-2">
+                                        <img class="mb-2 img-fluid" :src="coach.coachImage" alt="">
+        
+                                    </div>
+                                    <div class="col-10 d-flex flex-column">
+                                        <p><span>教練名稱：</span> {{coachName}}</p>
+                                        <p><span>專長：</span> {{coach.skill}}</p>
+                                        <p><span>經歷：</span> {{coach.experience}}</p>
+        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- 課程評論 -->
+                    <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
+                        <div class="col-10 m-auto pt-5">
+                            <!-- 顯示留言項目 -->
+                            <div class="mb-4 border-bottom" v-for="(item,index) in comment">
+                                <div class="user d-flex mb-2">
+                                    <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                    <h5 class="mt-auto">{{item.memberName}}</h5>
+                                </div>
+                                <div class="evaluation mb-2">
+                                    <!-- 動態新增星星數 -->
+                                    <i class="fa fa-star" aria-hidden="true" v-for="n in comment[index].star" ></i>
+                                </div>
+                                <p>{{item.commentContent}}</p>
+                                <p class="text-end me-2">{{item.commentCreateTime}}</p>
+                            </div>
+                            
+                        </div>
+                        <!-- 輸入留言區 -->
+                        <div class="col-10 m-auto mb-3">
+                            <div class="d-flex mb-2 align-items-center">
+                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <h5 class="mt-auto">{{member.memberName}}</h5>
+                                <div class="evaluation ms-4">
+                                    <div class="stars d-flex flex-row-reverse justify-content-end" >
+                                        <input type="radio" id="five" name="rate" value="5" v-model.number="courseComment.star" >
+                                        <label for="five"></label>
+                                        <input type="radio" id="four" name="rate" value="4" v-model.number="courseComment.star">
+                                        <label for="four"></label>
+                                        <input type="radio" id="three" name="rate" value="3" v-model.number="courseComment.star" checked>
+                                        <label for="three"></label>
+                                        <input type="radio" id="two" name="rate" value="2" v-model.number="courseComment.star">
+                                        <label for="two"></label>
+                                        <input type="radio" id="one" name="rate" value="1" v-model.number="courseComment.star">
+                                        <label for="one"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea class="form-control mb-2 mt-2" rows="3" v-model.trim="courseComment.CommentInput" ></textarea>
+                            <div class="d-flex justify-content-end">
+<!--                                <button class="btn btn-outline-primary pe-3 ps-3"  type="submit" @click="createComment">傳送</button>-->
+                                <button class="btn btn-outline-primary pe-3 ps-3"  type="submit" @click="createComment" >傳送</button>
+                            </div>
+                        </div>
+                        <!-- 分頁列 -->
+                        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+                            <ul class="pagination">
+                              <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                  <span aria-hidden="true">&laquo;</span>
+                                </a>
+                              </li>
+                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                              <li class="page-item"><a class="page-link" href="#">2</a></li>
+                              <li class="page-item"><a class="page-link" href="#">3</a></li>
+                              <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                </a>
+                              </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    
+    
+                    <!-- FQA -->
+                    <div class="tab-pane fade" id="course_fqa" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="col-10 m-auto pt-5">
+                            <!-- 顯示FQA -->
+                            <div class="mb-4" v-for="(item,index) in fqa">
+                                <div class="user d-flex mb-2">
+                                    <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                    <h5 class="mt-auto">{{item.memberName}}</h5>
+                                </div>
+                                <p>{{item.fqaContent}}</p>
+                                <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(item.fqaId)">回覆</span>{{item.fqaCreateTime}}</p>
+                                <!-- 顯示FQAReply-->
+                                <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="(key,num) in item.fqaReplies"> <!-- class添加ps-6 -->
+                                    <div class="user d-flex mb-2 align-items-center">
+                                        <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+key.memberImge" alt="">
+                                        <h5 class="mt-auto">{{key.memberName}}</h5>
+                                        <h6 class="mt-auto text-muted ms-4">回覆 {{item.memberName}}</h6>
+                                    </div>
+                                    <p>{{key.fqaReplyContent}}</p>
+                                    <p class="text-end me-2">{{key.fqaCreateTime}}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- 送出發問 <FQA> -->
+                        <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
+                            <div class="d-flex mb-2 align-items-center">
+                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <h5 class="mt-auto">{{member.memberName}}</h5>
+                            </div>
+                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaInput.fqaContent"></textarea>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit" @click="creatFqa">傳送</button>
+                            </div>
+                        </div>
+                        <!-- 送出發問 <FQAReply> -->
+                        <div class="col-10 m-auto mb-3"  v-if="fqaUser !=='' ">
+                            <div class="d-flex mb-2 align-items-center">
+                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <h5 class="mt-auto">{{member.memberName}}</h5>
+                                <h6 class="Reply_name mt-auto text-muted ms-4">回覆 {{fqaUser}}
+                                    <span type="button" class="btn-close btn-sm p-0 m-0" aria-label="Close" @click="closeFqa"></span>
+                                </h6> <!--點擊回覆會跳出此行-->
+                            </div>
+                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaReplyInput.fqaReplyContent"></textarea>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit"  @click="creatFqaReply">傳送</button>
+                            </div>
+                        </div>
+                        <!-- 分頁列 -->
+                        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+                            <ul class="pagination">
+                              <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                  <span aria-hidden="true">&laquo;</span>
+                                </a>
+                              </li>
+                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                              <li class="page-item"><a class="page-link" href="#">2</a></li>
+                              <li class="page-item"><a class="page-link" href="#">3</a></li>
+                              <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                </a>
+                              </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<!-- Vue -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
+<script src="./Vue/purchasedCourse.js"></script>
+</html>

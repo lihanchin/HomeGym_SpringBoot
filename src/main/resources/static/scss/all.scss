@@ -1,0 +1,79 @@
+
+@import "bootstrap/bootstrap";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500&display=swap');
+
+@import "index";
+
+@import "memberAreasIntroduction";
+
+@import "coachingAreasUploadedCourse";
+
+@import "memberAreasMyOrder";
+
+@import "PurchasedCourse";
+
+@import "myFitnessPlan";
+
+@import "shopping";
+
+@import "fitnesPlanPlayVideo";
+
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+body,html{
+    overflow-x: hidden;
+}
+
+p{
+    letter-spacing: 1.5px;
+}
+
+textarea {
+    resize : none;
+}
+
+//去除input btn的outline
+.form-control:focus,.form-select:focus {
+    border-color: none;
+    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.1);
+}
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none;
+    box-shadow:none;
+}
+
+//icon
+i{
+    // color: black;
+    &.fa-youtube-play{
+        color: #c4302b;
+    }
+    &.fa-facebook-official{
+        color: #3b5998;
+    }
+    &.fa-instagram{
+        color: black;
+    }
+    &.fa-google{
+        color: #4285F4;
+    }
+    &.fa-wrench{
+        color: green;
+    }
+    &.fa-trash-o{
+        color: #999;
+    }
+    &.fa-bars.my-handle{
+        cursor: move;
+    }
+    &.fa-star{
+        color: gold;
+    }
+}
+
+
+

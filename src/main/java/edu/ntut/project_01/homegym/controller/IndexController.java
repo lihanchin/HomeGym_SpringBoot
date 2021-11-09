@@ -3,8 +3,10 @@ package edu.ntut.project_01.homegym.controller;
 import edu.ntut.project_01.homegym.model.AuthRequest;
 import edu.ntut.project_01.homegym.model.Member;
 
+import edu.ntut.project_01.homegym.model.Visitor;
 import edu.ntut.project_01.homegym.service.AuthService;
 import edu.ntut.project_01.homegym.service.MemberService;
+import edu.ntut.project_01.homegym.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,14 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class IndexController {
 
-    private AuthService authService;
-    private MemberService memberService;
-
     @Autowired
-    public IndexController(AuthService authService, MemberService memberService) {
-        this.authService = authService;
-        this.memberService = memberService;
-    }
+    private AuthService authService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private VisitorService visitorService;
 
     //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)
     @GetMapping("/hello")
@@ -72,6 +72,11 @@ public class IndexController {
     @PostMapping("/login")
     public ResponseEntity<String> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
         return authService.login(authRequest.getUsername(), authRequest.getPassword());
+    }
+
+    @PostMapping("/addMessage")
+    public void addMessage(@RequestBody Visitor visitor){
+        visitorService.addMessage(visitor);
     }
 
 

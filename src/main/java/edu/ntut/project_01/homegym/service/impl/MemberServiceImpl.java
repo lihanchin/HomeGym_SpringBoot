@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.exception.category.LoginException;
 import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.exception.category.RegistrationException;
 import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
+import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
@@ -32,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
         this.memberRepository = memberRepository;
         this.mailUtil = mailUtil;
     }
+
+
 
     @Override
     public ResponseEntity<String> createMember(Member member) {
@@ -79,6 +82,27 @@ public class MemberServiceImpl implements MemberService {
         } else {
             throw new LoginException("帳號、密碼有誤");
         }
+    }
+
+    @Override
+    public Optional<Member> findMemberByEmail(String email) {
+
+        return memberRepository.findMemberByEmail(email);
+    }
+
+    @Override
+    public Optional<Member> findMemberByName(String name) {
+
+        return memberRepository.findMemberByName(name);
+    }
+
+    @Override
+    public void update(Member member) {
+        Optional<Member> member1= memberRepository.findMemberByMemberId(member.getMemberId());
+        if(member1.isPresent()){
+            memberRepository.save(member);
+        }
+
     }
 
 }

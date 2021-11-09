@@ -11,6 +11,7 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
     Optional<Member> findMemberByEmail(String email);
     Optional<Member> findMemberByCode(String code);
     Optional<Member> findMemberByMemberId(Integer id);
+    Optional<Member> findMemberByName(String name);
 
     // 自定義SQL查詢
 //    @Query(value = "select * from customer where name = ?1", nativeQuery = true)

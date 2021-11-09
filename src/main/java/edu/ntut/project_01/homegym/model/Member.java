@@ -2,6 +2,7 @@ package edu.ntut.project_01.homegym.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,8 +14,10 @@ import java.util.*;
 @Table(name = "member")
 public class Member {
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberId;
+    @Column(name = "member_name")
     private String name;
     private String email;
     private String password;
@@ -28,24 +31,53 @@ public class Member {
     //前端input hidden name:role  value:會員
     private String role;
     @Lob
+    @Column(name = "member_image")
     private byte[] memberImage;
     @CreatedDate
-    private Date createDate;
+    @Column(name = "create_time")
+    private Date createTime;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "member_courses",
-            joinColumns = {
-                    @JoinColumn(name = "MEMBER_ID", nullable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "COURSE_ID", nullable = false)}
-    )
-    private Set<Video> video = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    Set<Orders> orders = new HashSet<>();
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn
+    @JoinColumn(name = "coach_id")
     private Coach coach;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<CourseComment> courseComments = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<FQA> fqas = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<FQAReply> fqaReplies = new HashSet<>();
+
     public Member() {
+    }
+
+    public Member(Integer memberId, String name, String email, String password, String phone, java.sql.Date birthday, Integer status, String code, String role, byte[] memberImage, Date createTime, Set<Orders> orders, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<FQAReply> fqaReplies) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.status = status;
+        this.code = code;
+        this.role = role;
+        this.memberImage = memberImage;
+        this.createTime = createTime;
+        this.orders = orders;
+        this.coach = coach;
+        this.courseComments = courseComments;
+        this.fqas = fqas;
+        this.fqaReplies = fqaReplies;
     }
 
     public Integer getMemberId() {
@@ -128,20 +160,20 @@ public class Member {
         this.memberImage = memberImage;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Set<Video> getVideo() {
-        return video;
+    public Set<Orders> getOrders() {
+        return orders;
     }
 
-    public void setVideo(Set<Video> video) {
-        this.video = video;
+    public void setOrders(Set<Orders> orders) {
+        this.orders = orders;
     }
 
     public Coach getCoach() {
@@ -150,5 +182,29 @@ public class Member {
 
     public void setCoach(Coach coach) {
         this.coach = coach;
+    }
+
+    public Set<CourseComment> getCourseComments() {
+        return courseComments;
+    }
+
+    public void setCourseComments(Set<CourseComment> courseComments) {
+        this.courseComments = courseComments;
+    }
+
+    public Set<FQA> getFqas() {
+        return fqas;
+    }
+
+    public void setFqas(Set<FQA> fqas) {
+        this.fqas = fqas;
+    }
+
+    public Set<FQAReply> getFqaReplies() {
+        return fqaReplies;
+    }
+
+    public void setFqaReplies(Set<FQAReply> fqaReplies) {
+        this.fqaReplies = fqaReplies;
     }
 }

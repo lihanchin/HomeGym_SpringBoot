@@ -1,0 +1,20 @@
+
+.side_bar {
+    .active{
+        background-color: $primary;
+        i,p{
+            color: white;
+        }
+    } 
+}
+  
+
+.btn{
+    &:hover{
+        .fa-pencil{
+            color: white;
+            transition: .05s;
+        }
+    }
+}
+        

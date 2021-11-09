@@ -1,0 +1,43 @@
+.course_explanation,.mycourse_nav,.ordered{
+    .nav-link{
+        &.active{
+            color: $white;
+            background: $primary;
+        }
+    }
+}
+
+//調整星星
+.stars {
+    input{
+        display: none;
+    }
+    label{
+        font-size: 18px;
+        color: lightgrey;
+        text-shadow: 1px 1px #bbb;
+        margin-right: 5px;
+        &::before{
+            content: '★';
+        }
+    }
+}
+.stars input:checked ~ label{
+    color: gold;
+    text-shadow: 1px 1px #c60;
+}
+
+.stars:not(:checked) > label:hover,
+.stars:not(:checked) > label:hover ~ label{
+    color: gold;
+}
+
+.stars input:checked > label:hover,
+.stars input:checked > label:hover ~ label{
+    color: gold;
+    text-shadow: 1px 1px goldenrod;
+}
+
+
+
+

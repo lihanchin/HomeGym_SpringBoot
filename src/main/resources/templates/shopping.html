@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厝動HomeGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/all.min.css">
+</head>
+<body>
+    
+
+    <div id="app">
+
+        <!-- 導覽列 10/3更新-->
+        <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary">
+            <div class="container-fluid">
+                <div class="navbar-brand d-flex align-items-center">
+                    <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+                    <a class="text-white" href="./index.html">厝動 HomeGym</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <form class="d-flex ms-auto position-relative col-4">
+                        <input class="form-control" type="text" placeholder="關鍵字搜尋" aria-label="default input example"> 
+                        <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" aria-hidden="true"></i>
+                    </form>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                        <div id="marker"></div>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3 text-white" aria-current="page" href="./shopping.html"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                            商城</a>
+                        </li>
+                        <li class="shoppping_car nav-item dropdown">
+                            <a class="nav-link ms-3 text-white" href="shoppingCart.html"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                            購物車</a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width:400px;min-height:100px;" id="dropdown-menu">
+                                <div class="px-3 py-2 " id="menu">
+                                    <!-- 動態新增 -->
+                                    
+                                </div>   
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link ms-3 dropdown dropdown-toggle text-white" id="mycourse_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-window-maximize text-white" aria-hidden="true"></i>
+                                我的課程</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="mycourse_areas_dropdown">
+                                    <li><a class="dropdown-item" href="./mycoursesAreasBuyedCourse.html">已買課程</a></li>
+                                    <li><a class="dropdown-item" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>
+                                    <li><a class="dropdown-item" href="./myFitnessPlan.html">健身計畫</a></li>
+                                    <li><a class="dropdown-item start_btn" href="#" data-bs-toggle="modal" data-bs-target="#quiz_info">健身知識</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <img class="ms-4 rounded-circle" src="https://fakeimg.pl/50x50/" alt="...">
+                        <li class="nav-item me-4">
+                            <div class="top ms-3">
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊</a>
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
+                            </div>
+                            <div class="buttom text-center ms-3 dropdown">
+                                <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
+                                    <li><a class="dropdown-item" href="./memberAreasIntroduction.html">會員中心</a></li>
+                                    <li><a class="dropdown-item" href="./memberAreasApplicationCoach.html">成為教練</a></li>
+                                    <li><a class="dropdown-item" href="./coachingAreasIntroduction.html">教練專區</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <!-- 商城 -->
+        <section class="shoppingCar mt-5">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <!-- 側導覽列 -->
+                    <div class="col-md-2 col-sm-12 p-0 mb-4">
+                        <ul class="list-group rounded-0">
+                            <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
+                            <li class="list-group-item list-group-item-primary">上半身</li>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                二頭肌
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                二頭肌
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                二頭肌
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                二頭肌
+                            </label>
+                            <li class="list-group-item list-group-item-primary">下半身</li>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                臀部
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                臀部
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                臀部
+                            </label>
+                            <li class="list-group-item list-group-item-primary">有氧</li>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                瑜伽
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                瑜伽
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">
+                                瑜伽
+                            </label>
+                          </ul>
+                    </div>
+                    <!-- 內容 -->
+                    <div class="col-md-10 col-sm-12">
+                        <div class="container ps-3 pe-3">
+                            <div class="row row-cols-md-2 row-cols-lg-3 row-cols-sm-1">
+                                <!-- 課程卡片 -->
+                                <div class="col gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
+                                    <div class="card w-100 h-100 cart">
+
+                                        <div class="position-relative">
+                                            <img :src="item.courseImage" class="card-img-top" alt="...">
+                                            <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
+                                                <a href="#" class="btn btn-outline-secondary rounded-0 d-block addButton" :id=" 'courseId'+item.courseId " @click="pushCourseValue(item)">
+
+                                                    <input type="hidden" :value="CourseValue" >
+                                                    加到購物車
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body d-flex flex-column">
+                                            <div class="evaluation mb-2 pb-2 border-bottom d-flex">
+                                                <div class="star" v-for="n in item.star">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <h5 class="card-title">{{item.courseName}}</h5>
+                                            <div class="d-flex">
+                                                <p class="me-3 badge bg-secondary bg-dark">{{item.partOfBody}}</p>
+                                            </div>
+                                            <h6 class="pe-3">{{item.coachName}}教練</h6>
+                                            <p class="card-text">{{item.courseInfo}}</p>
+<!--                                            <a :href="'/product/'+item.courseId" class="btn btn-primary d-block mt-auto">課程觀看</a>-->
+                                            <a :href="'/product?id='+item.courseId" class="btn btn-primary d-block mt-auto">課程觀看</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- 分頁 -->
+                            <nav aria-label="Page navigation example" class="mb-5">
+                                <ul class="pagination justify-content-center">
+                                  <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                      <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                  </li>
+                                  <li class="page-item active" v-for="pageNo in totalPage">
+                                      <a class="page-link" href="#" >{{pageNo}}</a>
+                                  </li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<!-- Vue -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
+<script src="./Vue/shopping.js"></script>
+<!-- <script src="./js/shopping.js"></script> -->
+
+</html>

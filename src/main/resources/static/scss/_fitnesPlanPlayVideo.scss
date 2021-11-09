@@ -1,0 +1,13 @@
+#courseVideo {
+    position: relative;
+  }
+#adArea {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    visibility: hidden;
+}
