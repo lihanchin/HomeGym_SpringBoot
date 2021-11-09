@@ -1,6 +1,5 @@
 package edu.ntut.project_01.homegym.service.impl;
 
-import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.util.JwtUserFactory;
@@ -17,8 +16,12 @@ import java.util.Optional;
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    public JwtUserDetailsServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

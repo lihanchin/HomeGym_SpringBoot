@@ -21,11 +21,8 @@ public interface MemberService {
     //更改密碼
     ResponseEntity<Map<String , Object>> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck);
 
-    //已購買課程
-    ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size);
-
-    //已完成訂單
-//    ResponseEntity<List<Orders>> findOrdersByOKStatus(String status);
+    //已購買課程(舊版)
+//  ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size);
 
     //找出會員資料
     Member findMemberByToken(String authorizationHeader);

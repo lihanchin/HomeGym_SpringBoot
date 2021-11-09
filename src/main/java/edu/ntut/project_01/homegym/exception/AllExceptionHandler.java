@@ -33,9 +33,15 @@ public class AllExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
-    //404
+    //401
     @ExceptionHandler(MemberNotExistException.class)
     public ResponseEntity<String> handle(MemberNotExistException  exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
+    //404
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<String> handle(JwtException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
