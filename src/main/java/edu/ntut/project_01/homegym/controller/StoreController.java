@@ -1,92 +1,92 @@
 package edu.ntut.project_01.homegym.controller;
 
-import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
-import edu.ntut.project_01.homegym.model.CourseComment;
-import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CourseService;
+import org.hibernate.QueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/store")
 public class StoreController {
 
-    @Autowired
-    private CourseService courseService;
 
+    private CourseService courseService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${course.countsPerPage}")
-    Integer size;
+    private Integer size;
 
-    //進入商城
-    @GetMapping("/")
-    ResponseEntity<Map> showAllCourse() throws NullPointerException {
+    @Autowired
+    public StoreController(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    //進入商城(OK)
+    @GetMapping("/store")
+    ResponseEntity<Map<String, Object>> showAllCourse() throws NullPointerException {
 
         final Integer page = 0;
-        Page showCourse = courseService.findAllCourse(page, size);
-        Map<String,Object> storeDetail = new HashMap<>();
-
-        List<Course> courseList = showCourse.getContent();
-        for(Course course:courseList){
-            String coachName = course.getCoach().getMember().getName();
-            course.setCoachName(coachName);
-        }
-
-        storeDetail.put("shoppingCourse", showCourse.getContent());
+        Page<Course> showCourse = courseService.findAllCourse(page, size);
+        Map<String, Object> storeDetail = new HashMap<>();
+        storeDetail.put("firstPage", showCourse.getContent());
         storeDetail.put("totalPage", showCourse.getTotalPages());
         return ResponseEntity.ok().body(storeDetail);
 
     }
 
-    //商城分頁
-    @GetMapping("/allCourse")
-    ResponseEntity<Map> showOtherCourse(@RequestParam Integer page) {
-        final Integer totalPage = courseService.getAllCoursesTotalPage(size);
+    //商城分頁(OK)
+    @GetMapping("/store/allCourse/")
+    ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
+
+        Integer totalPage;
+        Page<Course> showCourse;
+        Map<String, Object> storeDetail;
+
+        if( page == null && partOfBody == null){
+            showCourse = courseService.findAllCourse(0, size);
+            storeDetail = new HashMap<>();
+            storeDetail.put("currentPage", showCourse.getContent());
+            storeDetail.put("totalPage", showCourse.getTotalPages());
+            return ResponseEntity.ok().body(storeDetail);
+        }
+
         if (page != null && page > 0) {
-            if (page <= totalPage) {
-                Page showCourse = courseService.findAllCourse(page-1, size);
-                Map<String,Object> storeDetail = new HashMap<>();
-                storeDetail.put("currentPage", showCourse.getContent());
-                storeDetail.put("totalPage", showCourse.getTotalPages());
-                return ResponseEntity.ok().body(storeDetail);
+            if (partOfBody == null) {
+                totalPage = courseService.getAllCoursesTotalPage(size);
+                if (page <= totalPage) {
+                    showCourse = courseService.findAllCourse(page - 1, size);
+                    storeDetail = new HashMap<>();
+                    storeDetail.put("currentPage", showCourse.getContent());
+                    storeDetail.put("totalPage", showCourse.getTotalPages());
+                    return ResponseEntity.ok().body(storeDetail);
+                }
+            } else {
+                totalPage = courseService.getCoursesTotalPageByFilter(partOfBody, size);
+                if (page <= totalPage) {
+                    showCourse = courseService.findCourseByFilter(partOfBody, page-1, size);
+                    storeDetail = new HashMap<>();
+                    storeDetail.put("currentPage", showCourse.getContent());
+                    storeDetail.put("totalPage", showCourse.getTotalPages());
+                    return ResponseEntity.ok().body(storeDetail);
+                }
             }
-            throw new NullPointerException("查無此頁面");
+            throw new QueryException("查無此頁面");
+        } else {
+            showCourse = courseService.findCourseByFilter(partOfBody, 0, size);
+            storeDetail = new HashMap<>();
+            storeDetail.put("currentPage", showCourse.getContent());
+            storeDetail.put("totalPage", showCourse.getTotalPages());
+            return ResponseEntity.ok().body(storeDetail);
         }
-        throw new NullPointerException("查無此頁面");
     }
-
-//課程詳細頁(包含評價、教練資訊)
-    @GetMapping("/{id}")
-    Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
-
-        Map<String,Object> map = new HashMap<>();
-
-        Optional<Course> course  = courseService.findById(id);
-        Coach coach = course.get().getCoach();
-        String coachName = coach.getMember().getName();
-        List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
-        for (CourseComment comment:commentlist){
-            String name = comment.getMember().getName();
-            byte[] memberImage = comment.getMember().getMemberImage();
-            comment.setMemberImge(memberImage);
-            comment.setMemberName(name);
-
-        }
-        map.put("course",course.get());
-        map.put("coach",coach);
-        map.put("coachName",coachName);
-        map.put("commentlist",commentlist);
-        return map;
-
-    }
-
 
 }

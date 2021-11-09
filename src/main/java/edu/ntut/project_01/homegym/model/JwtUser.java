@@ -11,7 +11,7 @@ public class JwtUser implements UserDetails {
     private final String id;
     private final String username;
     private final String password;
-    private final Integer status ;
+    private final Integer status;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public JwtUser(String id, String username, String password, Integer status, Collection<? extends GrantedAuthority> authorities) {
@@ -70,7 +70,7 @@ public class JwtUser implements UserDetails {
     @JsonIgnore
     @Override
         public boolean isEnabled() {
-            return status == 1 ? true : false;
+            return status == 1;
 
     }
 }

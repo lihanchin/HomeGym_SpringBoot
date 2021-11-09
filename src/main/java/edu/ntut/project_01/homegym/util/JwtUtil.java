@@ -1,12 +1,15 @@
 package edu.ntut.project_01.homegym.util;
 
 
+import edu.ntut.project_01.homegym.model.Member;
+import edu.ntut.project_01.homegym.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -28,20 +31,36 @@ public class JwtUtil {
 
     private Key key;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private MemberRepository memberRepository;
+
+    @Autowired
+    public JwtUtil(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     public String generateToken(UserDetails userDetails) {
+        Member member = memberRepository.findMemberByEmail(userDetails.getUsername()).orElseThrow();
+        Map<String, Object> loginResponse = new HashMap<>();
+        loginResponse.put("memberId", member.getMemberId());
+        loginResponse.put("email", userDetails.getUsername());
+        loginResponse.put("name", member.getName());
+        loginResponse.put("birthday", member.getBirthday());
+        loginResponse.put("phone", member.getPhone());
+        loginResponse.put("image", member.getMemberImage());
+        loginResponse.put("coachId", member.getCoach() == null ? null : member.getCoach().getCoachId());
+        loginResponse.put("role", userDetails.getAuthorities());
+
         key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         Calendar calendar = Calendar.getInstance(Locale.CHINESE);
         calendar.add(Calendar.SECOND, JWT_TOKEN_VALIDITY);
         logger.info("產生JWT");
         return Jwts.builder()
-                .claim("username",userDetails.getUsername())
-                .claim("role",userDetails.getAuthorities())
+                .setClaims(loginResponse)
                 .setIssuer(ISS)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(calendar.getTime())
-                .signWith(key,SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -51,6 +70,22 @@ public class JwtUtil {
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public Map<String, Object> extractLoginResponse(String token) {
+        Map<String ,Object> loginResponse = new HashMap<>();
+        final Claims claims = extractAllClaim(token);
+        loginResponse.put("memberId",claims.get("memberId"));
+        loginResponse.put("email", claims.get("email"));
+        loginResponse.put("name", claims.get("name"));
+        loginResponse.put("birthday", claims.get("birthday"));
+        loginResponse.put("phone", claims.get("phone"));
+        loginResponse.put("image", claims.get("image"));
+        loginResponse.put("role", claims.get("role"));
+        if(claims.get("role").equals("ROLE_COACH")){
+            loginResponse.put("coachId", claims.get("coachId"));
+        }
+        return loginResponse;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -70,7 +105,7 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final  String username = extractUsername(token);
+        final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

@@ -11,6 +11,7 @@ import edu.ntut.project_01.homegym.util.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Member> register(Member member) {
+    public ResponseEntity<Map<String, Object>> register(Member member) {
+        Map<String, Object> memberInfo = new HashMap<>();
         if (!memberRepository.existsMemberByEmail(member.getEmail())) {
             final String rawPassword = member.getPassword();
             member.setPassword(passwordEncoder.encode(rawPassword));
@@ -57,13 +61,32 @@ public class AuthServiceImpl implements AuthService {
             member.setCode(UUID.randomUUID().toString());
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
-            return ResponseEntity.ok().body(member);
+            memberInfo.put("memberId", memberRepository.findMemberByEmail(member.getEmail()).orElseThrow().getMemberId());
+            return ResponseEntity.ok().body(memberInfo);
         }
         throw new RegistrationException("此帳號已被使用");
     }
 
     @Override
-    public ResponseEntity<String> login(String username, String password) {
+    public ResponseEntity<String> updateStatus(String code) {
+        Optional<Member> member = memberRepository.findMemberByCode(code);
+
+        if (member.isPresent()) {
+            if (member.get().getStatus() == 0) {
+                member.get().setStatus(1);
+                memberRepository.save(member.get());
+                logger.info("會員帳號驗證通過！");
+                return ResponseEntity.status(HttpStatus.OK).body("驗證通過，歡迎使用HomeGym");
+            } else {
+                throw new VerificationMailException("此帳號已驗證通過");
+            }
+        } else {
+            throw new MemberNotExistException("用戶不存在");
+        }
+    }
+
+    @Override
+    public ResponseEntity<Map<String,Object>> login(String username, String password) {
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -72,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
         if(userDetails.isEnabled()){
             final String jwt = jwtUtil.generateToken(userDetails);
             logger.info("JWT: " + jwt);
-            return ResponseEntity.ok().body(jwt);
+            return ResponseEntity.ok().body(jwtUtil.extractLoginResponse(jwt));
         }
         throw new VerificationMailException("您的帳號尚未驗證");
     }

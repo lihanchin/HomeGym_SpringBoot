@@ -1,6 +1,8 @@
 package example;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.UUID;
 
@@ -36,7 +38,7 @@ public class ExampleAllInOne {
 //		System.out.println("fundingReconDetail: " + postFundingReconDetail());
 //		System.out.println("aioCheckOutALL: " + genAioCheckOutALL());
 //		System.out.println("aioCheckOutATM: " + genAioCheckOutATM());
-		System.out.println("aioCheckOutCVS: " + genAioCheckOutCVS());
+//		System.out.println("aioCheckOutCVS: " + genAioCheckOutCVS());
 //		System.out.println("aioCheckOutBARCODE: " + genAioCheckOutBARCODE());
 //		System.out.println("aioCheckOutDevide: " + genAioCheckOutDevide());
 //		System.out.println("aioCheckOutOneTime: " + genAioCheckOutOneTime());
@@ -132,16 +134,17 @@ public class ExampleAllInOne {
 		return form;
 	}
 	
-	public static String genAioCheckOutALL(String price, Integer id){
-		UUID uuid = UUID.randomUUID();
+	public static String genAioCheckOutALL(String price, String orderItems){
+		UUID uid = UUID.randomUUID();
+		String orderId = uid.toString().replace("-","").substring(0,6);
 		AioCheckOutALL obj = new AioCheckOutALL();
-		obj.setMerchantTradeNo(uuid.toString().replaceAll("-","").substring(0,15));
-		obj.setMerchantTradeDate("2017/01/01 08:05:23");
+		obj.setMerchantTradeNo("HG"+orderId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		obj.setMerchantTradeDate(sdf.format(new Date(System.currentTimeMillis())));
 		obj.setTotalAmount(price);
-		obj.setTradeDesc("test Description");
-		obj.setItemName("課程總金額");
-		obj.setReturnURL("http://211.23.128.214:5000");
-		obj.setClientRedirectURL("http://localhost:8080/memberAreasMyOrderOk/"+id);
+		obj.setTradeDesc("HomeGym~~~");
+		obj.setItemName(orderItems);
+		obj.setReturnURL("http://localhost:8080/hello");
 		obj.setNeedExtraPaidInfo("N");
 		String form = all.aioCheckOut(obj, null);
 		return form;

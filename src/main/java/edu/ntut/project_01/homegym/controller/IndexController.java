@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 public class IndexController {
@@ -23,6 +25,33 @@ public class IndexController {
     private MemberService memberService;
     @Autowired
     private VisitorService visitorService;
+
+
+    //註冊(加入Security)(OK)
+    @PostMapping("/registrations")
+    public ResponseEntity<Map<String, Object>> registrations(@RequestBody Member member) {
+        return authService.register(member);
+    }
+
+    //驗證(OK)
+    @GetMapping("/registrations/memberVerification")
+    public ResponseEntity<String> updateMemberStatus(@RequestParam String code) {
+        return authService.updateStatus(code);
+    }
+
+    //重寄驗證信(OK)
+    @GetMapping("/registrations/memberVerification/sendAgain/{memberId}")
+    public ResponseEntity<String> sendVerificationAgain(@PathVariable Integer memberId) {
+        return authService.resendMail(memberId);
+    }
+
+    //登入(加入Security)(OK)
+    @PostMapping("/login")
+    public ResponseEntity<Map<String,Object>> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
+        return authService.login(authRequest.getUsername(), authRequest.getPassword());
+    }
+
+
 
     //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)
     @GetMapping("/hello")
@@ -51,35 +80,10 @@ public class IndexController {
         return "只有教練進得來";
     }
 
-    //註冊(加入Security)
-    @PostMapping("/registrations")
-    public ResponseEntity<Member> registrations(@RequestBody Member member) {
-        return authService.register(member);
-    }
-
-    //驗證
-    @GetMapping("/registration/memberVerification")
-    public ResponseEntity<String> updateMemberStatus(@RequestParam String code) {
-        return memberService.updateStatus(code);
-    }
-
-    @GetMapping("/registration/memberVerification/sendAgain/{memberId}")
-    public ResponseEntity<String> sendVerificationAgain(@PathVariable Integer memberId) {
-        return authService.resendMail(memberId);
-    }
-
-    //登入(加入Security)
-    @PostMapping("/login")
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
-        return authService.login(authRequest.getUsername(), authRequest.getPassword());
-    }
-
     @PostMapping("/addMessage")
     public void addMessage(@RequestBody Visitor visitor){
         visitorService.addMessage(visitor);
     }
-
-
     //註冊(舊版)
 //    @PostMapping("/registration")
 //    public ResponseEntity<String> createMember(@RequestBody Member member) {

@@ -37,16 +37,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll();
-//                .antMatchers("/resources/**","/registrations","/registration/**","/login","/").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-
-        // 禁用缓存
-        // httpSecurity.headers().cacheControl();
+//                .antMatchers(
+//                        "/",
+//                        "/registrations",
+//                        "/registration/**",
+//                        "/login",
+//                        "/store",
+//                        "/store/**"
+//                ).permitAll()
+                .antMatchers("/**/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
+                .headers().cacheControl(); // 禁用缓存
     }
 
 
@@ -68,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtRequestFilter authenticationTokenFilterBean() throws Exception {
+    public JwtRequestFilter authenticationTokenFilterBean() {
         return new JwtRequestFilter();
     }
 }
