@@ -5,15 +5,23 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
+import edu.ntut.project_01.homegym.repository.FQARepository;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,7 +57,6 @@ class HomeGymApplicationTests {
                     col = row.split(",");
                     vb.setCourseName(col[1]);
                     vb.setCourseInfo((col[2]).toCharArray());
-                    vb.setCategory(col[3]);
                     vb.setPartOfBody(col[4]);
                     try {
                         vb.setUploadTime(format.parse(col[6]));

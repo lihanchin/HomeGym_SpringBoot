@@ -5,6 +5,7 @@ import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class CoachController {
 
@@ -65,7 +67,7 @@ public class CoachController {
 
 
         //存到coachImages
-        File imageFolder = new File("\\coachImages");
+        File imageFolder = new File("src/main/resources/static/coachImages");
         System.out.println(imageFolder);
         if(!imageFolder.exists()){
             imageFolder.mkdirs();
@@ -73,7 +75,7 @@ public class CoachController {
         String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder);
 
         //存到certification
-        File certificationFolder = new File("\\certification");
+        File certificationFolder = new File("src/main/resources/static/certification");
         System.out.println(certificationFolder);
         if(!certificationFolder.exists()){
             certificationFolder.mkdirs();
@@ -122,7 +124,13 @@ public class CoachController {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-        return file.toString();
+        String s = "static";
+        int start = file.toString().indexOf("static");
+        System.out.println(start);
+        String filaPath = file.toString().substring(start+s.length());
+        log.info(filaPath);
+
+        return filaPath;
     }
 
 

@@ -15,9 +15,8 @@ new Vue({
         axios.get("http://localhost:8080/store/").then((res) =>{ //shoppingdate.json
 
             console.log(res.data)
-            console.log(res.data.shoppingCourse)
-            this.shoppingCourse = res.data.shoppingCourse;
-            // this.coachNameList = res.data.coachNameList;
+            console.log(res.data.firstPage)
+            this.shoppingCourse = res.data.firstPage;
             this.totalPage = res.data.totalPage;
         })
     },

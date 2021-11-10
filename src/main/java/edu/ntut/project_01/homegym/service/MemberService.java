@@ -31,8 +31,7 @@ public interface MemberService {
 
     //找出會員資料
     Member findMemberByToken(String authorizationHeader);
-}
-}
+
     Optional<Member> findMemberByEmail(String email);
 
     Optional<Member> findMemberByName(String name);

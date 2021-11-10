@@ -1,6 +1,8 @@
 package edu.ntut.project_01.homegym.controller;
 
+import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
+import edu.ntut.project_01.homegym.model.CourseComment;
 import edu.ntut.project_01.homegym.service.CourseService;
 import org.hibernate.QueryException;
 import org.slf4j.Logger;
@@ -9,29 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
+@RequestMapping("/store")
 public class StoreController {
 
 
+    @Autowired
     private CourseService courseService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${course.countsPerPage}")
-    private Integer size;
-
-    @Autowired
-    public StoreController(CourseService courseService) {
-        this.courseService = courseService;
-    }
+    Integer size;
 
     //進入商城(OK)
-    @GetMapping("/store")
+    @GetMapping("/")
     ResponseEntity<Map<String, Object>> showAllCourse() throws NullPointerException {
 
         final Integer page = 0;
@@ -88,5 +85,31 @@ public class StoreController {
             return ResponseEntity.ok().body(storeDetail);
         }
     }
+
+    //課程詳細頁(包含評價、教練資訊)
+    @GetMapping("/{id}")
+    Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
+
+        Map<String,Object> map = new HashMap<>();
+
+        Optional<Course> course  = courseService.findById(id);
+        Coach coach = course.get().getCoach();
+        String coachName = coach.getMember().getName();
+        List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
+        for (CourseComment comment:commentlist){
+            String name = comment.getMember().getName();
+            byte[] memberImage = comment.getMember().getMemberImage();
+            comment.setMemberImge(memberImage);
+            comment.setMemberName(name);
+
+        }
+        map.put("course",course.get());
+        map.put("coach",coach);
+        map.put("coachName",coachName);
+        map.put("commentlist",commentlist);
+        return map;
+
+    }
+
 
 }

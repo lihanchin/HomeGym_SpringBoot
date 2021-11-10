@@ -8,13 +8,16 @@ import edu.ntut.project_01.homegym.service.CourseCommentService;
 import edu.ntut.project_01.homegym.service.CourseService;
 import edu.ntut.project_01.homegym.service.FQAReplyService;
 import edu.ntut.project_01.homegym.service.FQAService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+@Slf4j
 @RestController
 @RequestMapping("/course")
 public class CourseController {
@@ -28,42 +31,40 @@ public class CourseController {
     @Autowired
     FQAReplyService fqaReplyService;
 
-
-    //存留言並返回資料
-    @PostMapping ("/addComment")
-    public Map<String,Object> addCommentAndCountStar(@RequestBody CourseComment courseComment) {
-        System.out.println(courseComment.getCommentContent());
-        Map<String,Object> map = new HashMap<>();
-        //先存進資料庫
-        courseCommentService.save(courseComment);
-
-        //再抓取資料庫資料運算回傳
+    //算星星
+    public Map<String,Object> countStar(){
         Integer star = courseCommentService.countStar();
-
+        Map<String,Object> map = new HashMap<>();
         map.put("star",star);
         return map;
     }
 
 
-    @PostMapping ("/addFQA/{courseId}")
-    public Integer addFQA(@RequestBody FQA fqaInput ,@PathVariable Integer courseId) {
-        //找到課程
+
+    @PostMapping ("/addComment/{courseId}")
+    public void addComment(@RequestBody CourseComment courseComment,@PathVariable Integer courseId) {
         Course course = courseService.findById(courseId).get();
-        course.getFqas().add(fqaInput);
-        //先存進資料庫
-        courseService.save(course);
+        courseComment.setCourse(course);
+        courseCommentService.save(courseComment);
 
-        //再抓取資料庫資料運算回傳
-        Integer star = courseCommentService.countStar();
+    }
 
-        return star;
+
+    @PostMapping ("/addFQA/{courseId}")
+    public void addFQA(@RequestBody FQA fqaInput ,@PathVariable Integer courseId) {
+
+        Course course = courseService.findById(courseId).get();
+
+        fqaInput.setCourse(course);
+        fqaService.save(fqaInput);
+
     }
 
     @PostMapping ("/addFQAReply/{fqaId}")
     public void addFQAReply(@RequestBody FQAReply fqaReplyInput, @PathVariable Integer fqaId) {
         FQA fqa = fqaService.findById(fqaId).get();
-        fqa.getFqaReplies().add(fqaReplyInput);
-        fqaService.save(fqa);
+        fqaReplyInput.setFqa(fqa);
+        fqaReplyService.save(fqaReplyInput);
 
     }
 

@@ -95,7 +95,7 @@
                       <button class="nav-link active" id="course_explanation_tab" data-bs-toggle="tab" data-bs-target="#course_explanation" type="button" role="tab" aria-controls="home" aria-selected="true">課程說明</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="course_comment_tab" data-bs-toggle="tab" data-bs-target="#course_comment" type="button" @click="" role="tab" aria-controls="profile" aria-selected="false">課程評論</button>
+                      <button class="nav-link" id="course_comment_tab" data-bs-toggle="tab" data-bs-target="#course_comment" type="button" role="tab" aria-controls="profile" aria-selected="false">課程評論</button>
                     </li>
                     <li class="nav-item" role="presentation">
                       <button class="nav-link" id="course_fqa_tab" data-bs-toggle="tab" data-bs-target="#course_fqa" type="button" role="tab" aria-controls="profile" aria-selected="false">FQA</button>
@@ -137,26 +137,35 @@
     
                     <!-- 課程評論 -->
                     <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
-                        <div class="col-10 m-auto pt-5">
-                            <!-- 顯示留言項目 -->
-                            <div class="mb-4 border-bottom" v-for="(item,index) in comment">
-                                <div class="user d-flex mb-2">
-                                    <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
-                                    <h5 class="mt-auto">{{item.memberName}}</h5>
+                       <div  v-if="comment !=''">
+                           <div class="col-10 m-auto pt-5">
+                               <!-- 顯示留言項目 -->
+                               <div class="mb-4 border-bottom" v-for="item in comment" :key="item.id">
+                                   <div class="user d-flex mb-2">
+                                       <img class="rounded-circle  img-fluid" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                       <h5 class="mt-auto">{{item.memberName}}</h5>
+                                   </div>
+                                   <div class="evaluation mb-2">
+                                       <!-- 動態新增星星數 -->
+                                       <i class="fa fa-star" aria-hidden="true" v-for="n in item.star" ></i>
+                                   </div>
+                                   <p>{{item.commentContent}}</p>
+                                   <p class="text-end me-2">{{item.commentCreateTime}}</p>
+                               </div>
+                           </div>
+                       </div>
+                        <div v-else>
+                            <div class="container p-4 d-flex align-items-center  justify-content-center ">
+                                <div class="px-5 py-5  border-primary ">
+                                    <h3 class="text-center">目前尚無評價</h3>
                                 </div>
-                                <div class="evaluation mb-2">
-                                    <!-- 動態新增星星數 -->
-                                    <i class="fa fa-star" aria-hidden="true" v-for="n in comment[index].star" ></i>
-                                </div>
-                                <p>{{item.commentContent}}</p>
-                                <p class="text-end me-2">{{item.commentCreateTime}}</p>
                             </div>
-                            
                         </div>
+
                         <!-- 輸入留言區 -->
                         <div class="col-10 m-auto mb-3">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                                 <div class="evaluation ms-4">
                                     <div class="stars d-flex flex-row-reverse justify-content-end" >
@@ -202,32 +211,41 @@
     
                     <!-- FQA -->
                     <div class="tab-pane fade" id="course_fqa" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="col-10 m-auto pt-5">
-                            <!-- 顯示FQA -->
-                            <div class="mb-4" v-for="(item,index) in fqa">
-                                <div class="user d-flex mb-2">
-                                    <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
-                                    <h5 class="mt-auto">{{item.memberName}}</h5>
-                                </div>
-                                <p>{{item.fqaContent}}</p>
-                                <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(item.fqaId)">回覆</span>{{item.fqaCreateTime}}</p>
-                                <!-- 顯示FQAReply-->
-                                <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="(key,num) in item.fqaReplies"> <!-- class添加ps-6 -->
-                                    <div class="user d-flex mb-2 align-items-center">
-                                        <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+key.memberImge" alt="">
-                                        <h5 class="mt-auto">{{key.memberName}}</h5>
-                                        <h6 class="mt-auto text-muted ms-4">回覆 {{item.memberName}}</h6>
+                        <div  v-if="fqa !=''">
+                            <div class="col-10 m-auto pt-5">
+                                <!-- 顯示FQA -->
+                                <di class="mb-4" v-for="item in fqa" :key="item.id">
+                                    <div class="user d-flex mb-2">
+                                        <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                        <h5 class="mt-auto">{{item.memberName}}</h5>
                                     </div>
-                                    <p>{{key.fqaReplyContent}}</p>
-                                    <p class="text-end me-2">{{key.fqaCreateTime}}</p>
+                                    <p>{{item.fqaContent}}</p>
+                                    <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(item.fqaId)">回覆</span>{{item.fqaCreateTime}}</p>
+                                    <!-- 顯示FQAReply-->
+                                    <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="key in item.fqaReplies" :key="key.id"> <!-- class添加ps-6 -->
+                                        <div class="user d-flex mb-2 align-items-center">
+                                            <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+key.memberImge" alt="">
+                                            <h5 class="mt-auto">{{key.memberName}}</h5>
+                                            <h6 class="mt-auto text-muted ms-4">回覆 {{item.memberName}}</h6>
+                                        </div>
+                                        <p>{{key.fqaReplyContent}}</p>
+                                        <p class="text-end me-2">{{key.fqaCreateTime}}</p>
+                                    </div>
+                                </di>
+
+                            </div>
+                        </div>
+
+                        <div v-else>
+                            <div class="container p-4 d-flex align-items-center  justify-content-center ">
+                                <div class="px-5 py-5  border-primary ">
+                                    <h3 class="text-center">目前尚無發問</h3>
                                 </div>
                             </div>
-                            
-                        </div>
                         <!-- 送出發問 <FQA> -->
                         <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                             </div>
                             <textarea class="form-control mb-2" rows="3" v-model.trim="fqaInput.fqaContent"></textarea>
@@ -238,7 +256,7 @@
                         <!-- 送出發問 <FQAReply> -->
                         <div class="col-10 m-auto mb-3"  v-if="fqaUser !=='' ">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2" :src="member.memberImg" alt="">
+                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                                 <h6 class="Reply_name mt-auto text-muted ms-4">回覆 {{fqaUser}}
                                     <span type="button" class="btn-close btn-sm p-0 m-0" aria-label="Close" @click="closeFqa"></span>

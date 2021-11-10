@@ -3,6 +3,8 @@ package edu.ntut.project_01.homegym.service;
 import edu.ntut.project_01.homegym.model.Course;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 
 public interface CourseService {
     //撈出所有課程
@@ -16,5 +18,8 @@ public interface CourseService {
 
     //有篩選過的課程總共可以分幾頁
     Integer getCoursesTotalPageByFilter(String partOfBody, Integer size);
+
+    public Optional<Course> findById(Integer id);
+
     void save(Course course);
 }

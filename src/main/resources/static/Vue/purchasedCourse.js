@@ -1,5 +1,5 @@
-let id = (location.search.split('='))[1]
-console.log(id);
+let courseId = (location.search.split('='))[1]
+console.log(courseId);
 
 new Vue({
     el:'#app',
@@ -50,7 +50,7 @@ new Vue({
             const date = new Date();
             let createdTime = date.toLocaleString(); //創建時間
             console.log("準備請求")
-            axios.post(`http://localhost:8080/course/addComment`,
+            axios.post(`http://localhost:8080/course/addComment/${courseId}`,
                 {
                     // id : this.courseComment.length,
                     // name:this.member.memberName,
@@ -65,19 +65,19 @@ new Vue({
             })
 
 
-            // //畫面中推出留言
-            let createditem = {
-                id:this.courseComment.length,
-                name:this.member.memberName,
-                img:this.member.memberImg,
-                star:star,
-                commentContent:comment,
-                commentCreateTime:createdTime
-            };
-            this.course.push(createditem);
+            // // //畫面中推出留言
+            // let createditem = {
+            //     id:this.courseComment.length,
+            //     name:this.member.memberName,
+            //     img:this.member.memberImg,
+            //     star:star,
+            //     commentContent:comment,
+            //     commentCreateTime:createdTime
+            // };
+            // this.course.push(createditem);
             //點擊後 input清空
-            this.CommentInput ='';
-
+            this.courseComment.CommentInput ='';
+            this.courseComment.star ='';
 
         },
 
@@ -87,7 +87,6 @@ new Vue({
             console.log("方法近來")
             if(!this.fqaInput.fqaContent) return false;
             console.log("通過檢查")
-            let courseId = id;
             let comment =this.fqaInput.fqaContent; //留言input
             const date = new Date();
             let createdTime = date.toLocaleString(); //創建時間
@@ -102,13 +101,13 @@ new Vue({
             })
             console.log("請求結束")
 
-            this.fqa.push({
-                id:this.courseFqa.length,
-                name:this.member.memberName,
-                img:this.member.memberImg,
-                comment:comment,
-                createdTime:createdTime,
-            });
+            // this.fqa.push({
+            //     id:this.courseFqa.length,
+            //     name:this.member.memberName,
+            //     img:this.member.memberImg,
+            //     comment:comment,
+            //     createdTime:createdTime,
+            // });
             //點擊後 input清空
             this.fqaInput.fqaContent ='';
         },
@@ -168,7 +167,7 @@ new Vue({
     },
     mounted() {
 
-        axios.get("http://localhost:8080/store/"+id).then((res) =>{ //memberAreasIntroduction.json
+        axios.get("http://localhost:8080/store/"+courseId).then((res) =>{ //memberAreasIntroduction.json
             console.log(res);
             this.course = res.data.course
             this.coach = res.data.coach
@@ -176,7 +175,7 @@ new Vue({
             this.comment = res.data.commentlist
         });
 
-        axios.get("http://localhost:8080/course/"+id).then((res) =>{ //memberAreasIntroduction.json
+        axios.get("http://localhost:8080/course/"+courseId).then((res) =>{ //memberAreasIntroduction.json
             console.log(res);
         this.fqa = res.data
         });
