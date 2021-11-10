@@ -57,5 +57,4 @@ public class GlobalService {
         sb = new SerialBlob(b);
         return sb;
     }
-
 }

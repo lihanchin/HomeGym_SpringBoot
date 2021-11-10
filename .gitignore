@@ -32,3 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 service-logs
+service-logs/all.log
+service-logs

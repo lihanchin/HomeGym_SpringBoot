@@ -87,6 +87,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<Map<String,Object>> login(String username, String password) {
+        Map<String,Object> response = new HashMap<>();
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -95,7 +96,9 @@ public class AuthServiceImpl implements AuthService {
         if(userDetails.isEnabled()){
             final String jwt = jwtUtil.generateToken(userDetails);
             logger.info("JWT: " + jwt);
-            return ResponseEntity.ok().body(jwtUtil.extractLoginResponse(jwt));
+            response.put("JWT", jwt);
+            response.put("loginResponse", jwtUtil.extractLoginResponse(jwt));
+            return ResponseEntity.ok().body(response);
         }
         throw new VerificationMailException("您的帳號尚未驗證");
     }

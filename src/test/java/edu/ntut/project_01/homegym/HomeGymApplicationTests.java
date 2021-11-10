@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -126,20 +128,26 @@ class HomeGymApplicationTests {
             }
         }
     }
-//    @Transactional
-//    @Test
-//    public void orderStatusOK(){
-//        Collection<String> status = new HashSet<>();
-//        status.add("付款完成");
-//        List<Orders> orders = ordersRepository.findOrdersByOrderStatusIn(status);
-//
-//        for (Orders o : orders){
-//            System.out.println("/////////////////////////////////////");
-//            System.out.println(o.getOrderId());
-//            System.out.println(o.getCourses());
-//            System.out.println(o.getMember().getMemberId());
-//            System.out.println("/////////////////////////////////////");
-//        }
-//    }
+    @Transactional
+    @Test
+    public void orderStatusOK(){
+        Collection<String> status = new HashSet<>();
+        status.add("付款完成");
+        Integer memberId = 7;
+//        Optional<List<Orders>> orders = ordersRepository.findOrdersByOrderStatusIn(status);
+        PageRequest pageRequest = PageRequest.of(0,2);
+        Page<Orders> orders = ordersRepository.findOrdersByOrderStatusIn(status,pageRequest);
+        for (Orders o : orders){
+            System.out.println("<-------訂單編號------->");
+            System.out.println(o.getOrderId());
+            System.out.println("//////////////////////////");
+            System.out.println("<-------課程集合------->");
+            System.out.println(o.getCourses());
+            System.out.println("//////////////////////////");
+            System.out.println("<-------會員ID------->");
+            System.out.println(o.getMember().getMemberId());
+            System.out.println("/////////////////////////");
+        }
+    }
 
 }

@@ -1,6 +1,8 @@
 package edu.ntut.project_01.homegym.filter;
 
+import edu.ntut.project_01.homegym.exception.category.LoginException;
 import edu.ntut.project_01.homegym.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtUtil jwtUtil;
+
     @Value("${jwt.header}")
     private String requestHeader;
     @Value("${jwt.tokenHead}")
@@ -42,8 +45,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith(tokenHeader)) {
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
-            logger.info("checking authentication " + username);
+            //如果token過期前端要刪掉localStorage內的JWT
+            try {
+                username = jwtUtil.extractUsername(jwt);
+                logger.info("checking authentication " + username);
+            } catch (ExpiredJwtException e) {
+                logger.error("JWT過期");
+                throw new LoginException("請重新登入");
+            }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
