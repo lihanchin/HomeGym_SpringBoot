@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
+
 
 @RestController
 public class ShoppingCartController {
@@ -26,15 +28,20 @@ public class ShoppingCartController {
 使用#來分開多個項目
 */
     @PostMapping("/test/buySoomething")
-    ResponseEntity<String> useECPAY(@RequestBody Map<String,String> checkOut) {
+    ResponseEntity<Map> useECPAY(@RequestBody Map<String,String> checkOut) {
         ExampleAllInOne exampleAllInOne = new ExampleAllInOne();
         ExampleAllInOne.initial();
+        Map<String,String> map =new HashMap<>();
         String price = checkOut.get("price");
+
         String orderItems = checkOut.get("orderItems");
         String paymentPage = exampleAllInOne.genAioCheckOutALL(price, orderItems);
         if (paymentPage != null) {
-            return ResponseEntity.ok().body(paymentPage);
+            map.put("paymentPage",paymentPage);
+            System.out.println(paymentPage);
+            return ResponseEntity.ok().body(map);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("交易失敗");
+       map.put("message","交易失敗");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 }

@@ -113,40 +113,6 @@ public class MemberServiceImpl implements MemberService {
         } throw new JwtException("用戶尚未登入取得驗證");
     }
 
-    //    @Override
-//    public ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size) {
-//        Optional<Member> member = memberRepository.findById(memberId);
-//        List<Course> myCourses;
-//        Map<String, Object> response;
-//        Integer totalPage;
-//        if (member.isPresent()) {
-//            Set<Orders> orders = member.get().getOrders();
-//            if(!orders.isEmpty()){
-//                myCourses = new ArrayList<>();
-//                for (Orders orderList : orders) {
-//                    Set<Course> courses = orderList.getCourses();
-//                    myCourses.addAll(courses);
-//                }
-//                totalPage = (int) Math.ceil(myCourses.size() / (double) size);
-//                if (page <= totalPage) {
-//                    List<Course> myCoursesPage = new ArrayList<>();
-//                    if (page == 1) {
-//                        myCoursesPage = myCourses.subList(0, page * size - 1);
-//                    }
-//                    if (page > 1) {
-//                        myCoursesPage = myCourses.subList((page - 1) * size, page * size - 1);
-//                    }
-//                    response = new HashMap<>();
-//                    response.put("totalPage", totalPage);
-//                    response.put("myCoursesPage", myCoursesPage);
-//                    return ResponseEntity.ok().body(response);
-//                }
-//                throw new QueryException("頁數不得大於總頁數");
-//            }
-//           throw new QueryException("您尚未購買任何課程");
-//        }
-//        throw new MemberNotExistException("查無此ID會員購買的課程");
-//    }
 
     public Optional<Member> findMemberByEmail(String email) {
 
