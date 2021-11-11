@@ -36,7 +36,7 @@ public class Member {
     @CreatedDate
     @Column(name = "create_time")
     private Date createTime;
-
+    private String mimeType;
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     Set<Orders> orders = new HashSet<>();
@@ -61,7 +61,7 @@ public class Member {
     public Member() {
     }
 
-    public Member(Integer memberId, String name, String email, String password, String phone, java.sql.Date birthday, Integer status, String code, String role, byte[] memberImage, Date createTime, Set<Orders> orders, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<FQAReply> fqaReplies) {
+    public Member(Integer memberId, String name, String email, String password, String phone, java.sql.Date birthday, Integer status, String code, String role, byte[] memberImage, Date createTime, String mimeType, Set<Orders> orders, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<FQAReply> fqaReplies) {
         this.memberId = memberId;
         this.name = name;
         this.email = email;
@@ -73,6 +73,7 @@ public class Member {
         this.role = role;
         this.memberImage = memberImage;
         this.createTime = createTime;
+        this.mimeType = mimeType;
         this.orders = orders;
         this.coach = coach;
         this.courseComments = courseComments;
@@ -158,6 +159,14 @@ public class Member {
 
     public void setMemberImage(byte[] memberImage) {
         this.memberImage = memberImage;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     public Date getCreateTime() {

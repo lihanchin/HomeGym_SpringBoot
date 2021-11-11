@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer totalPageByStatus(Integer memberId, Collection<String> status, Integer size) {
         Optional<List<Orders>> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusIn(memberId, status);
-        if (okOrders.isPresent() && okOrders.get().size() != 0) {
+        if (okOrders.isPresent()) {
             return (int) Math.ceil(okOrders.get().size() / (double) size);
         }
         throw new QueryException("會員尚無已完成訂單");

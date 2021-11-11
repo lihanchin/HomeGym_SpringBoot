@@ -6,11 +6,13 @@ import edu.ntut.project_01.homegym.exception.category.VerificationMailException;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.AuthService;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
 import edu.ntut.project_01.homegym.util.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +40,8 @@ public class AuthServiceImpl implements AuthService {
     private MemberRepository memberRepository;
     private PasswordEncoder passwordEncoder;
     private MailUtil mailUtil;
+    @Value("${hg.ImgMimeType}")
+    private String presetImgMimeType;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -59,6 +63,9 @@ public class AuthServiceImpl implements AuthService {
             member.setPassword(passwordEncoder.encode(rawPassword));
             member.setRole("ROLE_MEMBER");
             member.setCode(UUID.randomUUID().toString());
+            member.setMimeType(presetImgMimeType);
+            member.setMemberImage(GlobalService.hgImg());
+            member.setStatus(0);
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
             memberInfo.put("memberId", memberRepository.findMemberByEmail(member.getEmail()).orElseThrow().getMemberId());

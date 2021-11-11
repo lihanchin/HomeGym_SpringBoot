@@ -1,5 +1,6 @@
 package edu.ntut.project_01.homegym.controller;
 
+import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.service.OrderService;
 import org.hibernate.QueryException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
+@RequestMapping("/memberArea")
 public class MemberAreaController {
 
     @Value("${jwt.header}")
@@ -32,8 +34,24 @@ public class MemberAreaController {
         this.orderService = orderService;
     }
 
+    //會員資料
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> showMemberInfo(HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        Member member = memberService.findMemberByToken(authorizationHeader);
+        Map<String,Object> memberInfo = new HashMap<>();
+        memberInfo.put("memberImage" ,member.getMemberImage());
+        memberInfo.put("mimeType" ,member.getMimeType());
+        memberInfo.put("name" ,member.getName());
+        memberInfo.put("email" ,member.getEmail());
+        memberInfo.put("birthday" ,member.getBirthday());
+        memberInfo.put("phone" ,member.getPhone());
+
+        return ResponseEntity.ok().body(memberInfo);
+    }
+
     //更改密碼(OK)
-    @PostMapping("/memberArea/changePassword")
+    @PostMapping("/changePassword")
     public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> oldAndNewPassword, HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         String oldPassword = oldAndNewPassword.get("oldPassword");
@@ -43,8 +61,9 @@ public class MemberAreaController {
         return memberService.changePassword(authorizationHeader, oldPassword, newPassword, newPasswordCheck);
     }
 
+
     //我的訂單OK(OK)
-    @GetMapping("/memberArea/OKOrder")
+    @GetMapping("/OKOrder")
     public ResponseEntity<Map<String, Object>> findOkOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
 
         authorizationHeader = httpServletRequest.getHeader(HEADER);
@@ -63,7 +82,7 @@ public class MemberAreaController {
     }
 
     //我的訂單NG(OK)
-    @GetMapping("/memberArea/NGOrder")
+    @GetMapping("/NGOrder")
     public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
@@ -80,4 +99,16 @@ public class MemberAreaController {
         indexPage = 0;
         return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
     }
+
+    //會員資料更新
+    @PutMapping("/edit")
+    public ResponseEntity<Map<String, Object>> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+        String memberImage = memberInfo.get("memberImage").toString();
+        String name = memberInfo.get("name").toString();
+        String phone = memberInfo.get("phone").toString();
+        return ResponseEntity.ok().body(memberService.updateMemberInfo(memberId,name,memberImage,phone));
+    }
+
 }

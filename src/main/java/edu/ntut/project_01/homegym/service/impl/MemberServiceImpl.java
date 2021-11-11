@@ -43,7 +43,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-
     @Override
     public ResponseEntity<String> createMember(Member member) {
 
@@ -75,8 +74,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<Map<String , Object>> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck) {
-        Map<String , Object> response;
+    public ResponseEntity<Map<String, Object>> changePassword(String authorizationHeader, String oldPassword, String newPassword, String newPasswordCheck) {
+        Map<String, Object> response;
         if (authorizationHeader != null && authorizationHeader.startsWith(tokenHeader)) {
             String jwt = authorizationHeader.substring(7);
             String username = jwtUtil.extractUsername(jwt);
@@ -89,7 +88,7 @@ public class MemberServiceImpl implements MemberService {
                         memberRepository.save(member.get());
                         response = new HashMap<>();
 //                        response.put("member", memberRepository.findMemberByEmail(username).get());
-                        response.put("message","密碼更改成功");
+                        response.put("message", "密碼更改成功");
                         return ResponseEntity.ok().body(response);
                     }
                     throw new IllegalArgumentException("密碼與確認密碼不相符");
@@ -110,43 +109,9 @@ public class MemberServiceImpl implements MemberService {
             memberEmail = jwtUtil.extractUsername(jwt);
             logger.info("checking authentication " + memberEmail);
             return memberRepository.findMemberByEmail(memberEmail).orElseThrow();
-        } throw new JwtException("用戶尚未登入取得驗證");
+        }
+        throw new JwtException("用戶尚未登入取得驗證");
     }
-
-    //    @Override
-//    public ResponseEntity<Map<String, Object>> findMyCourses(Integer memberId, Integer page, Integer size) {
-//        Optional<Member> member = memberRepository.findById(memberId);
-//        List<Course> myCourses;
-//        Map<String, Object> response;
-//        Integer totalPage;
-//        if (member.isPresent()) {
-//            Set<Orders> orders = member.get().getOrders();
-//            if(!orders.isEmpty()){
-//                myCourses = new ArrayList<>();
-//                for (Orders orderList : orders) {
-//                    Set<Course> courses = orderList.getCourses();
-//                    myCourses.addAll(courses);
-//                }
-//                totalPage = (int) Math.ceil(myCourses.size() / (double) size);
-//                if (page <= totalPage) {
-//                    List<Course> myCoursesPage = new ArrayList<>();
-//                    if (page == 1) {
-//                        myCoursesPage = myCourses.subList(0, page * size - 1);
-//                    }
-//                    if (page > 1) {
-//                        myCoursesPage = myCourses.subList((page - 1) * size, page * size - 1);
-//                    }
-//                    response = new HashMap<>();
-//                    response.put("totalPage", totalPage);
-//                    response.put("myCoursesPage", myCoursesPage);
-//                    return ResponseEntity.ok().body(response);
-//                }
-//                throw new QueryException("頁數不得大於總頁數");
-//            }
-//           throw new QueryException("您尚未購買任何課程");
-//        }
-//        throw new MemberNotExistException("查無此ID會員購買的課程");
-//    }
 
     public Optional<Member> findMemberByEmail(String email) {
 
@@ -161,11 +126,43 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void update(Member member) {
-        Optional<Member> member1= memberRepository.findMemberByMemberId(member.getMemberId());
-        if(member1.isPresent()){
+        Optional<Member> member1 = memberRepository.findMemberByMemberId(member.getMemberId());
+        if (member1.isPresent()) {
             memberRepository.save(member);
         }
-
     }
 
+    @Override
+    public Map <String,Object> updateMemberInfo(Integer memberId, String name, String memberImage, String phone) {
+        Map <String,Object> updateMemberInfoResponse = new HashMap<>();
+        Map <String,String> errorMessage = new HashMap<>();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        if (memberImage != null) {
+            String dataToBase64 = memberImage.substring(memberImage.indexOf(",") + 1);
+            String mimeType = memberImage.substring(5,memberImage.indexOf(";"));
+            byte[] imageBytes = Base64.getDecoder().decode(dataToBase64);
+            member.setMemberImage(imageBytes);
+            member.setMimeType(mimeType);
+        }
+        if(!phone.equals(member.getPhone())){
+            if(phone.matches("^09[0-9]{8}$")){
+                member.setPhone(phone);
+            }
+            errorMessage.put("phoneErrorMessage", "手機號碼格式有誤");
+        }
+        if(!name.equals(member.getName())){
+            member.setName(name);
+        }
+        memberRepository.save(member);
+        updateMemberInfoResponse.put("memberImage" ,member.getMemberImage());
+        updateMemberInfoResponse.put("mimeType" ,member.getMimeType());
+        updateMemberInfoResponse.put("name" ,member.getName());
+        updateMemberInfoResponse.put("email" ,member.getEmail());
+        updateMemberInfoResponse.put("birthday" ,member.getBirthday());
+        updateMemberInfoResponse.put("phone" ,member.getPhone());
+        updateMemberInfoResponse.put("errorMessage" ,errorMessage);
+
+        return updateMemberInfoResponse;
+    }
 }
