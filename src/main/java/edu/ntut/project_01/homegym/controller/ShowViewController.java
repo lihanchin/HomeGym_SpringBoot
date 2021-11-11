@@ -43,4 +43,10 @@ public class ShowViewController {
 
         return "memberAreasApplicationCoach" ; // 要導入的html
     }
+
+    @GetMapping("/check")
+    public String checkout() {
+
+        return "checkout" ; // 要導入的html
+    }
 }

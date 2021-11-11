@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.CourseComment;
 import edu.ntut.project_01.homegym.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.QueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/store")
 public class StoreController {
@@ -91,18 +93,21 @@ public class StoreController {
     Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
 
         Map<String,Object> map = new HashMap<>();
-
         Optional<Course> course  = courseService.findById(id);
         Coach coach = course.get().getCoach();
         String coachName = coach.getMember().getName();
         List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
-        for (CourseComment comment:commentlist){
-            String name = comment.getMember().getName();
-            byte[] memberImage = comment.getMember().getMemberImage();
-            comment.setMemberImge(memberImage);
-            comment.setMemberName(name);
+        System.out.println(commentlist);
+        if(commentlist != null){
+            for (CourseComment comment:commentlist){
+                String name = comment.getMember().getName();
+                byte[] memberImage = comment.getMember().getMemberImage();
+                comment.setMemberImge(memberImage);
+                comment.setMemberName(name);
+            }
 
         }
+
         map.put("course",course.get());
         map.put("coach",coach);
         map.put("coachName",coachName);

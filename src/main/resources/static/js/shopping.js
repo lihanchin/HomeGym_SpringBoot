@@ -47,8 +47,10 @@ function doFirst(){
     
     let list = document.querySelectorAll('.addButton');     //按了加入購物車
     for(let i = 0; i < list.length; i++){
-         list[i].addEventListener('click',function() { 
-             let classInfo = document.querySelector(`#${this.id} input`).value; 
+         list[i].addEventListener('click',function() {
+             console.log(this.id)
+             let classInfo = document.querySelector(`#${this.id} input`).value;
+             console.log(classInfo)
              if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                  textDivId.remove(textId)
                  addCountArea()
