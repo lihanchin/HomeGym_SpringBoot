@@ -139,7 +139,7 @@
                                         <div class="position-relative">
                                             <img :src="item.courseImage" class="card-img-top" alt="...">
                                             <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
-                                                <a href="#" class="btn btn-outline-secondary rounded-0 d-block addButton" :id=" 'courseId'+item.courseId " @click="pushCourseValue(item)">
+                                                <a href="#" class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
 
                                                     <input type="hidden" :value="CourseValue" >
                                                     加到購物車
@@ -158,7 +158,6 @@
                                             </div>
                                             <h6 class="pe-3">{{item.coachName}}教練</h6>
                                             <p class="card-text">{{item.courseInfo}}</p>
-<!--                                            <a :href="'/product/'+item.courseId" class="btn btn-primary d-block mt-auto">課程觀看</a>-->
                                             <a :href="'/product?id='+item.courseId" class="btn btn-primary d-block mt-auto">課程觀看</a>
                                         </div>
                                     </div>
