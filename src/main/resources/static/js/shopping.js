@@ -1,8 +1,5 @@
 
-
-
-
-// let localStorage = localStorage;
+let localStorage = localStorage;
 function doFirst(){
     if(localStorage['addItemList'] == null){                     //條件判斷 //防止重整後資料被清空
         localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value

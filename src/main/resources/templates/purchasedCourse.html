@@ -84,7 +84,6 @@
                 </div>
             </div>
         </section>
-    
         
         <!-- 課程說明、課程評論 -->
         <section class="course_explanation">
@@ -214,7 +213,7 @@
                         <div  v-if="fqa !=''">
                             <div class="col-10 m-auto pt-5">
                                 <!-- 顯示FQA -->
-                                <di class="mb-4" v-for="item in fqa" :key="item.id">
+                                <div class="mb-4" v-for="item in fqa" :key="item.id">
                                     <div class="user d-flex mb-2">
                                         <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
                                         <h5 class="mt-auto">{{item.memberName}}</h5>
@@ -231,7 +230,7 @@
                                         <p>{{key.fqaReplyContent}}</p>
                                         <p class="text-end me-2">{{key.fqaCreateTime}}</p>
                                     </div>
-                                </di>
+                                </div>
 
                             </div>
                         </div>
@@ -242,6 +241,7 @@
                                     <h3 class="text-center">目前尚無發問</h3>
                                 </div>
                             </div>
+                        </div>
                         <!-- 送出發問 <FQA> -->
                         <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
                             <div class="d-flex mb-2 align-items-center">
@@ -285,8 +285,9 @@
                               </li>
                             </ul>
                         </nav>
+
                     </div>
-                </div>
+            </div>
             </div>
         </section>
 

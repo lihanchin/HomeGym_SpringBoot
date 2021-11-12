@@ -19,7 +19,7 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
-    public String apply(@RequestBody Coach coach){
+    public String apply(Coach coach){
         coachRepository.save(coach);
         return "申請成功";
     }

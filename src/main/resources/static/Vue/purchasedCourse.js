@@ -154,8 +154,8 @@ new Vue({
 
             //點擊後 input清空
             this.fqaReplyInput.fqaReplyContent ='';
-
-
+            this.fqaUserIndex='';
+            this.fqaUserIndex='';
         },
 
         //取消回覆fqa

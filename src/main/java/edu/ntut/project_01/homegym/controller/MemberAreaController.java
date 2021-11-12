@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
+@RequestMapping("/memberArea")
 public class MemberAreaController {
 
     @Value("${jwt.header}")
@@ -33,7 +34,7 @@ public class MemberAreaController {
     }
 
     //更改密碼(OK)
-    @PostMapping("/memberArea/changePassword")
+    @PostMapping("/changePassword")
     public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> oldAndNewPassword, HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         String oldPassword = oldAndNewPassword.get("oldPassword");
@@ -44,7 +45,7 @@ public class MemberAreaController {
     }
 
     //我的訂單OK(OK)
-    @GetMapping("/memberArea/OKOrder")
+    @GetMapping("/OKOrder")
     public ResponseEntity<Map<String, Object>> findOkOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
 
         authorizationHeader = httpServletRequest.getHeader(HEADER);
@@ -63,7 +64,7 @@ public class MemberAreaController {
     }
 
     //我的訂單NG(OK)
-    @GetMapping("/memberArea/NGOrder")
+    @GetMapping("/NGOrder")
     public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();

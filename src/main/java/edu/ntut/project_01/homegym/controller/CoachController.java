@@ -35,8 +35,6 @@ public class CoachController {
     @Autowired
     MemberService memberService;
 
-    @Autowired
-    JwtUtil jwtUtil;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -44,27 +42,13 @@ public class CoachController {
     @Value("${jwt.header}")
     private String authorization;
 
-    @Value("${jwt.tokenHead}")
-    private String tokenHeader;
 
     @PostMapping("/apply")
     public String  applyForCoach(@RequestBody Coach coach, HttpServletRequest request){
 
-//        String header= request.getHeader(authorization);
-//        String jwt;
-//        String username = null;
-//
-//        if (header != null && header.startsWith(tokenHeader)) {
-//
-//            jwt = header.substring(7);
-//            username = jwtUtil.extractUsername(jwt);
-//            logger.info("checking authentication " + username);
-//        }
-//
-//        System.out.println("進方法");
-//        //帳號抓會員
-//        Optional<Member> member = memberService.findMemberByName(username);
-
+        String header= request.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        Integer memberId = member.getMemberId();
 
         //存到coachImages
         File imageFolder = new File("src/main/resources/static/coachImages");
@@ -72,7 +56,7 @@ public class CoachController {
         if(!imageFolder.exists()){
             imageFolder.mkdirs();
         }
-        String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder);
+        String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder,memberId);
 
         //存到certification
         File certificationFolder = new File("src/main/resources/static/certification");
@@ -81,7 +65,7 @@ public class CoachController {
             certificationFolder.mkdirs();
         }
 
-        String certificationPath = imageSaveToFile(coach.getCertification(),certificationFolder);
+        String certificationPath = imageSaveToFile(coach.getCertification(),certificationFolder,memberId);
 
         coach.setChecked("0");
         coach.setSuspension(0);
@@ -93,26 +77,24 @@ public class CoachController {
         coach.setApplyTime(applyTime);
         coach.setCertification(certificationPath);
         coach.setCoachImage(coachImagePath);
-//        member.get().setCoach(coach);
-//        memberService.update(member.get());
-        coachService.apply(coach);
+        member.setCoach(coach);
+        memberService.update(member);
         System.out.println("存取結束");
         return "waitForApplyingForCoach";
     }
 
 
     //寫進資料夾的方法
-    public String imageSaveToFile(String data, File folder) {
+    public String imageSaveToFile(String data, File folder,Integer memberId) {
 
-        //取名用
-        int startIndex = data.indexOf(",")+80;
-        int endIndex = startIndex + 6;
+        int start = folder.toString().lastIndexOf("/");
+        String folderPath= folder.toString().substring(start);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = data.substring(startIndex, endIndex);
+        String name = folder.toString().substring(start+1)+memberId.toString();
         File file = new File(folder,name+".jpg");
 
         try {
@@ -124,13 +106,11 @@ public class CoachController {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-        String s = "static";
-        int start = file.toString().indexOf("static");
-        System.out.println(start);
-        String filaPath = file.toString().substring(start+s.length());
-        log.info(filaPath);
 
-        return filaPath;
+
+        log.info(folderPath+name+".jpg");
+
+        return folderPath+name+".jpg";
     }
 
 
