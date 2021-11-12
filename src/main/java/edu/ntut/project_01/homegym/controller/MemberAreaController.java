@@ -46,6 +46,22 @@ public class MemberAreaController {
         return ResponseEntity.ok().body(memberInfo);
     }
 
+    //會員資料
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> showMemberInfo(HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        Member member = memberService.findMemberByToken(authorizationHeader);
+        Map<String,Object> memberInfo = new HashMap<>();
+        memberInfo.put("memberImage" ,member.getMemberImage());
+        memberInfo.put("mimeType" ,member.getMimeType());
+        memberInfo.put("name" ,member.getName());
+        memberInfo.put("email" ,member.getEmail());
+        memberInfo.put("birthday" ,member.getBirthday());
+        memberInfo.put("phone" ,member.getPhone());
+
+        return ResponseEntity.ok().body(memberInfo);
+    }
+
     //更改密碼(OK)
     @PostMapping("/changePassword")
     public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> oldAndNewPassword, HttpServletRequest httpServletRequest) {
@@ -56,6 +72,7 @@ public class MemberAreaController {
 
         return memberService.changePassword(authorizationHeader, oldPassword, newPassword, newPasswordCheck);
     }
+
 
     //我的訂單OK(OK)
     @GetMapping("/OKOrder")
@@ -94,4 +111,16 @@ public class MemberAreaController {
         indexPage = 0;
         return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
     }
+
+    //會員資料更新
+    @PutMapping("/edit")
+    public ResponseEntity<Map<String, Object>> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+        String memberImage = memberInfo.get("memberImage").toString();
+        String name = memberInfo.get("name").toString();
+        String phone = memberInfo.get("phone").toString();
+        return ResponseEntity.ok().body(memberService.updateMemberInfo(memberId,name,memberImage,phone));
+    }
+
 }

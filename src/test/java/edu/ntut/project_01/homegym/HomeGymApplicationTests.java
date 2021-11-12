@@ -149,5 +149,4 @@ class HomeGymApplicationTests {
             System.out.println("/////////////////////////");
         }
     }
-
 }
