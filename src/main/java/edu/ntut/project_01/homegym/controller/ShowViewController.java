@@ -55,6 +55,12 @@ public class ShowViewController {
         return "checkout" ; // 要導入的html
     }
 
+    @GetMapping("/member")
+    public String showMemberInfo() {
+
+        return "memberAreasIntroduction" ; // 要導入的html
+    }
+
     //驗證(OK)
     @GetMapping("/memberVerification")
     public String updateMemberStatus(@RequestParam String code) {

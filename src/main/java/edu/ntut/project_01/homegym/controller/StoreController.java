@@ -43,7 +43,7 @@ public class StoreController {
     }
 
     //商城分頁(OK)
-    @GetMapping("/store/allCourse/")
+    @GetMapping("/allCourse/")
     ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
 
         Integer totalPage;

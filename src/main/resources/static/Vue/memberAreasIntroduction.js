@@ -1,14 +1,8 @@
 new Vue({
     el:"#app",
     data:{
-        memberProfile:{
-            id:1,
-            img:"https://fakeimg.pl/1000x1000/",
-            name:"陳天浩",
-            email:"A123@gmail.com",
-            birthday:"2021/11/30",
-            phone:"0922555999"
-        },
+        //資料庫來的資料
+        memberProfile:{},
         cacheContent:{},
         cacheName:"",
         cachePhone:"",
@@ -51,9 +45,18 @@ new Vue({
         },
     },
     mounted() {
-        axios.get("http://localhost:3000/memberProfile").then((res) =>{ //memberAreasIntroduction.json
-        console.log(res);
-        this.memberProfile = res.data
+        let  token = localStorage.getItem("Authorization")
+        axios.get("http://localhost:8080/memberArea/", {
+            headers: {
+                Authorization: token
+            }
+        }).then((res) =>{ //memberAreasIntroduction.json
+            console.log(res);
+            this.memberProfile = res.data
+        }).catch(error =>{
+            console.log(error.response.data.message)
+            window.alert("請重新登入");
+            window.location.replace("http://localhost:8080/");
         })
     }
 });

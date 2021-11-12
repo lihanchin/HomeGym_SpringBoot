@@ -5,10 +5,15 @@ new Vue({
         CourseValue:"",
         coachNameList:[],
         shoppingCourse:[],
+        partOfBody:"",
+        page:""
     },
     methods: {
         pushCourseValue(item){
             this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'https://fakeimg.pl/500x400/';
+        },
+        filter(){
+
         },
     },
     mounted() {

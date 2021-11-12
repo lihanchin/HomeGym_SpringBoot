@@ -6,22 +6,27 @@ new Vue({
     methods:{
         logout(){
             localStorage.removeItem("Authorization");
+            window.location.reload()
         },
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
-        axios.get(`http://localhost:8080/`,{
-            headers: {
-                Authorization: token
-            }
-        }).then((res) =>{
-            console.log(res)
-            this.status="登入"
-        }).catch(error =>{
-            console.log(error.response.data)
-            this.status="登出"
+        console.log("token========"+token)
+        if(token!==null){
+            axios.get(`http://localhost:8080/`,{
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) =>{
+                console.log(res)
+                this.status="登入"
+            }).catch(error =>{
+                console.log(error.response.data)
+                this.status="登出"
+            })
+        }
+        this.status="登出"
 
-        })
     }
 })
 
@@ -50,9 +55,9 @@ new Vue({
                 username : this.login.email,
                 password:this.login.password,
             }).then((res) =>{
-                console.log(res);
                 console.log(res.data.JWT)
                 localStorage.setItem("Authorization","Bearer "+res.data.JWT);
+                window.location.reload()
             })
 
         },
