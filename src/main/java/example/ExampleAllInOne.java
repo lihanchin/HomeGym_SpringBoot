@@ -134,18 +134,18 @@ public class ExampleAllInOne {
 		return form;
 	}
 	
-	public static String genAioCheckOutALL(String price, String orderItems){
-		UUID uid = UUID.randomUUID();
-		String orderId = uid.toString().replace("-","").substring(0,6);
+	public static String genAioCheckOutALL(String orderId, String price, String orderItems){
+
 		AioCheckOutALL obj = new AioCheckOutALL();
-		obj.setMerchantTradeNo("HG"+orderId);
+		obj.setMerchantTradeNo(orderId);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		obj.setMerchantTradeDate(sdf.format(new Date(System.currentTimeMillis())));
 		obj.setTotalAmount(price);
 		obj.setTradeDesc("HomeGym~~~");
 		obj.setItemName(orderItems);
-		obj.setReturnURL("http://localhost:8080/hello");
-		obj.setNeedExtraPaidInfo("N");
+		obj.setReturnURL("http://localhost:8080/ecpayResponse");
+		obj.setNeedExtraPaidInfo("Y");
+		obj.setClientBackURL("http://localhost:8080/");
 		String form = all.aioCheckOut(obj, null);
 		return form;
 	}

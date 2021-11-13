@@ -25,8 +25,8 @@ public class Course {
     private String mimeType;
     @Column(name = "course_name")
     private String courseName;
-    @Lob
-    private char[] courseInfo;
+    @Column(name = "course_info")
+    private String courseInfo;
 
     @Column(name = "part_of_body")
     private String partOfBody;
@@ -75,7 +75,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(Integer courseId, String coursePath, String mimeType, String courseName, char[] courseInfo, String partOfBody, String courseImage, Date uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, Date checkTime, String coachName, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
+    public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, Date uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, Date checkTime, String coachName, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
         this.courseId = courseId;
         this.coursePath = coursePath;
         this.mimeType = mimeType;
@@ -137,11 +137,11 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public char[] getCourseInfo() {
+    public String getCourseInfo() {
         return courseInfo;
     }
 
-    public void setCourseInfo(char[] courseInfo) {
+    public void setCourseInfo(String courseInfo) {
         this.courseInfo = courseInfo;
     }
 

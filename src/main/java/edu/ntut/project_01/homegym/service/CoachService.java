@@ -5,5 +5,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface CoachService {
 
-    public String apply( Coach coach);
+    String apply(Coach coach);
+    String edit(Coach coach, Integer coachId);
 }

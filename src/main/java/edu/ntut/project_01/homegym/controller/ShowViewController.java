@@ -67,5 +67,9 @@ public class ShowViewController {
         authService.updateStatus(code);
 
         return "registated";
+    @GetMapping("/NGOrder")
+    public String ngOrder() {
+
+        return "memberAreasMyOrderNg" ; // 要導入的html
     }
 }

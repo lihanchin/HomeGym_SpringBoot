@@ -40,22 +40,17 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Member member = memberRepository.findMemberByEmail(userDetails.getUsername()).orElseThrow();
-        Map<String, Object> loginResponse = new HashMap<>();
-        loginResponse.put("memberId", member.getMemberId());
-        loginResponse.put("email", userDetails.getUsername());
-        loginResponse.put("name", member.getName());
-//        loginResponse.put("birthday", member.getBirthday());
-//        loginResponse.put("phone", member.getPhone());
-//        loginResponse.put("image", member.getMemberImage());
-        loginResponse.put("coachId", member.getCoach() == null ? null : member.getCoach().getCoachId());
-        loginResponse.put("role", userDetails.getAuthorities());
+        Map<String, Object> memberInfo = new HashMap<>();
+        memberInfo.put("memberId", member.getMemberId());
+        memberInfo.put("email", userDetails.getUsername());
+        memberInfo.put("role", userDetails.getAuthorities());
 
         key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         Calendar calendar = Calendar.getInstance(Locale.CHINESE);
         calendar.add(Calendar.SECOND, JWT_TOKEN_VALIDITY);
         logger.info("產生JWT");
         return Jwts.builder()
-                .setClaims(loginResponse)
+                .setClaims(memberInfo)
                 .setIssuer(ISS)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -77,11 +72,12 @@ public class JwtUtil {
         final Claims claims = extractAllClaim(token);
         loginResponse.put("memberId",claims.get("memberId"));
         loginResponse.put("email", claims.get("email"));
-        loginResponse.put("name", claims.get("name"));
-        loginResponse.put("birthday", claims.get("birthday"));
-        loginResponse.put("phone", claims.get("phone"));
-        loginResponse.put("image", claims.get("image"));
         loginResponse.put("role", claims.get("role"));
+        Member member = memberRepository.findMemberByMemberId(Integer.valueOf(claims.get("memberId").toString())).orElseThrow();
+        loginResponse.put("memberImage",member.getMemberImage());
+        loginResponse.put("MimeType",member.getMimeType());
+        loginResponse.put("memberName",member.getName());
+
         if(claims.get("role").equals("ROLE_COACH")){
             loginResponse.put("coachId", claims.get("coachId"));
         }

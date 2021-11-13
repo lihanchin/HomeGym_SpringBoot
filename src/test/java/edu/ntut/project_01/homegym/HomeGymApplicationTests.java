@@ -58,7 +58,7 @@ class HomeGymApplicationTests {
                     vb = new Course();
                     col = row.split(",");
                     vb.setCourseName(col[1]);
-                    vb.setCourseInfo((col[2]).toCharArray());
+                    vb.setCourseInfo((col[2]));
                     vb.setPartOfBody(col[4]);
                     try {
                         vb.setUploadTime(format.parse(col[6]));

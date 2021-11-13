@@ -17,8 +17,7 @@ public class Orders {
 
     @Id
     @Column(name = "order_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderId;
+    private String orderId;
     @Column(name = "total_amt")
     private Integer totalPrice;
     @Column(name = "order_status")
@@ -39,7 +38,14 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(Integer orderId, Integer totalPrice, String orderStatus, Date orderTime, Member member, Set<Course> courses) {
+    public Orders(String orderId, Integer totalPrice, Member member, Set<Course> courses) {
+        this.orderId = orderId;
+        this.totalPrice = totalPrice;
+        this.member = member;
+        this.courses = courses;
+    }
+
+    public Orders(String orderId, Integer totalPrice, String orderStatus, Date orderTime, Member member, Set<Course> courses) {
         this.orderId = orderId;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
@@ -48,11 +54,11 @@ public class Orders {
         this.courses = courses;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
