@@ -117,21 +117,44 @@
                                 </ul>            
                             </div>
                             <!-- 項目卡片 -->
-                            <div class="card mt-3 mb-3">
+                            <div class="card mt-3 mb-3" v-for="(item,index) in orderNg">
                                 <div class="row  d-flex align-items-center">
                                     <div class="col-4 ps-5">
-                                        <h6>訂單編號</h6>
-                                        <p>A11111</p>
+                                        <h6>課程名稱</h6>
+                                        <a href="#">{{orderNg[index].courseName}}</a>
                                     </div>
                                     <div class="col-8">
                                         <div class="row">
                                             <div class="col-6 pt-3">
-                                                <h6>訂單明細</h6>
-                                                <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#orderContent">
-                                                    查看內容
-                                                </button>
+                                                <h6>訂單編號</h6>
+                                                <p>{{orderNg[index].orderNamber}}</p>
                                                 <h6>價錢</h6>
-                                                <p>1000元</p>
+                                                <p>{{orderNg[index].orderPrice}}元</p>
+                                            </div>
+                                            <div class="col-6 pt-3">
+                                                <h6>付款方式</h6>
+                                                <p>{{orderNg[index].paymentMethod}}</p>
+                                                <h6>失敗原因</h6>
+                                                <p>{{orderNg[index].reasonForPaymentFailure}}</p>
+                                            </div>
+                                        </div>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="card mt-3 mb-3">
+                                <div class="row  d-flex align-items-center">
+                                    <div class="col-4 ps-5">
+                                        <h6>課程名稱</h6>
+                                        <a href="#">1小時全身深層肌肉拉筋</a>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-6 pt-3">
+                                                <h6>訂單編號</h6>
+                                                <p>A202109221735</p>
+                                                <h6>價錢</h6>
+                                                <p>1000元</p> 
                                             </div>
                                             <div class="col-6 pt-3">
                                                 <h6>付款方式</h6>
@@ -140,50 +163,10 @@
                                                 <p>信用卡餘額不足</p>
                                             </div>
                                         </div>
-
+                                            
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- 訂單明細內容(彈跳視窗) -->
-                            <div class="modal fade" id="orderContent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">訂單明細內容</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <ul class="list-group">
-                                                <!-- 課程購買細項項目 -->
-                                                <li class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-4">
-                                                            <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
-                                                        </div>
-                                                        <div class="col-4 pt-3">
-                                                            <h6 class="">課程名稱</h6>
-                                                            <p class="">3333</p>
-                                                            <h6 class="">價錢</h6>
-                                                            <p class="">CID0315</p>
-                                                        </div>
-                                                        <div class="col-4 pt-3">
-                                                            <h6 class="">訓練部位</h6>
-                                                            <p class="">CID0315</p>
-                                                            <h6 class="">評價</h6>
-                                                            <p class="">CID0315</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> -->
                             
                             <!-- 分頁 -->
                             <nav aria-label="Page navigation example" class="mb-5">
