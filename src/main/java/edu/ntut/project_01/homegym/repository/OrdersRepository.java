@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrdersRepository extends JpaRepository<Orders,Integer> {
+public interface OrdersRepository extends JpaRepository<Orders,String> {
     //尋找所有「自訂狀態」的訂單
     Page<Orders> findOrdersByOrderStatusIn(Collection<String> orderStatus, Pageable pageable);
 

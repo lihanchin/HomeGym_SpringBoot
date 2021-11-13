@@ -1,19 +1,14 @@
 package edu.ntut.project_01.homegym.controller;
 
-import edu.ntut.project_01.homegym.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ShowViewController {
 
-    @Autowired
-    private AuthService authService;
-
+//    @GetMapping("/product/{id}")
     @GetMapping("/product{id}")
     public String showDetil() {
 
@@ -55,17 +50,9 @@ public class ShowViewController {
         return "checkout" ; // 要導入的html
     }
 
-    @GetMapping("/member")
-    public String showMemberInfo() {
+    @GetMapping("/NGOrder")
+    public String ngOrder() {
 
-        return "memberAreasIntroduction" ; // 要導入的html
-    }
-
-    //驗證(OK)
-    @GetMapping("/memberVerification")
-    public String updateMemberStatus(@RequestParam String code) {
-        authService.updateStatus(code);
-
-        return "registated";
+        return "memberAreasMyOrderNg" ; // 要導入的html
     }
 }

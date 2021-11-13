@@ -46,6 +46,22 @@ public class MemberAreaController {
         return ResponseEntity.ok().body(memberInfo);
     }
 
+    //會員資料
+    @GetMapping("/")
+    public ResponseEntity<Map<String, Object>> showMemberInfo(HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        Member member = memberService.findMemberByToken(authorizationHeader);
+        Map<String,Object> memberInfo = new HashMap<>();
+        memberInfo.put("memberImage" ,member.getMemberImage());
+        memberInfo.put("mimeType" ,member.getMimeType());
+        memberInfo.put("name" ,member.getName());
+        memberInfo.put("email" ,member.getEmail());
+        memberInfo.put("birthday" ,member.getBirthday());
+        memberInfo.put("phone" ,member.getPhone());
+
+        return ResponseEntity.ok().body(memberInfo);
+    }
+
     //更改密碼(OK)
     @PostMapping("/changePassword")
     public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> oldAndNewPassword, HttpServletRequest httpServletRequest) {
@@ -56,6 +72,7 @@ public class MemberAreaController {
 
         return memberService.changePassword(authorizationHeader, oldPassword, newPassword, newPasswordCheck);
     }
+
 
     //我的訂單OK(OK)
     @GetMapping("/OKOrder")
@@ -78,20 +95,32 @@ public class MemberAreaController {
 
     //我的訂單NG(OK)
     @GetMapping("/NGOrder")
-    public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
-        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+    public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page) {
+//        authorizationHeader = httpServletRequest.getHeader(HEADER);
+//        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
         //之後這裡應該是要從綠界抓
         Set<String> failReason = new HashSet<>(Arrays.asList("付款失敗", "信用卡餘額不足", "網路中斷交易"));
-        totalPage = orderService.totalPageByStatus(memberId, failReason, orderPageSize);
+        totalPage = orderService.totalPageByStatus(7, failReason, orderPageSize);
         if (page != null) {
             if (page > 0 && page <= totalPage) {
                 indexPage = page - 1;
-                return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
+                return ResponseEntity.ok().body(orderService.orderPage(7, failReason, indexPage, orderPageSize));
             }
             throw new QueryException("頁數不可大於總頁數");
         }
         indexPage = 0;
-        return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
+        return ResponseEntity.ok().body(orderService.orderPage(7, failReason, indexPage, orderPageSize));
     }
+
+    //會員資料更新
+    @PutMapping("/edit")
+    public ResponseEntity<Map<String, Object>> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+        String memberImage = memberInfo.get("memberImage").toString();
+        String name = memberInfo.get("name").toString();
+        String phone = memberInfo.get("phone").toString();
+        return ResponseEntity.ok().body(memberService.updateMemberInfo(memberId,name,memberImage,phone));
+    }
+
 }

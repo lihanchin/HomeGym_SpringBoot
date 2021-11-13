@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.MemberService;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -36,9 +37,6 @@ public class CoachController {
     MemberService memberService;
 
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
     @Value("${jwt.header}")
     private String authorization;
 
@@ -56,7 +54,7 @@ public class CoachController {
         if(!imageFolder.exists()){
             imageFolder.mkdirs();
         }
-        String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder,memberId);
+        String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder);
 
         //存到certification
         File certificationFolder = new File("src/main/resources/static/certification");
@@ -65,7 +63,7 @@ public class CoachController {
             certificationFolder.mkdirs();
         }
 
-        String certificationPath = imageSaveToFile(coach.getCertification(),certificationFolder,memberId);
+        String certificationPath = GlobalService.imageSaveToFile(coach.getCertification(),certificationFolder);
 
         coach.setChecked("0");
         coach.setSuspension(0);
@@ -82,36 +80,4 @@ public class CoachController {
         System.out.println("存取結束");
         return "waitForApplyingForCoach";
     }
-
-
-    //寫進資料夾的方法
-    public String imageSaveToFile(String data, File folder,Integer memberId) {
-
-        int start = folder.toString().lastIndexOf("/");
-        String folderPath= folder.toString().substring(start);
-
-        //base64轉byte陣列
-        String dataToBase64 = data.substring(data.indexOf(",") + 1);
-        byte[] bytes = Base64.getDecoder().decode(dataToBase64);
-
-        String name = folder.toString().substring(start+1)+memberId.toString();
-        File file = new File(folder,name+".jpg");
-
-        try {
-            OutputStream out = new FileOutputStream(file);
-            out.write(bytes);
-            System.out.println("讀取完畢");
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            System.out.println("失敗");
-        }
-
-
-        log.info(folderPath+name+".jpg");
-
-        return folderPath+name+".jpg";
-    }
-
-
 }

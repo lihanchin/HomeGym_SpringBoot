@@ -1,7 +1,6 @@
 package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
-import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import org.hibernate.criterion.Order;
@@ -9,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 
 
 public interface MemberService {
@@ -34,4 +33,7 @@ public interface MemberService {
     Optional<Member> findMemberByName(String name);
 
     void update(Member member);
+
+    Map <String,Object> updateMemberInfo(Integer memberId, String name, String memberImage, String phone);
+
 }

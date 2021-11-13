@@ -51,6 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 logger.info("checking authentication " + username);
             } catch (ExpiredJwtException e) {
                 logger.error("JWT過期");
+                SecurityContextHolder.getContext().setAuthentication(null);
                 throw new LoginException("請重新登入");
             }
         }

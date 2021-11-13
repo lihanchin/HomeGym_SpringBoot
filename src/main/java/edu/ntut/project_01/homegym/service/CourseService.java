@@ -2,7 +2,10 @@ package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,7 +22,16 @@ public interface CourseService {
     //有篩選過的課程總共可以分幾頁
     Integer getCoursesTotalPageByFilter(String partOfBody, Integer size);
 
-    public Optional<Course> findById(Integer id);
+    //儲存課程影片相關資訊
+    String upload(@RequestBody Course course);
+
+    //透過關鍵字篩選課程列表
+    ResponseEntity<List<Course>> findCoursesByKeyword(String keyword);
+
+    //在教練專區利用Id抓出來的課程，進行分頁還有總頁數
+    Page<Course> findCourseByCoachArea (Integer coachId, Integer page, Integer size);
+
+    Optional<Course> findById(Integer id);
 
     void save(Course course);
 }
