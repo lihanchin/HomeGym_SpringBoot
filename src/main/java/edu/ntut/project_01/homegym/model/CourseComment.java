@@ -25,11 +25,14 @@ public class CourseComment {
 
     @Transient
     @Lob
-    private byte[] memberImge;
+    private byte[] memberImage;
 
-    @CreatedDate
+    @Transient
+    private String mineType;
+
+
     @Column(name = "comment_create_time")
-    private Date commentCreateTime;
+    private String commentCreateTime;
 
     @JsonIgnore
     @ManyToOne
@@ -44,23 +47,32 @@ public class CourseComment {
     public CourseComment() {
     }
 
-    public CourseComment(Integer courseCommentId, Integer star, String commentContent, String memberName, byte[] memberImge, Date commentCreateTime, Member member, Course course) {
+    public CourseComment(Integer courseCommentId, Integer star, String commentContent, String memberName, byte[] memberImage, String mineType, String commentCreateTime, Member member, Course course) {
         this.courseCommentId = courseCommentId;
         this.star = star;
         this.commentContent = commentContent;
         this.memberName = memberName;
-        this.memberImge = memberImge;
+        this.memberImage = memberImage;
+        this.mineType = mineType;
         this.commentCreateTime = commentCreateTime;
         this.member = member;
         this.course = course;
     }
 
-    public byte[] getMemberImge() {
-        return memberImge;
+    public String getMineType() {
+        return mineType;
     }
 
-    public void setMemberImge(byte[] memberImge) {
-        this.memberImge = memberImge;
+    public void setMineType(String mineType) {
+        this.mineType = mineType;
+    }
+
+    public byte[] getMemberImage() {
+        return memberImage;
+    }
+
+    public void setMemberImage(byte[] memberImage) {
+        this.memberImage = memberImage;
     }
 
     public String getMemberName() {
@@ -95,11 +107,11 @@ public class CourseComment {
         this.commentContent = commentContent;
     }
 
-    public Date getCommentCreateTime() {
+    public String getCommentCreateTime() {
         return commentCreateTime;
     }
 
-    public void setCommentCreateTime(Date commentCreateTime) {
+    public void setCommentCreateTime(String commentCreateTime) {
         this.commentCreateTime = commentCreateTime;
     }
 

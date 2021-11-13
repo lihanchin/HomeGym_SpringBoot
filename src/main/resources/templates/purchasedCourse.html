@@ -78,8 +78,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-11 m-auto">
-                        <h3>課程名稱</h3>
-                        <video class="w-100" src="./video/video.mp4" controls></video>
+                        <h3>{{course.courseName}}</h3>
+                        <video class="w-100" :src="course.coursePath" controls></video>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,6 @@
                                 <div class="row align-items-center">
                                     <div class="col-2">
                                         <img class="mb-2 img-fluid" :src="coach.coachImage" alt="">
-        
                                     </div>
                                     <div class="col-10 d-flex flex-column">
                                         <p><span>教練名稱：</span> {{coachName}}</p>
@@ -141,7 +140,9 @@
                                <!-- 顯示留言項目 -->
                                <div class="mb-4 border-bottom" v-for="item in comment" :key="item.id">
                                    <div class="user d-flex mb-2">
-                                       <img class="rounded-circle  img-fluid" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                       <div class="me-2" style="width: 40px;">
+                                            <img class="rounded-circle  img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
+                                       </div>
                                        <h5 class="mt-auto">{{item.memberName}}</h5>
                                    </div>
                                    <div class="evaluation mb-2">
@@ -164,15 +165,17 @@
                         <!-- 輸入留言區 -->
                         <div class="col-10 m-auto mb-3">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
+                                <div class="me-2" style="width: 40px;">
+                                    <img class="rounded-circle img-fluid" :src="member.memberImage" alt="">
+                                </div>
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                                 <div class="evaluation ms-4">
                                     <div class="stars d-flex flex-row-reverse justify-content-end" >
-                                        <input type="radio" id="five" name="rate" value="5" v-model.number="courseComment.star" >
+                                        <input type="radio" id="five" name="rate" value="5" required v-model.number="courseComment.star" >
                                         <label for="five"></label>
                                         <input type="radio" id="four" name="rate" value="4" v-model.number="courseComment.star">
                                         <label for="four"></label>
-                                        <input type="radio" id="three" name="rate" value="3" v-model.number="courseComment.star" checked>
+                                        <input type="radio" id="three" name="rate" value="3"  v-model.number="courseComment.star" >
                                         <label for="three"></label>
                                         <input type="radio" id="two" name="rate" value="2" v-model.number="courseComment.star">
                                         <label for="two"></label>
@@ -183,8 +186,7 @@
                             </div>
                             <textarea class="form-control mb-2 mt-2" rows="3" v-model.trim="courseComment.CommentInput" ></textarea>
                             <div class="d-flex justify-content-end">
-<!--                                <button class="btn btn-outline-primary pe-3 ps-3"  type="submit" @click="createComment">傳送</button>-->
-                                <button class="btn btn-outline-primary pe-3 ps-3"  type="submit" @click="createComment" >傳送</button>
+                                <button class="btn btn-outline-primary pe-3 ps-3"  type="submit" @click="createComment" >送出</button>
                             </div>
                         </div>
                         <!-- 分頁列 -->
@@ -215,7 +217,9 @@
                                 <!-- 顯示FQA -->
                                 <div class="mb-4" v-for="item in fqa" :key="item.id">
                                     <div class="user d-flex mb-2">
-                                        <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+item.memberImge" alt="">
+                                        <div class="me-2" style="width: 40px;">
+                                            <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
+                                        </div>
                                         <h5 class="mt-auto">{{item.memberName}}</h5>
                                     </div>
                                     <p>{{item.fqaContent}}</p>
@@ -223,12 +227,14 @@
                                     <!-- 顯示FQAReply-->
                                     <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="key in item.fqaReplies" :key="key.id"> <!-- class添加ps-6 -->
                                         <div class="user d-flex mb-2 align-items-center">
-                                            <img class="rounded-circle me-2" :src="'data:image/jpeg;base64,'+key.memberImge" alt="">
+                                            <div class="me-2" style="width: 40px;">
+                                                <img class="rounded-circle img-fluid" :src="'data:'+key.mineType+';base64,'+key.memberImage" alt="">
+                                            </div>
                                             <h5 class="mt-auto">{{key.memberName}}</h5>
                                             <h6 class="mt-auto text-muted ms-4">回覆 {{item.memberName}}</h6>
                                         </div>
                                         <p>{{key.fqaReplyContent}}</p>
-                                        <p class="text-end me-2">{{key.fqaCreateTime}}</p>
+                                        <p class="text-end me-2">{{key.fqaReplyCreateTime}}</p>
                                     </div>
                                 </div>
 
@@ -245,7 +251,10 @@
                         <!-- 送出發問 <FQA> -->
                         <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
+                                <div class="me-2" style="width: 40px;">
+                                    <img class="rounded-circle  img-fluid" :src="member.memberImage" alt="">
+                                </div>
+
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                             </div>
                             <textarea class="form-control mb-2" rows="3" v-model.trim="fqaInput.fqaContent"></textarea>
@@ -256,7 +265,9 @@
                         <!-- 送出發問 <FQAReply> -->
                         <div class="col-10 m-auto mb-3"  v-if="fqaUser !=='' ">
                             <div class="d-flex mb-2 align-items-center">
-                                <img class="rounded-circle me-2 img-fluid" :src="member.memberImg" alt="">
+                                <div class="me-2" style="width: 40px;">
+                                    <img class="rounded-circle img-fluid" :src="member.memberImage" alt="">
+                                </div>
                                 <h5 class="mt-auto">{{member.memberName}}</h5>
                                 <h6 class="Reply_name mt-auto text-muted ms-4">回覆 {{fqaUser}}
                                     <span type="button" class="btn-close btn-sm p-0 m-0" aria-label="Close" @click="closeFqa"></span>

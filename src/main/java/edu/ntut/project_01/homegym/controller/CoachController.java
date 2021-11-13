@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -72,7 +73,7 @@ public class CoachController {
 
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
-        String applyTime = sdf.format(new Timestamp(System.currentTimeMillis()));
+        String applyTime = sdf.format(new Date());
 
         coach.setApplyTime(applyTime);
         coach.setCertification(certificationPath);
@@ -86,9 +87,12 @@ public class CoachController {
 
     //寫進資料夾的方法
     public String imageSaveToFile(String data, File folder,Integer memberId) {
-
-        int start = folder.toString().lastIndexOf("/");
+        System.out.println("folder.toString()=================================="+folder.toString());
+        int start = folder.toString().lastIndexOf("\\");
+        System.out.println("start=================================="+start);
+        System.out.println("folderPath=================================="+folder.toString().substring(start));
         String folderPath= folder.toString().substring(start);
+
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
@@ -110,7 +114,7 @@ public class CoachController {
 
         log.info(folderPath+name+".jpg");
 
-        return folderPath+name+".jpg";
+        return folderPath+"\\"+name+".jpg";
     }
 
 

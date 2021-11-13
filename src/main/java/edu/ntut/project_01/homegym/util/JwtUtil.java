@@ -44,9 +44,9 @@ public class JwtUtil {
         loginResponse.put("memberId", member.getMemberId());
         loginResponse.put("email", userDetails.getUsername());
         loginResponse.put("name", member.getName());
-        loginResponse.put("birthday", member.getBirthday());
-        loginResponse.put("phone", member.getPhone());
-        loginResponse.put("image", member.getMemberImage());
+//        loginResponse.put("birthday", member.getBirthday());
+//        loginResponse.put("phone", member.getPhone());
+//        loginResponse.put("image", member.getMemberImage());
         loginResponse.put("coachId", member.getCoach() == null ? null : member.getCoach().getCoachId());
         loginResponse.put("role", userDetails.getAuthorities());
 
