@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.MemberService;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -38,9 +39,6 @@ public class CoachController {
     @Autowired
     JwtUtil jwtUtil;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
     @Value("${jwt.header}")
     private String authorization;
 
@@ -72,7 +70,7 @@ public class CoachController {
         if(!imageFolder.exists()){
             imageFolder.mkdirs();
         }
-        String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder);
+        String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder);
 
         //存到certification
         File certificationFolder = new File("src/main/resources/static/certification");
@@ -81,7 +79,7 @@ public class CoachController {
             certificationFolder.mkdirs();
         }
 
-        String certificationPath = imageSaveToFile(coach.getCertification(),certificationFolder);
+        String certificationPath = GlobalService.imageSaveToFile(coach.getCertification(),certificationFolder);
 
         coach.setChecked("0");
         coach.setSuspension(0);
@@ -99,39 +97,4 @@ public class CoachController {
         System.out.println("存取結束");
         return "waitForApplyingForCoach";
     }
-
-
-    //寫進資料夾的方法
-    public String imageSaveToFile(String data, File folder) {
-
-        //取名用
-        int startIndex = data.indexOf(",")+80;
-        int endIndex = startIndex + 6;
-
-        //base64轉byte陣列
-        String dataToBase64 = data.substring(data.indexOf(",") + 1);
-        byte[] bytes = Base64.getDecoder().decode(dataToBase64);
-
-        String name = data.substring(startIndex, endIndex);
-        File file = new File(folder,name+".jpg");
-
-        try {
-            OutputStream out = new FileOutputStream(file);
-            out.write(bytes);
-            System.out.println("讀取完畢");
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            System.out.println("失敗");
-        }
-        String s = "static";
-        int start = file.toString().indexOf("static");
-        System.out.println(start);
-        String filaPath = file.toString().substring(start+s.length());
-        log.info(filaPath);
-
-        return filaPath;
-    }
-
-
 }

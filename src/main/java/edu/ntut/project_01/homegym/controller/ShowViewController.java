@@ -49,4 +49,10 @@ public class ShowViewController {
 
         return "checkout" ; // 要導入的html
     }
+
+    @GetMapping("/NGOrder")
+    public String ngOrder() {
+
+        return "memberAreasMyOrderNg" ; // 要導入的html
+    }
 }
