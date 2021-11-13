@@ -25,7 +25,7 @@ public class CourseCommentServiceImpl implements CourseCommentService {
     }
 
     @Override
-    public void save(@RequestBody CourseComment curseComment) {
+    public void save( CourseComment curseComment) {
 
         courseCommentRepository.save(curseComment);
     }

@@ -7,15 +7,18 @@ import edu.ntut.project_01.homegym.model.Visitor;
 import edu.ntut.project_01.homegym.service.AuthService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.service.VisitorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 public class IndexController {
 
@@ -27,17 +30,25 @@ public class IndexController {
     private VisitorService visitorService;
 
 
+    @Value("${jwt.header}")
+    private String authorization;
+
+//    //檢查JWT
+//    @GetMapping("/checkStatus")
+//    public String checkStatus( HttpServletRequest request) {
+//
+//        String header= request.getHeader(authorization);
+//        Member member = memberService.findMemberByToken(header);
+//        return "registated";
+//    }
+
     //註冊(加入Security)(OK)
     @PostMapping("/registrations")
     public ResponseEntity<Map<String, Object>> registrations(@RequestBody Member member) {
         return authService.register(member);
     }
 
-    //驗證(OK)
-    @GetMapping("/registrations/memberVerification")
-    public ResponseEntity<String> updateMemberStatus(@RequestParam String code) {
-        return authService.updateStatus(code);
-    }
+
 
     //重寄驗證信(OK)
     @GetMapping("/registrations/memberVerification/sendAgain/{memberId}")
@@ -48,6 +59,9 @@ public class IndexController {
     //登入(加入Security)(OK)
     @PostMapping("/login")
     public ResponseEntity<Map<String,Object>> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
+       log.info("準備傳回會員資料");
+        System.out.println(authRequest.getUsername());
+        System.out.println(authRequest.getPassword());
         return authService.login(authRequest.getUsername(), authRequest.getPassword());
     }
 

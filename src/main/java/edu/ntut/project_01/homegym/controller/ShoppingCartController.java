@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 @RestController
 public class ShoppingCartController {
@@ -26,15 +29,23 @@ public class ShoppingCartController {
 使用#來分開多個項目
 */
     @PostMapping("/test/buySoomething")
-    ResponseEntity<String> useECPAY(@RequestBody Map<String,String> checkOut) {
+    ResponseEntity<Map> useECPAY(@RequestBody String[] checkOut) {
+
+        System.out.println(checkOut[0].toString());
+
         ExampleAllInOne exampleAllInOne = new ExampleAllInOne();
         ExampleAllInOne.initial();
-        String price = checkOut.get("price");
-        String orderItems = checkOut.get("orderItems");
-        String paymentPage = exampleAllInOne.genAioCheckOutALL(price, orderItems);
-        if (paymentPage != null) {
-            return ResponseEntity.ok().body(paymentPage);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("交易失敗");
+        Map<String,String> map =new HashMap<>();
+//        String price = checkOut.get("price");
+//
+//        String orderItems = checkOut.get("orderItems");
+//        String paymentPage = exampleAllInOne.genAioCheckOutALL(price, orderItems);
+//        if (paymentPage != null) {
+//            map.put("paymentPage",paymentPage);
+//            System.out.println(paymentPage);
+//            return ResponseEntity.ok().body(map);
+//        }
+       map.put("message","交易失敗");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 }

@@ -16,11 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Transactional
 @Service
 public class CourseServiceImpl implements CourseService {
 
+    @Autowired
     private CourseRepository courseRepository;
 
     public Optional<Course> findById(Integer id) {

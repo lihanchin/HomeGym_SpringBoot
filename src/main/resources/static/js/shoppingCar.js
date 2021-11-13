@@ -24,7 +24,6 @@ function doFirst(){
 }
 
 function createCartList(classId,classValue){
-    // console.log(classValue)
     let name = classValue.split('|')[0];
     let classImage = classValue.split('|')[1];
     let classPrice = classValue.split('|')[2];

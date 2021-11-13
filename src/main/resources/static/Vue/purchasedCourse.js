@@ -1,5 +1,5 @@
-let courseId = (location.search.split('='))[1]
-console.log(courseId);
+let id = (location.search.split('='))[1]
+console.log(id);
 
 new Vue({
     el:'#app',
@@ -144,18 +144,18 @@ new Vue({
             })
             console.log("請求結束")
 
-            let courseFqaReplyContent = {
-                name:this.member.memberName,
-                img:this.member.memberImg,
-                comment:comment,
-                createdTime:createdTime,
-            }
-            this.fqa[id].fqaReplies.push(courseFqaReplyContent);
+            // let courseFqaReplyContent = {
+            //     name:this.member.memberName,
+            //     img:this.member.memberImg,
+            //     comment:comment,
+            //     createdTime:createdTime,
+            // }
+            // this.fqa[id].fqaReplies.push(courseFqaReplyContent);
 
             //點擊後 input清空
             this.fqaReplyInput.fqaReplyContent ='';
-
-
+            this.fqaUserIndex='';
+            this.fqaUserIndex='';
         },
 
         //取消回覆fqa
@@ -167,7 +167,7 @@ new Vue({
     },
     mounted() {
 
-        axios.get("http://localhost:8080/store/"+courseId).then((res) =>{ //memberAreasIntroduction.json
+        axios.get("http://localhost:8080/store/"+id).then((res) =>{ //memberAreasIntroduction.json
             console.log(res);
             this.course = res.data.course
             this.coach = res.data.coach
@@ -175,7 +175,7 @@ new Vue({
             this.comment = res.data.commentlist
         });
 
-        axios.get("http://localhost:8080/course/"+courseId).then((res) =>{ //memberAreasIntroduction.json
+        axios.get("http://localhost:8080/course/"+id).then((res) =>{ //memberAreasIntroduction.json
             console.log(res);
         this.fqa = res.data
         });

@@ -27,6 +27,9 @@ public class FQAReply {
     @Lob
     private byte[] memberImge;
 
+    @Transient
+    private String mineType;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "member_id")

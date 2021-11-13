@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
                 logger.info("會員帳號驗證通過！");
                 return ResponseEntity.status(HttpStatus.OK).body("驗證通過，歡迎使用HomeGym");
             } else {
-                throw new VerificationMailException("此帳號已驗證通過");
+                return ResponseEntity.status(HttpStatus.OK).body("已驗證過");
             }
         } else {
             throw new MemberNotExistException("用戶不存在");

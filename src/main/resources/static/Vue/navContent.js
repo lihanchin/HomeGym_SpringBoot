@@ -1,4 +1,39 @@
 new Vue({
+    el:"#app",
+    data:{
+        status:'',
+    },
+    methods:{
+        logout(){
+            localStorage.removeItem("Authorization");
+            window.location.reload()
+        },
+    },
+    mounted(){
+        let  token = localStorage.getItem("Authorization")
+        console.log("token========"+token)
+        if(token!==null){
+            axios.get(`http://localhost:8080/`,{
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) =>{
+                console.log(res)
+                this.status="登入"
+            }).catch(error =>{
+                console.log(error.response.data)
+                this.status="登出"
+            })
+        }
+        this.status="登出"
+
+    }
+})
+
+
+
+// let localStorage = localStorage;
+new Vue({
     el:"#nav_content",
     data:{
         login:{
@@ -11,32 +46,33 @@ new Vue({
             name:'',
             phone:'',
             birthday:'',
-        }
+        },
+
     },
     methods: {
         memberLogin(){
-            axios.post(`http://localhost:3000/login`,{
-                email : this.login.email,
+            axios.post(`http://localhost:8080/login`,{
+                username : this.login.email,
                 password:this.login.password,
-
-
             }).then((res) =>{
-                console.log(res);
+                console.log(res.data.JWT)
+                localStorage.setItem("Authorization","Bearer "+res.data.JWT);
+                window.location.reload()
             })
 
         },
 
         memberSignUp(){
-            axios.post(`http://localhost:3000/signup`,{
+            axios.post(`http://localhost:8080/registrations`,{
                 email : this.signup.email,
                 password:this.signup.password,
                 name:this.signup.name,
                 phone:this.signup.phone,
                 birthday:this.signup.birthday
 
-
             }).then((res) =>{
                 console.log(res);
+
             })
             this.signup.email ="";
             this.signup.password ="";
@@ -47,22 +83,26 @@ new Vue({
         }
         
     },
+
 });
 
 
 
+
+
+
 //登入驗證
-window.addEventListener('load', function () {
-let login = document.getElementById('needs_validation_login');
-    login.addEventListener('submit', function (event) {
-        if (login.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        login.classList.add('was-validated');
-    }, false);
-}, false);
-    
+// window.addEventListener('load', function () {
+// let login = document.getElementById('needs_validation_login');
+//     login.addEventListener('submit', function (event) {
+//         if (login.checkValidity() === false) {
+//             event.preventDefault();
+//             event.stopPropagation();
+//         }
+//         login.classList.add('was-validated');
+//     }, false);
+// }, false);
+//
     
 /////////////////////////////////////////////////////////
 //註冊驗證
