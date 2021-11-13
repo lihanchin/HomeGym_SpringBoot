@@ -36,17 +36,33 @@ public class CoachController {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    JwtUtil jwtUtil;
 
     @Value("${jwt.header}")
     private String authorization;
 
+    @Value("${jwt.tokenHead}")
+    private String tokenHeader;
 
     @PostMapping("/apply")
     public String  applyForCoach(@RequestBody Coach coach, HttpServletRequest request){
 
-        String header= request.getHeader(authorization);
-        Member member = memberService.findMemberByToken(header);
-        Integer memberId = member.getMemberId();
+//        String header= request.getHeader(authorization);
+//        String jwt;
+//        String username = null;
+//
+//        if (header != null && header.startsWith(tokenHeader)) {
+//
+//            jwt = header.substring(7);
+//            username = jwtUtil.extractUsername(jwt);
+//            logger.info("checking authentication " + username);
+//        }
+//
+//        System.out.println("進方法");
+//        //帳號抓會員
+//        Optional<Member> member = memberService.findMemberByName(username);
+
 
         //存到coachImages
         File imageFolder = new File("src/main/resources/static/coachImages");
@@ -75,8 +91,9 @@ public class CoachController {
         coach.setApplyTime(applyTime);
         coach.setCertification(certificationPath);
         coach.setCoachImage(coachImagePath);
-        member.setCoach(coach);
-        memberService.update(member);
+//        member.get().setCoach(coach);
+//        memberService.update(member.get());
+        coachService.apply(coach);
         System.out.println("存取結束");
         return "waitForApplyingForCoach";
     }
