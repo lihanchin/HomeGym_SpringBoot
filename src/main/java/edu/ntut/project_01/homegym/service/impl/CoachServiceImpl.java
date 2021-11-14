@@ -7,10 +7,8 @@ import edu.ntut.project_01.homegym.util.GlobalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.File;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -42,7 +40,7 @@ public class CoachServiceImpl implements CoachService {
             if(!imageFolder.exists()){
                 imageFolder.mkdirs();
             }
-            String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder);
+            String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,coachId,".jpg");
             theCoach.setCoachImage(coachImagePath);
         }
 

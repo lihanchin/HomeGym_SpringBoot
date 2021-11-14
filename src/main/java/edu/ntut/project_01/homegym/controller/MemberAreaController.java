@@ -101,22 +101,16 @@ public class MemberAreaController {
 
     //會員資料更新
     @PutMapping("/edit")
-    public ResponseEntity<Member> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
+    public ResponseEntity<Map> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         Member member = memberService.findMemberByToken(authorizationHeader);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
-        String base64 =  memberInfo.get("memberImage").toString();
-        int startIndex = base64.indexOf(",")+1;
-        String mimeType = base64.substring(base64.indexOf(":")+1,base64.indexOf(";"));
-        byte[] bytes = Base64.getDecoder().decode(base64.substring(startIndex));
         String name = memberInfo.get("name").toString();
         String phone = memberInfo.get("phone").toString();
-        member.setPhone(phone);
-        member.setName(name);
-        member.setMimeType(mimeType);
-        member.setMemberImage(bytes);
-        memberService.update(member);
-        return ResponseEntity.ok().body(member);
+        String base64 =  memberInfo.get("memberImage").toString();
+        Map <String,Object> updateMemberInfoResponse = memberService.updateMemberInfo(memberId,name,base64,phone);
+
+        return ResponseEntity.ok().body(updateMemberInfoResponse);
     }
 
 }

@@ -4,27 +4,20 @@ import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.MemberService;
-import edu.ntut.project_01.homegym.util.JwtUtil;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -57,7 +50,8 @@ public class CoachController {
         if(!imageFolder.exists()){
             imageFolder.mkdirs();
         }
-        String coachImagePath = imageSaveToFile(coach.getCoachImage(),imageFolder,memberId);
+
+        String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,memberId,".jpg");
 
         //存到certification
         File certificationFolder = new File("src/main/resources/static/certification");
@@ -66,7 +60,7 @@ public class CoachController {
             certificationFolder.mkdirs();
         }
 
-        String certificationPath = imageSaveToFile(coach.getCertification(),certificationFolder,memberId);
+        String certificationPath = GlobalService.imageSaveToFile(coach.getCertification(),certificationFolder,memberId,".jpg");
 
         coach.setChecked("0");
         coach.setSuspension(0);
@@ -83,39 +77,5 @@ public class CoachController {
         System.out.println("存取結束");
         return "waitForApplyingForCoach";
     }
-
-
-    //寫進資料夾的方法
-    public String imageSaveToFile(String data, File folder,Integer memberId) {
-        System.out.println("folder.toString()=================================="+folder.toString());
-        int start = folder.toString().lastIndexOf("\\");
-        System.out.println("start=================================="+start);
-        System.out.println("folderPath=================================="+folder.toString().substring(start));
-        String folderPath= folder.toString().substring(start);
-
-
-        //base64轉byte陣列
-        String dataToBase64 = data.substring(data.indexOf(",") + 1);
-        byte[] bytes = Base64.getDecoder().decode(dataToBase64);
-
-        String name = folder.toString().substring(start+1)+memberId.toString();
-        File file = new File(folder,name+".jpg");
-
-        try {
-            OutputStream out = new FileOutputStream(file);
-            out.write(bytes);
-            System.out.println("讀取完畢");
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            System.out.println("失敗");
-        }
-
-
-        log.info(folderPath+name+".jpg");
-
-        return folderPath+"\\"+name+".jpg";
-    }
-
 
 }

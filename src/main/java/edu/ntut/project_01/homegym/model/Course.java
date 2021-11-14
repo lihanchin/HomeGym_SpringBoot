@@ -34,14 +34,14 @@ public class Course {
     private String courseImage;
     @CreatedDate
     @Column(name = "upload_time")
-    private Date uploadTime;
+    private String uploadTime;
     private Integer price;
     private String equipment;
     private String level;
     private Integer pass;
     private	Integer checked;
     @Column(name = "check_time")
-    private Date checkTime;
+    private String checkTime;
 
     @Transient
     private String coachName;
@@ -75,7 +75,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, Date uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, Date checkTime, String coachName, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
+    public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, String uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, String checkTime, String coachName, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
         this.courseId = courseId;
         this.coursePath = coursePath;
         this.mimeType = mimeType;
@@ -161,11 +161,11 @@ public class Course {
         this.courseImage = courseImage;
     }
 
-    public Date getUploadTime() {
+    public String getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(Date uploadTime) {
+    public void setUploadTime(String uploadTime) {
         this.uploadTime = uploadTime;
     }
 
@@ -209,11 +209,11 @@ public class Course {
         this.checked = checked;
     }
 
-    public Date getCheckTime() {
+    public String getCheckTime() {
         return checkTime;
     }
 
-    public void setCheckTime(Date checkTime) {
+    public void setCheckTime(String checkTime) {
         this.checkTime = checkTime;
     }
 

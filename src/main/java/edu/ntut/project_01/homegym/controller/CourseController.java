@@ -2,39 +2,24 @@ package edu.ntut.project_01.homegym.controller;
 
 import edu.ntut.project_01.homegym.model.*;
 import edu.ntut.project_01.homegym.service.*;
-import edu.ntut.project_01.homegym.model.Course;
-import edu.ntut.project_01.homegym.model.CourseComment;
-import edu.ntut.project_01.homegym.model.FQA;
-import edu.ntut.project_01.homegym.model.FQAReply;
-import edu.ntut.project_01.homegym.repository.CourseRepository;
-import edu.ntut.project_01.homegym.service.CourseCommentService;
-import edu.ntut.project_01.homegym.service.CourseService;
-import edu.ntut.project_01.homegym.service.FQAReplyService;
-import edu.ntut.project_01.homegym.service.FQAService;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.sql.Timestamp;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/course")
 public class CourseController {
-
-    private CourseRepository courseRepository;
-    private CourseCommentService courseCommentService;
-    private CourseService courseService;
-    private FQAService fqaService;
-    private FQAReplyService fqaReplyService;
 
     @Autowired
     CourseCommentService courseCommentService;
@@ -108,7 +93,6 @@ public class CourseController {
     }
 
 
-
     @GetMapping ("/{id}")
     public  Map<String,Object> showFQA(@PathVariable Integer id,HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -142,8 +126,13 @@ public class CourseController {
         return map;
     }
 
-    @PostMapping("/coachingAreasIntroduction")
-    public void Coach(@RequestBody Map<String, Object> coachInfo) {
+
+    @PostMapping("/upload")
+    public void Coach(@RequestBody Map<String, Object> coachInfo,HttpServletRequest request) {
+        String header= request.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        Coach coach = member.getCoach();
+        Integer coachId = coach.getCoachId();
 
         String coursePath = coachInfo.get("coursePath").toString();//這
         String courseName = coachInfo.get("courseName").toString();
@@ -153,6 +142,19 @@ public class CourseController {
         String level = coachInfo.get("level").toString();
         String courseInfo = coachInfo.get("courseInfo").toString();
 
+        //存影片到
+        File videoFolder = new File("src/main/resources/static/video");
+        System.out.println(videoFolder);
+        if (!videoFolder.exists()) {
+            videoFolder.mkdirs();
+        }
+
+        String videoCoachPath = GlobalService.imageSaveToFile(coursePath, videoFolder,coachId,".mp4");
+
+        String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+        String uploadTime = sdf.format(new Date());
+
         Course course = new Course();
         course.setCourseName(courseName);
         course.setPartOfBody(partOfBody);
@@ -160,44 +162,12 @@ public class CourseController {
         course.setEquipment(equipment);
         course.setLevel(level);
         course.setCourseInfo(courseInfo);
-        courseRepository.save(course);
-
-        //存影片到
-        File videoFolder = new File("src/main/resources/static/video");
-        System.out.println(videoFolder);
-        if (!videoFolder.exists()) {
-            videoFolder.mkdirs();
-        }
-        String videoCoachPath = videoSaveToFile(coursePath, videoFolder);
-//        course.setChecked(0);
-        course.setUploadTime(new Timestamp(System.currentTimeMillis()));
+        course.setCoach(coach);
+        course.setUploadTime(uploadTime);
         course.setCoursePath(videoCoachPath);
-        courseService.upload(course);
+        course.setChecked(0);
+        course.setPass(0);
+        courseService.save(course);
     }
 
-
-    //寫進資料夾的方法
-    public String videoSaveToFile(String date, File folder) {
-        //取名用
-//        int startIndex = date.indexOf(",")+100;
-//        int endIndex =startIndex + 6;
-//        String name = date.substring(startIndex,endIndex);
-
-        UUID uuid = UUID.randomUUID();
-        String name = uuid.toString().replace("-", "").substring(0, 6);
-        //base64轉byte陣列
-        String dateToBase64 = date.substring(date.indexOf(",") + 1);
-        byte[] bytes = Base64.getDecoder().decode(dateToBase64);
-        File file = new File(folder, name + ".mp4");
-        try {
-            OutputStream out = new FileOutputStream(file);
-            out.write(bytes);
-            System.out.println("讀取完畢");
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            System.out.println("失敗");
-        }
-        return file.toString();
-    }
 }

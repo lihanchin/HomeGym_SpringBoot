@@ -34,5 +34,6 @@ public interface MemberService {
 
     void update(Member member);
 
+    Map <String,Object> updateMemberInfo(Integer memberId, String name, String memberImage, String phone);
 
 }

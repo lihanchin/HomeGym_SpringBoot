@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
 public class ShowViewController {
 
@@ -67,9 +65,20 @@ public class ShowViewController {
         authService.updateStatus(code);
 
         return "registated";
+    }
+
     @GetMapping("/NGOrder")
     public String ngOrder() {
+        return "memberAreasMyOrderNg";
+    }
 
-        return "memberAreasMyOrderNg" ; // 要導入的html
+    @GetMapping("/coachArea")
+    public String uploadCourse() {
+        return "coachAreasIntroduction";
+    }
+
+    @GetMapping("/revisePassword")
+    public String revisePassword() {
+        return "revisePassword";
     }
 }

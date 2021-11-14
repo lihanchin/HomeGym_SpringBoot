@@ -3,6 +3,7 @@ package edu.ntut.project_01.homegym.controller;
 
 import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
+import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.repository.CoachRepository;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.CourseService;
@@ -14,11 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
-@RequestMapping("/coacharea")
+@RequestMapping("/coachArea")
 public class CoachAreaController {
 
     @Value("${course.countsPerPage}")
@@ -28,17 +31,22 @@ public class CoachAreaController {
     private String authorizationHeader;
     private Integer coachId;
 
+    @Autowired
     private CourseService courseService;
+    @Autowired
     private CoachService coachService;
+    @Autowired
     private CoachRepository coachRepository;
+    @Autowired
     private MemberService memberService;
 
-    @Autowired
-    public CoachAreaController(CourseService courseService, CoachService coachService, CoachRepository coachRepository, MemberService memberService) {
-        this.courseService = courseService;
-        this.coachService = coachService;
-        this.coachRepository = coachRepository;
-        this.memberService = memberService;
+    //會員資料
+    @GetMapping("/")
+    public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        Member member = memberService.findMemberByToken(authorizationHeader);
+        Coach coach = member.getCoach();
+        return ResponseEntity.ok().body(coach);
     }
 
     @GetMapping("/mycourse")

@@ -1,3 +1,4 @@
+let  token = localStorage.getItem("Authorization")
 new Vue({
     el:"#app",
     data:{
@@ -30,25 +31,28 @@ new Vue({
             item.name = this.cacheName
             item.phone = this.cachePhone
 
-
             axios.put(`http://localhost:8080/memberArea/edit`,{
                 memberId: this.memberProfile.memberId,
-                img: this.memberProfile.memberImage,
+                memberImage: this.memberProfile.memberImage,
                 name: this.memberProfile.name,
                 email: this.memberProfile.email,
                 birthday: this.memberProfile.birthday,
                 phone: this.memberProfile.phone
                 
+            }, {
+                headers: {
+                    Authorization: token
+                }
             }).then((res) =>{
                 console.log(res);
             })
-            this.cacheName ='';
-            this.cachePhone="",
+                this.cacheName ='';
+                this.cachePhone="",
                 this.cacheContent ={};
         },
     },
     mounted() {
-        let  token = localStorage.getItem("Authorization")
+
         axios.get("http://localhost:8080/memberArea/", {
             headers: {
                 Authorization: token

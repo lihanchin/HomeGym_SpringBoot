@@ -19,18 +19,18 @@ public class GlobalService {
     }
 
     //寫進資料夾的方法
-    public static String imageSaveToFile(String data, File folder) {
+    public static String imageSaveToFile(String data, File folder,Integer id,String evt) {
 
         //取名用
-        int startIndex = data.indexOf(",")+80;
-        int endIndex = startIndex + 6;
+        int start = folder.toString().lastIndexOf("\\");
+        String folderPath= folder.toString().substring(start);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = data.substring(startIndex, endIndex);
-        File file = new File(folder,name+".jpg");
+        String name = folder.toString().substring(start+1)+id.toString();
+        File file = new File(folder,name+evt);
 
         try {
             OutputStream out = new FileOutputStream(file);
@@ -41,12 +41,7 @@ public class GlobalService {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-        String s = "static";
-        int start = file.toString().indexOf("static");
-        System.out.println(start);
-        String filaPath = file.toString().substring(start+s.length());
-        log.info(filaPath);
 
-        return filaPath;
+        return folderPath+"\\"+name+evt;
     }
 }
