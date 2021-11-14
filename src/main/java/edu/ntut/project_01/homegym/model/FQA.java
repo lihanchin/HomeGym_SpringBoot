@@ -19,17 +19,19 @@ public class FQA {
     private Integer fqaId;
     @Column(name = "fqa_content")
     private String fqaContent;
-    @CreatedDate
+
     @Column(name = "fqa_create_time")
-    private Date fqaCreateTime;
+    private String fqaCreateTime;
 
     @Transient
     private String memberName;
 
     @Transient
     @Lob
-    private byte[] memberImge;
+    private byte[] memberImage;
 
+    @Transient
+    private String mineType;
 
     @JsonIgnore
     @ManyToOne
@@ -48,23 +50,32 @@ public class FQA {
     public FQA() {
     }
 
-    public FQA(Integer fqaId, String fqaContent, Date fqaCreateTime, String memberName, byte[] memberImge, Member member, Course course, Set<FQAReply> fqaReplies) {
+    public FQA(Integer fqaId, String fqaContent, String fqaCreateTime, String memberName, byte[] memberImage, String mineType, Member member, Course course, Set<FQAReply> fqaReplies) {
         this.fqaId = fqaId;
         this.fqaContent = fqaContent;
         this.fqaCreateTime = fqaCreateTime;
         this.memberName = memberName;
-        this.memberImge = memberImge;
+        this.memberImage = memberImage;
+        this.mineType = mineType;
         this.member = member;
         this.course = course;
         this.fqaReplies = fqaReplies;
     }
 
-    public byte[] getMemberImge() {
-        return memberImge;
+    public String getMineType() {
+        return mineType;
     }
 
-    public void setMemberImge(byte[] memberImge) {
-        this.memberImge = memberImge;
+    public void setMineType(String mineType) {
+        this.mineType = mineType;
+    }
+
+    public byte[] getMemberImage() {
+        return memberImage;
+    }
+
+    public void setMemberImage(byte[] memberImage) {
+        this.memberImage = memberImage;
     }
 
     public Integer getFqaId() {
@@ -83,11 +94,11 @@ public class FQA {
         this.fqaContent = fqaContent;
     }
 
-    public Date getFqaCreateTime() {
+    public String getFqaCreateTime() {
         return fqaCreateTime;
     }
 
-    public void setFqaCreateTime(Date fqaCreateTime) {
+    public void setFqaCreateTime(String fqaCreateTime) {
         this.fqaCreateTime = fqaCreateTime;
     }
 

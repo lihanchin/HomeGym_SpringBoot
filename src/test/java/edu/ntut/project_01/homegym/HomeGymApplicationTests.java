@@ -61,7 +61,7 @@ class HomeGymApplicationTests {
                     vb.setCourseInfo((col[2]));
                     vb.setPartOfBody(col[4]);
                     try {
-                        vb.setUploadTime(format.parse(col[6]));
+//                        vb.setUploadTime(format.parse(col[6]));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

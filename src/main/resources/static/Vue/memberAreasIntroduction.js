@@ -1,8 +1,10 @@
+let  token = localStorage.getItem("Authorization")
 new Vue({
     el:"#app",
     data:{
         //資料庫來的資料
         memberProfile:{},
+
         cacheContent:{},
         cacheName:"",
         cachePhone:"",
@@ -15,7 +17,7 @@ new Vue({
             reader.readAsDataURL(file);
         },
         imageLoaded(evt){
-           this.memberProfile.img = evt.target.result
+           this.memberProfile.memberImage = evt.target.result
         },
         editMember: function(item){
             
@@ -28,31 +30,37 @@ new Vue({
             console.log(key);
             item.name = this.cacheName
             item.phone = this.cachePhone
-            this.cacheName ='';
-            this.cacheContent ={};
 
-            axios.put(`http://localhost:3000/memberProfile/`,{
-                id: this.memberProfile.id,
-                img: this.memberProfile.img,
+            axios.put(`http://localhost:8080/memberArea/edit`,{
+                memberId: this.memberProfile.memberId,
+                memberImage: this.memberProfile.memberImage,
                 name: this.memberProfile.name,
                 email: this.memberProfile.email,
                 birthday: this.memberProfile.birthday,
                 phone: this.memberProfile.phone
                 
+            }, {
+                headers: {
+                    Authorization: token
+                }
             }).then((res) =>{
                 console.log(res);
             })
+                this.cacheName ='';
+                this.cachePhone="",
+                this.cacheContent ={};
         },
     },
     mounted() {
-        let  token = localStorage.getItem("Authorization")
+
         axios.get("http://localhost:8080/memberArea/", {
             headers: {
                 Authorization: token
             }
-        }).then((res) =>{ //memberAreasIntroduction.json
+        }).then((res) =>{
             console.log(res);
             this.memberProfile = res.data
+            this.memberProfile.memberImage= 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
         }).catch(error =>{
             console.log(error.response.data.message)
             window.alert("請重新登入");

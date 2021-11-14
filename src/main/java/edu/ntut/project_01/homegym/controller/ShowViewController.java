@@ -3,8 +3,6 @@ package edu.ntut.project_01.homegym.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
 public class ShowViewController {
 
@@ -52,16 +50,24 @@ public class ShowViewController {
 
     @GetMapping("/NGOrder")
     public String ngOrder() {
-
         return "memberAreasMyOrderNg" ; //訂單交易失敗
     }
 
-
-    @GetMapping("/OKOrder")
+	@GetMapping("/OKOrder")
     public String okOrder() {
-
         return "memberAreasMyOrderOk" ; //訂單交易成功
     }
+    
+
+
+
+    //驗證(OK)
+    @GetMapping("/memberVerification")
+    public String updateMemberStatus(@RequestParam String code) {
+        authService.updateStatus(code);
+		return "registated";
+	}
+
 
     @GetMapping("/Coach")
     public String coach() {
@@ -69,11 +75,7 @@ public class ShowViewController {
         return "coachingAreasIntroduction" ; //教練專區
     }
 
-    @GetMapping("/CoachUploadedCourse")
-    public String CoachUploadedCourse() {
-
-        return "coachingAreasUploadedCourse" ; //教練專區
-    }
+   
 
 
 

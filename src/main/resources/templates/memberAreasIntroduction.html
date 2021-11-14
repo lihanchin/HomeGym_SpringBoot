@@ -63,7 +63,7 @@
                                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
                                     <li><a class="dropdown-item" href="./memberAreasIntroduction.html">會員中心</a></li>
                                     <li><a class="dropdown-item" href="./memberAreasApplicationCoach.html">成為教練</a></li>
-                                    <li><a class="dropdown-item" href="./coachingAreasIntroduction.html">教練專區</a></li>
+                                    <li><a class="dropdown-item" href="coachAreasIntroduction.html">教練專區</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -106,10 +106,10 @@
                     <div class="col-10 mb-6">
                         <div class="container p-3">
                             <div class="navbar mb-2 ps-2">
-                                <button type="button" class="btn btn-outline-primary" @click="editMember(memberProfile)" v-if="cacheContent.id !== memberProfile.id"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                <button type="button" class="btn btn-outline-primary" @click="editMember(memberProfile)" v-if="cacheContent.memberId !== memberProfile.memberId"><i class="fa fa-pencil" aria-hidden="true"></i>
                                     編輯資料
                                 </button>
-                                <button type="button" class="btn btn-outline-primary" @click="editMemberDone(memberProfile)" v-if="cacheContent.id === memberProfile.id"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                <button type="button" class="btn btn-outline-primary" @click="editMemberDone(memberProfile)" v-if="cacheContent.memberId === memberProfile.memberId"><i class="fa fa-pencil" aria-hidden="true"></i>
                                     編輯完成
                                 </button>
                             </div>
@@ -121,11 +121,11 @@
                                     <div class="col-6">
                                         <form action="" method="GET">
                                             <div class="col-7 mb-3">
-                                                <img class="p-2 img-fluid" :src="memberProfile.img" alt="">
+                                                <img class="p-2 img-fluid" :src="memberProfile.memberImage" alt="">
                                             </div>
                                             <div class="mb-3">
                                                 <!-- 綁定顯示圖片(upPicture.js)方法 -->
-                                                <input class="form-control w-75" type="file" @change="selectedImg" v-if="cacheContent.id === memberProfile.id" accept="image/*">
+                                                <input class="form-control w-75" type="file" @change="selectedImg" v-if="cacheContent.memberId === memberProfile.memberId" accept="image/*">
                                                 <!-- <input class="form-control w-75" type="file" id="formFile" onchange="openFile(event)" accept="image/*"> -->
                                                 
                                             </div>
@@ -138,8 +138,8 @@
                                         <h5>姓名</h5>
                                     </div>
                                     <div class="col-6">
-                                        <p v-if="cacheContent.id !== memberProfile.id">{{memberProfile.name}}</p>
-                                        <input class="form-control" v-if="cacheContent.id === memberProfile.id" v-model="cacheName"></input>
+                                        <p v-if="cacheContent.memberId !== memberProfile.memberId">{{memberProfile.name}}</p>
+                                        <input class="form-control" v-if="cacheContent.memberId === memberProfile.memberId" v-model="cacheName"></input>
                                     </div>
                                     
                                 </div>
@@ -158,10 +158,9 @@
                                     <div class="col-6">
                                         <p>不顯示</p>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary col-md-2 col-sm-3"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                    <a type="button" href="/revisePassword" class="btn btn-outline-primary col-md-2 col-sm-3"><i class="fa fa-pencil" aria-hidden="true"></i>
                                         更改密碼
-                                    </button>
-                                    
+                                    </a>
                                 </div>
                                 <div class="row p-3 border-bottom border-2">
                                     <div class="col-2">
@@ -176,8 +175,8 @@
                                         <h5>電話</h5>
                                     </div>
                                     <div class="col-6">
-                                        <p v-if="cacheContent.id !== memberProfile.id">{{memberProfile.phone}}</p>
-                                        <input class="form-control" v-if="cacheContent.id === memberProfile.id" v-model="cachePhone"></input>
+                                        <p v-if="cacheContent.memberId !== memberProfile.memberId">{{memberProfile.phone}}</p>
+                                        <input class="form-control" v-if="cacheContent.memberId === memberProfile.memberId" v-model="cachePhone"></input>
                                     </div>
                                     
                                 </div>

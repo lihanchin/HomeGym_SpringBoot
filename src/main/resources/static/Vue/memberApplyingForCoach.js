@@ -59,6 +59,7 @@ new Vue({
                 window.alert("請重新登入");
                 window.location.replace("http://localhost:8080/");
             })
+            window.location.replace("http://localhost:8080/waiting");
             // location.assign("http://localhost:8080/waiting")
             this.coach.skill ="";
             this.coach.experience ="";

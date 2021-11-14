@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -30,6 +31,8 @@ public class MemberAreaController {
     @Autowired
     private OrderService orderService;
 
+
+
     //會員資料
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> showMemberInfo(HttpServletRequest httpServletRequest) {
@@ -38,11 +41,14 @@ public class MemberAreaController {
         Map<String,Object> memberInfo = new HashMap<>();
         memberInfo.put("memberImage" ,member.getMemberImage());
         memberInfo.put("mimeType" ,member.getMimeType());
+        memberInfo.put("memberId" ,member.getMemberId());
         memberInfo.put("name" ,member.getName());
         memberInfo.put("email" ,member.getEmail());
         memberInfo.put("birthday" ,member.getBirthday());
         memberInfo.put("phone" ,member.getPhone());
 
+        memberInfo.put("mimeType" ,member.getMimeType());
+        memberInfo.put("memberImage" ,member.getMemberImage());
         return ResponseEntity.ok().body(memberInfo);
     }
 
@@ -99,13 +105,16 @@ public class MemberAreaController {
 
     //會員資料更新
     @PutMapping("/edit")
-    public ResponseEntity<Map<String, Object>> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
+    public ResponseEntity<Map> editMyMemberInfo(@RequestBody Map<String,Object> memberInfo, HttpServletRequest httpServletRequest){
         authorizationHeader = httpServletRequest.getHeader(HEADER);
+        Member member = memberService.findMemberByToken(authorizationHeader);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
-        String memberImage = memberInfo.get("memberImage").toString();
         String name = memberInfo.get("name").toString();
         String phone = memberInfo.get("phone").toString();
-        return ResponseEntity.ok().body(memberService.updateMemberInfo(memberId,name,memberImage,phone));
+        String base64 =  memberInfo.get("memberImage").toString();
+        Map <String,Object> updateMemberInfoResponse = memberService.updateMemberInfo(memberId,name,base64,phone);
+
+        return ResponseEntity.ok().body(updateMemberInfoResponse);
     }
 
 }

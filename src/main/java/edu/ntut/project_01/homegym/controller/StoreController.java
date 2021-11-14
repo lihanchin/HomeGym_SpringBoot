@@ -94,24 +94,30 @@ public class StoreController {
 
         Map<String,Object> map = new HashMap<>();
         Optional<Course> course  = courseService.findById(id);
-        Coach coach = course.get().getCoach();
-        String coachName = coach.getMember().getName();
-        List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
-        System.out.println(commentlist);
-        if(commentlist != null){
-            for (CourseComment comment:commentlist){
-                String name = comment.getMember().getName();
-                byte[] memberImage = comment.getMember().getMemberImage();
-                comment.setMemberImge(memberImage);
-                comment.setMemberName(name);
-            }
+        if(course.isPresent()){
+            Coach coach = course.get().getCoach();
+            String coachName = coach.getMember().getName();
+            List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
+            System.out.println(commentlist);
+            if(commentlist != null){
+                for (CourseComment comment:commentlist){
+                    String name = comment.getMember().getName();
+                    byte[] memberImage = comment.getMember().getMemberImage();
+                    String mimeType = comment.getMember().getMimeType();
+                    comment.setMemberImage(memberImage);
+                    comment.setMemberName(name);
+                    comment.setMineType(mimeType);
+                }
 
+            }
+            map.put("course",course.get());
+            map.put("coach",coach);
+            map.put("coachName",coachName);
+            map.put("commentlist",commentlist);
+        }else {
+            System.out.println("無資料");
         }
 
-        map.put("course",course.get());
-        map.put("coach",coach);
-        map.put("coachName",coachName);
-        map.put("commentlist",commentlist);
         return map;
 
     }

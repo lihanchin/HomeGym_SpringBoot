@@ -17,7 +17,7 @@ public class FQAReply {
     @Column(name = "fqa_reply_content")
     private String fqaReplyContent;
     @Column(name = "fqa_reply_create_time")
-    private Date fqaCreateTime;
+    private String fqaReplyCreateTime;
 
 
     @Transient
@@ -25,7 +25,7 @@ public class FQAReply {
 
     @Transient
     @Lob
-    private byte[] memberImge;
+    private byte[] memberImage;
 
     @Transient
     private String mineType;
@@ -43,22 +43,31 @@ public class FQAReply {
     public FQAReply() {
     }
 
-    public FQAReply(Integer fqaReplyId, String fqaReplyContent, Date fqaCreateTime, String memberName, byte[] memberImge, Member member, FQA fqa) {
+    public FQAReply(Integer fqaReplyId, String fqaReplyContent, String fqaReplyCreateTime, String memberName, byte[] memberImage, String mineType, Member member, FQA fqa) {
         this.fqaReplyId = fqaReplyId;
         this.fqaReplyContent = fqaReplyContent;
-        this.fqaCreateTime = fqaCreateTime;
+        this.fqaReplyCreateTime = fqaReplyCreateTime;
         this.memberName = memberName;
-        this.memberImge = memberImge;
+        this.memberImage = memberImage;
+        this.mineType = mineType;
         this.member = member;
         this.fqa = fqa;
     }
 
-    public byte[] getMemberImge() {
-        return memberImge;
+    public String getMineType() {
+        return mineType;
     }
 
-    public void setMemberImge(byte[] memberImge) {
-        this.memberImge = memberImge;
+    public void setMineType(String mineType) {
+        this.mineType = mineType;
+    }
+
+    public byte[] getMemberImage() {
+        return memberImage;
+    }
+
+    public void setMemberImage(byte[] memberImage) {
+        this.memberImage = memberImage;
     }
 
     public String getMemberName() {
@@ -85,12 +94,12 @@ public class FQAReply {
         this.fqaReplyContent = fqaReplyContent;
     }
 
-    public Date getFqaCreateTime() {
-        return fqaCreateTime;
+    public String getFqaReplyCreateTime() {
+        return fqaReplyCreateTime;
     }
 
-    public void setFqaCreateTime(Date fqaCreateTime) {
-        this.fqaCreateTime = fqaCreateTime;
+    public void setFqaReplyCreateTime(String fqaReplyCreateTime) {
+        this.fqaReplyCreateTime = fqaReplyCreateTime;
     }
 
     public Member getMember() {
