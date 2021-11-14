@@ -1,10 +1,16 @@
 package edu.ntut.project_01.homegym.controller;
 
+import edu.ntut.project_01.homegym.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ShowViewController {
+
+    @Autowired
+    private AuthService authService;
 
 
     @GetMapping("/product{id}")
@@ -68,14 +74,19 @@ public class ShowViewController {
 		return "registated";
 	}
 
+    @GetMapping("/CoachIntroduction")
+    public String coachAreasIntroduction() {
 
-    @GetMapping("/Coach")
-    public String coach() {
-
-        return "coachingAreasIntroduction" ; //教練專區
+        return "coachAreasIntroduction" ; //教練專區
     }
 
-   
+
+    @GetMapping("/CoachCourse")
+    public String coach() {
+
+        return "coachAreasUploadedCourse" ; //教練專區
+    }
+
 
 
 
