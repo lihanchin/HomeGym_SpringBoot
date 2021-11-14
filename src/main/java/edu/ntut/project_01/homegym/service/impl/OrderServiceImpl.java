@@ -51,11 +51,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map<String, Object> statusOrderDetail(Page<Orders> orders) {
         Map<String, Object> orderDetail = new HashMap<>();
+        String coachName;
 
         for (Orders o : orders) {
             System.out.println("訂單人姓名＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝" + o.getMember().getName());
+
             Set<Course> courses = o.getCourses();
+            for(Course v: courses){
+                coachName = v.getCoach().getMember().getName();
+                System.out.println(coachName);
+                v.setCoachName(coachName);
+            }
+//            String coach = ;
+//            System.out.println(coach);
+
             orderDetail.put(o.getOrderId().toString(), courses);
+
+
         }
         return orderDetail;
     }
