@@ -65,7 +65,7 @@ public class Course {
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "orderItem",
+    @JoinTable(name = "order_item",
             joinColumns = {
                     @JoinColumn(name = "course_id", nullable = false)},
             inverseJoinColumns = {
@@ -254,4 +254,7 @@ public class Course {
     public void setOrders(Set<Orders> orders) {
         this.orders = orders;
     }
+
+
+
 }

@@ -1,27 +1,21 @@
 new Vue({
     el: "#app",
     data: {
-        orderDetail: [
-            // {
-            // courseName: '',
-            // orderNamber: '',
-            // orderPrice: '',
-            // paymentMethod: "信用卡",
-            // reasonForPaymentFailure: '',
-            // },
-        ],
-        totalPage:'',
-        currentPage:[{
-
-        }
-        ]
+        currentPage:[],
+        orderDetail:[],
+        totalPage:""
     },
     mounted() {
-        axios.get("http://localhost:8080/memberArea/NGOrder", ).then((res) => { //shoppingdate.json
-            this.totalPage = res.data.totalPage
-            this.orderDetail = res.data.orderDetail
-            this.currentPage = res.data.currentPage
-
+        let  token = localStorage.getItem("Authorization")
+        axios.get("http://localhost:8080/memberArea/NGOrder",{
+            headers: {
+                Authorization: token
+            }
+        }).then((res) =>{
+            this.currentPage = res.data.currentPage;
+            this.orderDetail = res.data.orderDetail;
+            this.totalPage = res.data.totalPage;
+            console.log(res.data)
 
         })
     },

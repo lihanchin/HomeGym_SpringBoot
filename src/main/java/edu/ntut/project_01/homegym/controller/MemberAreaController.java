@@ -39,11 +39,14 @@ public class MemberAreaController {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         Member member = memberService.findMemberByToken(authorizationHeader);
         Map<String,Object> memberInfo = new HashMap<>();
+        memberInfo.put("memberImage" ,member.getMemberImage());
+        memberInfo.put("mimeType" ,member.getMimeType());
         memberInfo.put("memberId" ,member.getMemberId());
         memberInfo.put("name" ,member.getName());
         memberInfo.put("email" ,member.getEmail());
         memberInfo.put("birthday" ,member.getBirthday());
         memberInfo.put("phone" ,member.getPhone());
+
         memberInfo.put("mimeType" ,member.getMimeType());
         memberInfo.put("memberImage" ,member.getMemberImage());
         return ResponseEntity.ok().body(memberInfo);
@@ -67,6 +70,7 @@ public class MemberAreaController {
 
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+
         totalPage = orderService.totalPageByStatus(memberId, Arrays.asList("付款完成"), orderPageSize);
 
         if (page != null) {
@@ -82,21 +86,21 @@ public class MemberAreaController {
 
     //我的訂單NG(OK)
     @GetMapping("/NGOrder")
-    public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page) {
-//        authorizationHeader = httpServletRequest.getHeader(HEADER);
-//        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+    public ResponseEntity<Map<String, Object>> findNgOrderByMemberId(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
         //之後這裡應該是要從綠界抓
         Set<String> failReason = new HashSet<>(Arrays.asList("付款失敗", "信用卡餘額不足", "網路中斷交易"));
-        totalPage = orderService.totalPageByStatus(7, failReason, orderPageSize);
+        totalPage = orderService.totalPageByStatus(memberId, failReason, orderPageSize);
         if (page != null) {
             if (page > 0 && page <= totalPage) {
                 indexPage = page - 1;
-                return ResponseEntity.ok().body(orderService.orderPage(7, failReason, indexPage, orderPageSize));
+                return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
             }
             throw new QueryException("頁數不可大於總頁數");
         }
         indexPage = 0;
-        return ResponseEntity.ok().body(orderService.orderPage(7, failReason, indexPage, orderPageSize));
+        return ResponseEntity.ok().body(orderService.orderPage(memberId, failReason, indexPage, orderPageSize));
     }
 
     //會員資料更新

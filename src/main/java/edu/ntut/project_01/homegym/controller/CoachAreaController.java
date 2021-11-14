@@ -40,6 +40,9 @@ public class CoachAreaController {
     @Autowired
     private MemberService memberService;
 
+    @Value("${jwt.header}")
+    private String authorization;
+
     //會員資料
     @GetMapping("/")
     public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
@@ -50,8 +53,12 @@ public class CoachAreaController {
     }
 
     @GetMapping("/mycourse")
-    ResponseEntity<Map<String, Object>> coachmycourse(@RequestParam(required = false) Integer page, @RequestParam Integer coachId){
+    ResponseEntity<Map<String, Object>> coachmycourse(@RequestParam(required = false) Integer page,HttpServletRequest httpServletRequest){
 
+        String header= httpServletRequest.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        Integer coachId = member.getCoach().getCoachId();
+        System.out.println(coachId);
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
 
@@ -66,7 +73,11 @@ public class CoachAreaController {
 
 
     @GetMapping("/keyword")
-    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword){
+    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword, HttpServletRequest httpServletRequest){
+        String header= httpServletRequest.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        Integer coachId = member.getCoach().getCoachId();
+
         return courseService.findCoursesByKeyword(keyword);
     }
 

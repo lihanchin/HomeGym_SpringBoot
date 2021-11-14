@@ -29,13 +29,14 @@ public class CoachController {
     @Autowired
     MemberService memberService;
 
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Value("${jwt.header}")
     private String authorization;
 
+    @Value("${jwt.tokenHead}")
+    private String tokenHeader;
 
     @PostMapping("/apply")
     public String  applyForCoach(@RequestBody Coach coach, HttpServletRequest request){

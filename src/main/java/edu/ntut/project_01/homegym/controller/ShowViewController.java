@@ -12,73 +12,82 @@ public class ShowViewController {
     @Autowired
     private AuthService authService;
 
+
     @GetMapping("/product{id}")
     public String showDetil() {
 
-        return "notPurchasedCourse" ;
+        return "notPurchasedCourse" ; //未購買課程畫面
     }
 
     @GetMapping("/course{id}")
     public String showCourse() {
 
-        return "purchasedCourse" ;
+        return "purchasedCourse" ; //課程畫面
     }
 
     @GetMapping("/shop")
     public String show() {
 
-        return "shopping" ;
+        return "shopping" ; //商城
     }
     @GetMapping("/shoppingCart")
     public String checkOut() {
 
-        return "shoppingCart" ; // 要導入的html
+        return "shoppingCart" ; //購物車
     }
 
     @GetMapping("/waiting")
     public String showWaitForApplyingForCoach() {
 
-        return "waitForApplyingForCoach" ; // 要導入的html
+        return "waitForApplyingForCoach" ; //成為教練_顯示申請中
     }
 
     @GetMapping("/apply")
     public String showEmptyForm() {
 
-        return "memberAreasApplicationCoach" ; // 要導入的html
+        return "memberAreasApplicationCoach" ; //成為教練
     }
 
     @GetMapping("/check")
     public String checkout() {
 
-        return "checkout" ; // 要導入的html
+        return "checkout" ; //金流結帳畫面
     }
 
-    @GetMapping("/member")
-    public String showMemberInfo() {
-
-        return "memberAreasIntroduction" ; // 要導入的html
+    @GetMapping("/NGOrder")
+    public String ngOrder() {
+        return "memberAreasMyOrderNg" ; //訂單交易失敗
     }
+
+	@GetMapping("/OKOrder")
+    public String okOrder() {
+        return "memberAreasMyOrderOk" ; //訂單交易成功
+    }
+    
+
+
 
     //驗證(OK)
     @GetMapping("/memberVerification")
     public String updateMemberStatus(@RequestParam String code) {
         authService.updateStatus(code);
+		return "registated";
+	}
 
-        return "registated";
+    @GetMapping("/CoachIntroduction")
+    public String coachAreasIntroduction() {
+
+        return "coachAreasIntroduction" ; //教練專區
     }
 
-    @GetMapping("/NGOrder")
-    public String ngOrder() {
-        return "memberAreasMyOrderNg";
+
+    @GetMapping("/CoachCourse")
+    public String coach() {
+
+        return "coachAreasUploadedCourse" ; //教練專區
     }
 
-    @GetMapping("/coachArea")
-    public String uploadCourse() {
-        return "coachAreasIntroduction";
-    }
 
-    @GetMapping("/revisePassword")
-    public String revisePassword() {
-        return "revisePassword";
-    }
+
+
 }

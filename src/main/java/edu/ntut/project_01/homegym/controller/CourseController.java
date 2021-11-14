@@ -109,7 +109,6 @@ public class CourseController {
             }
         }
 
-
         map.put("fqaList",fqaList);
         map.put("name",member.getName());
         map.put("memberImage",member.getMemberImage());

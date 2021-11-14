@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+
 @Transactional
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -27,7 +28,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Orders> findOrdersByMemberIdAndStatus(Integer memberId, Collection<String> status, Pageable pageable) {
+        System.out.println("memberId"+memberId+"==================");
+        System.out.println("status"+status.toString()+"=====================");
+        System.out.println("pageable"+pageable.toString()+"=====================");
         Page<Orders> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusIn(memberId, status, pageable);
+        System.out.println(okOrders.getContent());
         if (okOrders != null) {
             return okOrders;
         }
@@ -46,10 +51,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map<String, Object> statusOrderDetail(Page<Orders> orders) {
         Map<String, Object> orderDetail = new HashMap<>();
+        String coachName;
 
         for (Orders o : orders) {
+            System.out.println("訂單人姓名＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝" + o.getMember().getName());
+
             Set<Course> courses = o.getCourses();
+            for(Course v: courses){
+                coachName = v.getCoach().getMember().getName();
+                System.out.println(coachName);
+                v.setCoachName(coachName);
+            }
             orderDetail.put(o.getOrderId().toString(), courses);
+
         }
         return orderDetail;
     }
@@ -57,9 +71,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<String, Object> orderPage(Integer memberId, Collection<String> status, Integer page, Integer totalPage) {
+        System.out.println("進入orderpage方法====================");
         PageRequest pageRequest = PageRequest.of(page, totalPage);
         Page<Orders> currentPage = findOrdersByMemberIdAndStatus(memberId, status, pageRequest);
         Map<String, Object> orderPageResponse = new HashMap<>();
+        System.out.println("currentPage.getContent()=============="+currentPage.getContent());
+        System.out.println("statusOrderDetail(currentPage)=============="+statusOrderDetail(currentPage));
         orderPageResponse.put("currentPage", currentPage.getContent());
         orderPageResponse.put("totalPage", currentPage.getTotalPages());
         orderPageResponse.put("orderDetail", statusOrderDetail(currentPage));
