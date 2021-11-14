@@ -73,7 +73,11 @@ public class CoachAreaController {
 
 
     @GetMapping("/keyword")
-    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword){
+    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword, HttpServletRequest httpServletRequest){
+        String header= httpServletRequest.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        Integer coachId = member.getCoach().getCoachId();
+
         return courseService.findCoursesByKeyword(keyword);
     }
 

@@ -5,6 +5,7 @@ new Vue({
         totalPage:"",
         cacheContent:{},
         cacheTitle:"",
+        keyword:"",
     },
     methods: {
         editContent: function(item){
@@ -34,6 +35,20 @@ new Vue({
 
             this.cacheTitle ='';
             this.cacheContent={};
+        },
+        searchCourse(keyword){
+            let  token = localStorage.getItem("Authorization")
+            axios.get(`http://localhost:8080/coachArea/keyword?keyword=${keyword}`,{
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) =>{
+                this.currentPage = res.data
+                this.totalPage = res.data.totalPage
+
+                console.log(res)
+            })
+
         }
     },
     mounted() {

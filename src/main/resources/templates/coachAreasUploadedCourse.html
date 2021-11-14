@@ -117,10 +117,10 @@
                                      <option value="2">依照星級評等</option>
                                      <option value="4">依照上傳時間</option>
                                  </select>
-                                 <form action="" class="d-flex justify-content-end me-3">
-                                     <input class="form-control" type="search" placeholder="請輸入關鍵字" aria-label="Search">
-                                     <button class="btn btn-outline-primary ms-3" type="submit">搜尋</button>
-                                 </form>
+                                 <div class="d-flex justify-content-end me-3">
+                                     <input class="form-control" type="search" placeholder="搜尋課程名稱" aria-label="Search" v-model="keyword">
+                                     <button class="btn btn-outline-primary ms-3" type="button" @click="searchCourse(keyword)">搜尋</button>
+                                 </div>
                              </div>
                              <div class="container">
                                  <!-- 已上傳課程項目 <動態新增> -->
