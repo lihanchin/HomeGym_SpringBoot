@@ -112,8 +112,8 @@
                             <!-- 分頁選項 -->
                             <div class="mt-3">
                                 <ul class="nav nav-tabs">
-                                    <li class="nav-item"><a href="./memberAreasMyOrderOk.html" class="nav-link active">已完成訂單</a></li>
-                                    <li class="nav-item"><a href="./memberAreasMyOrderNg.html" class="nav-link ">交易失敗</a></li>
+                                    <li class="nav-item"><a href="/OKOrder" class="nav-link active">已完成訂單</a></li>
+                                    <li class="nav-item"><a href="/NGOrder" class="nav-link ">交易失敗</a></li>
                                 </ul>            
                             </div>
                             <!-- 項目卡片 -->
@@ -156,7 +156,7 @@
                                         <div class="modal-body">
                                             <ul class="list-group">
                                                 <!-- 課程購買細項項目 -->
-                                                <li class="list-group-item" v-for="(item,index) in orderDetail[index+1]">
+                                                <li class="list-group-item" v-for="(item,key) in orderDetail[currentPage[index].orderId]">
                                                     <div class="row align-items-center">
                                                         <div class="col-4">
                                                             <img class="w-100" :src="item.courseImage" alt="">

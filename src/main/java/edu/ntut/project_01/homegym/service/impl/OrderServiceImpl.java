@@ -62,11 +62,7 @@ public class OrderServiceImpl implements OrderService {
                 System.out.println(coachName);
                 v.setCoachName(coachName);
             }
-//            String coach = ;
-//            System.out.println(coach);
-
             orderDetail.put(o.getOrderId().toString(), courses);
-
 
         }
         return orderDetail;

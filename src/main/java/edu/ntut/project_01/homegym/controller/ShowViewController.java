@@ -57,12 +57,23 @@ public class ShowViewController {
     }
 
 
-    @GetMapping("/OKOrderShow")
+    @GetMapping("/OKOrder")
     public String okOrder() {
 
         return "memberAreasMyOrderOk" ; //訂單交易成功
     }
 
+    @GetMapping("/Coach")
+    public String coach() {
+
+        return "coachingAreasIntroduction" ; //教練專區
+    }
+
+    @GetMapping("/CoachUploadedCourse")
+    public String CoachUploadedCourse() {
+
+        return "coachingAreasUploadedCourse" ; //教練專區
+    }
 
 
 
