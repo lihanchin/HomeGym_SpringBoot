@@ -24,7 +24,7 @@ public class ShowViewController {
         return "purchasedCourse" ;
     }
 
-    @GetMapping("/shopping")
+    @GetMapping("/shop")
     public String show() {
 
         return "shopping" ;

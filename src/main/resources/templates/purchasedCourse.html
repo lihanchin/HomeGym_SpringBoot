@@ -212,6 +212,37 @@
     
                     <!-- FQA -->
                     <div class="tab-pane fade" id="course_fqa" role="tabpanel" aria-labelledby="profile-tab">
+                        <!-- 送出發問 <FQA> -->
+                        <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
+                            <div class="d-flex mb-2 align-items-center">
+                                <div class="me-2" style="width: 40px;">
+                                    <img class="rounded-circle  img-fluid" :src="member.memberImage" alt="">
+                                </div>
+
+                                <h5 class="mt-auto">{{member.memberName}}</h5>
+                            </div>
+                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaInput.fqaContent"></textarea>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit" @click="creatFqa">傳送</button>
+                            </div>
+                        </div>
+                        <!-- 送出發問 <FQAReply> -->
+                        <div class="col-10 m-auto mb-3"  v-if="fqaUser !=='' ">
+                            <div class="d-flex mb-2 align-items-center">
+                                <div class="me-2" style="width: 40px;">
+                                    <img class="rounded-circle img-fluid" :src="member.memberImage" alt="">
+                                </div>
+                                <h5 class="mt-auto">{{member.memberName}}</h5>
+                                <h6 class="Reply_name mt-auto text-muted ms-4">回覆 {{fqaUser}}
+                                    <span type="button" class="btn-close btn-sm p-0 m-0" aria-label="Close" @click="closeFqa"></span>
+                                </h6> <!--點擊回覆會跳出此行-->
+                            </div>
+                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaReplyInput.fqaReplyContent"></textarea>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit"  @click="creatFqaReply">傳送</button>
+                            </div>
+                        </div>
+
                         <div  v-if="fqa !=''">
                             <div class="col-10 m-auto pt-5">
                                 <!-- 顯示FQA -->
@@ -248,54 +279,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 送出發問 <FQA> -->
-                        <div class="col-10 m-auto mb-3" v-if="fqaUser ==='' ">
-                            <div class="d-flex mb-2 align-items-center">
-                                <div class="me-2" style="width: 40px;">
-                                    <img class="rounded-circle  img-fluid" :src="member.memberImage" alt="">
-                                </div>
 
-                                <h5 class="mt-auto">{{member.memberName}}</h5>
-                            </div>
-                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaInput.fqaContent"></textarea>
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit" @click="creatFqa">傳送</button>
-                            </div>
-                        </div>
-                        <!-- 送出發問 <FQAReply> -->
-                        <div class="col-10 m-auto mb-3"  v-if="fqaUser !=='' ">
-                            <div class="d-flex mb-2 align-items-center">
-                                <div class="me-2" style="width: 40px;">
-                                    <img class="rounded-circle img-fluid" :src="member.memberImage" alt="">
-                                </div>
-                                <h5 class="mt-auto">{{member.memberName}}</h5>
-                                <h6 class="Reply_name mt-auto text-muted ms-4">回覆 {{fqaUser}}
-                                    <span type="button" class="btn-close btn-sm p-0 m-0" aria-label="Close" @click="closeFqa"></span>
-                                </h6> <!--點擊回覆會跳出此行-->
-                            </div>
-                            <textarea class="form-control mb-2" rows="3" v-model.trim="fqaReplyInput.fqaReplyContent"></textarea>
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-outline-primary pe-3 ps-3" type="submit"  @click="creatFqaReply">傳送</button>
-                            </div>
-                        </div>
-                        <!-- 分頁列 -->
-                        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
-                            <ul class="pagination">
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            </ul>
-                        </nav>
 
                     </div>
             </div>

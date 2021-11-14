@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <div class="navbar-brand d-flex align-items-center">
                 <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
-                <a class="text-white" href="./index.html">厝動 HomeGym</a>
+                <a class="text-white" href="/">厝動 HomeGym</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,11 +38,11 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
                     <div id="marker"></div>
                     <li class="nav-item">
-                        <a class="nav-link ms-3 text-white" aria-current="page" href="./shopping.html"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                        <a class="nav-link ms-3 text-white" aria-current="page" href="/shop"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
                         商城</a>
                     </li>
                     <li class="shoppping_car nav-item dropdown">
-                        <a class="nav-link ms-3 text-white text-center" href="shoppingCart.html"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                        <a class="nav-link ms-3 text-white text-center" href="/shoppingCart"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
                         購物車</a>
                         <div class="dropdown-menu dropdown-menu-right" style="min-width:400px;min-height:100px;" id="dropdown-menu">
                             <div class="px-3 py-2 " id="menu">
@@ -56,8 +56,8 @@
                             我的課程</a>
                             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="mycourse_areas_dropdown">
                                 <li><a class="dropdown-item text-center" href="./mycoursesAreasBuyedCourse.html">已買課程</a></li>
-                                <li><a class="dropdown-item text-center" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>
-                                <li><a class="dropdown-item text-center" href="./myFitnessPlan.html">健身計畫</a></li>
+<!--                                <li><a class="dropdown-item text-center" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>-->
+<!--                                <li><a class="dropdown-item text-center" href="./myFitnessPlan.html">健身計畫</a></li>-->
                                 <li><a class="dropdown-item text-center start_btn" href="#" data-bs-toggle="modal" data-bs-target="#quiz_info">健身知識</a></li>
                             </ul>
                         </div>
@@ -76,9 +76,9 @@
                         <div class="buttom text-center ms-3 dropdown">
                             <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
                             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
-                                <li><a class="dropdown-item text-center" href="./memberAreasIntroduction.html">會員中心</a></li>
-                                <li><a class="dropdown-item text-center" href="./memberAreasApplicationCoach.html">成為教練</a></li>
-                                <li><a class="dropdown-item text-center" href="coachAreasIntroduction.html">教練專區</a></li>
+                                <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
+                                <li><a class="dropdown-item text-center" href="/apply">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" href="/coachArea">教練專區</a></li>
                             </ul>
                         </div>
                     </li>
@@ -98,7 +98,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title m-auto" id="exampleModalLabel">登入帳號</h5>
                     </div>
-<!--                    <form id="needs_validation_login" novalidate>-->
+                    <form id="needs_validation_login" novalidate>
                         <div class="modal-body">
                             <div class="login_btn d-flex flex-column w-50 align-items-center m-auto mb-3">
                                 <div class="btn btn-outline-primary mb-2"><i class="fa fa-facebook-official fs-5 me-2" aria-hidden="true"></i>
@@ -125,7 +125,7 @@
                                 <button type="submit" @click="memberLogin(),login" class="btn btn-primary" data-bs-dismiss="modal">登入</button>
                             </div>
                         </div>
-
+                    </form>
                 </div>
             </div>
         </div>

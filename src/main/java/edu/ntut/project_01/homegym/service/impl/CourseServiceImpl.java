@@ -1,6 +1,7 @@
 package edu.ntut.project_01.homegym.service.impl;
 
 import edu.ntut.project_01.homegym.model.Course;
+import edu.ntut.project_01.homegym.repository.CourseCommentRepository;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,11 @@ import java.util.Optional;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    private CourseRepository courseRepository;
-
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
+    private CourseRepository courseRepository;
+    @Autowired
+    private CourseCommentRepository courseCommentRepository;
+
 
     public Optional<Course> findById(Integer id) {
         return courseRepository.findById(id);
@@ -85,6 +85,12 @@ public class CourseServiceImpl implements CourseService {
     public String upload(@RequestBody Course course){
         courseRepository.save(course);
         return "上傳成功";
+    }
+
+    @Override
+    public Integer countStar(Integer courseId) {
+        Integer star = courseCommentRepository.countStar(courseId).intValue();
+        return star;
     }
 
 }

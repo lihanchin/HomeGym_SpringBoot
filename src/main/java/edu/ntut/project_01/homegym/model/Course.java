@@ -46,7 +46,8 @@ public class Course {
     @Transient
     private String coachName;
 
-
+    @Transient
+    private Integer star;
 
     @JsonBackReference
     @ManyToOne
@@ -75,7 +76,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, String uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, String checkTime, String coachName, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
+    public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, String uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, String checkTime, String coachName, Integer star, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
         this.courseId = courseId;
         this.coursePath = coursePath;
         this.mimeType = mimeType;
@@ -91,11 +92,16 @@ public class Course {
         this.checked = checked;
         this.checkTime = checkTime;
         this.coachName = coachName;
+        this.star = star;
         this.coach = coach;
         this.courseComments = courseComments;
         this.fqas = fqas;
         this.orders = orders;
     }
+
+    public Integer getStar() {return star;}
+
+    public void setStar(Integer star) {this.star = star;}
 
     public String getCoachName() {
         return coachName;

@@ -5,6 +5,9 @@ import edu.ntut.project_01.homegym.repository.CoachRepository;
 import edu.ntut.project_01.homegym.repository.CourseCommentRepository;
 import edu.ntut.project_01.homegym.service.CourseCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,10 +34,9 @@ public class CourseCommentServiceImpl implements CourseCommentService {
     }
 
     @Override
-    public Integer countStar() {
-        Integer star = courseCommentRepository.countStar().intValue();
-
-        return star;
+    public Page<CourseComment> findCourseComment(Integer courseId, Integer pageNo, Integer size) {
+        PageRequest pageRequest = PageRequest.of(pageNo, size);
+        return courseCommentRepository.findCourseCommentByCourse_CourseId(courseId,pageRequest);
     }
 
 

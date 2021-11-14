@@ -1,6 +1,7 @@
 package edu.ntut.project_01.homegym.repository;
 
 import edu.ntut.project_01.homegym.model.Course;
+import edu.ntut.project_01.homegym.model.CourseComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     Page<Course> findCourseByCoach_CoachId(Integer coachId, Pageable pageable);
     //從課程Table中抓，利用課程名稱做關鍵字查詢在首頁和教練專區都有使用到
     Optional<List<Course>> findCoursesByCourseNameContaining(String keyword);   //一個interface
+
 }

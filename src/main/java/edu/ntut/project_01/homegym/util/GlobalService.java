@@ -20,16 +20,17 @@ public class GlobalService {
 
     //寫進資料夾的方法
     public static String imageSaveToFile(String data, File folder,Integer id,String evt) {
-
+        String s = "static";
+        int index = s.length();
         //取名用
-        int start = folder.toString().lastIndexOf("\\");
-        String folderPath= folder.toString().substring(start);
+        int start = folder.toString().lastIndexOf("static");
+        String folderPath= folder.toString().substring(start+index);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = folder.toString().substring(start+1)+id.toString();
+        String name = folder.toString().substring(start+index+1)+id.toString();
         File file = new File(folder,name+evt);
 
         try {

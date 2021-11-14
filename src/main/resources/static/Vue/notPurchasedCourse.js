@@ -18,6 +18,7 @@ new Vue({
         course:{},
         coach:{},
         coachName:"",
+        totalPage:""
     },
     methods: {
         keepToggle: function(){
@@ -30,16 +31,15 @@ new Vue({
         },
     },
     mounted() {
-        // axios.get(url+"/comment").then((res) =>{ //memberAreasIntroduction.json
-        //     console.log(res)
-        //     this.courseComment = res.data
-        // });
-
-        axios.get("http://localhost:8080/store/"+id).then((res) =>{ //memberAreasIntroduction.json
+        axios.get("http://localhost:8080/store/"+id).then((res) =>{
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName
-            this.courseComment = res.data.commentlist
+        });
+
+        axios.get("http://localhost:8080/course/"+id+"/showComment").then((res) =>{
+            this.courseComment = res.data.courseComment
+            this.totalPage = res.data.totalPage
         });
 
     }

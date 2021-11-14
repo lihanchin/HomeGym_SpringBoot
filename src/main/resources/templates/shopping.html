@@ -85,24 +85,28 @@
                             <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
 <!--                            <li class="list-group-item list-group-item-primary">上半身</li>-->
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="重量訓練" v-model="partOfBody">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="重量訓練" v-model="partOfBody" @change="filter">
                                 重量訓練
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="心肺訓練" v-model="partOfBody">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="心肺訓練" v-model="partOfBody" @change="filter">
                                 心肺訓練
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="核心訓練" v-model="partOfBody">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="核心訓練" v-model="partOfBody" @change="filter">
                                 核心訓練
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="筋膜放鬆" v-model="partOfBody">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="筋膜放鬆" v-model="partOfBody" @change="filter">
                                 筋膜放鬆
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="瑜珈" v-model="partOfBody">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="瑜珈" v-model="partOfBody"  @change="filter">
                                 瑜珈
+                            </label>
+                            <label class="list-group-item">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="全部" v-model="partOfBody"  @change="">
+                                全部
                             </label>
 <!--                            <li class="list-group-item list-group-item-primary">下半身</li>-->
 <!--                            <label class="list-group-item">-->
@@ -143,8 +147,7 @@
                                         <div class="position-relative">
                                             <img :src="item.courseImage" class="card-img-top" alt="...">
                                             <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
-                                                <a href="#" class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
-
+                                                <a class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
                                                     <input type="hidden" :value="CourseValue" >
                                                     加到購物車
                                                 </a>
@@ -160,7 +163,7 @@
                                             <div class="d-flex">
                                                 <p class="me-3 badge bg-secondary bg-dark">{{item.partOfBody}}</p>
                                             </div>
-                                            <h6 class="pe-3">{{item.coachName}}教練</h6>
+                                            <h6 class="pe-3">{{item.coachName}} 教練</h6>
                                             <p class="card-text">{{item.courseInfo}}</p>
                                             <a :href="'/product?id='+item.courseId" class="btn btn-primary d-block mt-auto">課程觀看</a>
                                         </div>
@@ -176,8 +179,8 @@
                                       <span aria-hidden="true">&laquo;</span>
                                     </a>
                                   </li>
-                                  <li class="page-item active" v-for="pageNo in totalPage">
-                                      <a class="page-link" href="#" >{{pageNo}}</a>
+                                  <li class="page-item active" v-for="(pageNo,index) in totalPage">
+                                      <button class="page-link" @click="clickPage(index)" >{{pageNo}}</button>
                                   </li>
                                   <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Next">
@@ -204,6 +207,5 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
 <script src="./Vue/shopping.js"></script>
-<!-- <script src="./js/shopping.js"></script> -->
 
 </html>

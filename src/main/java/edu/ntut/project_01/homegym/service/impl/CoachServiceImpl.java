@@ -5,6 +5,7 @@ import edu.ntut.project_01.homegym.repository.CoachRepository;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.util.GlobalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,9 @@ import java.io.File;
 @Transactional
 public class CoachServiceImpl implements CoachService {
 
-    private CoachRepository coachRepository;
     @Autowired
-    public CoachServiceImpl(CoachRepository coachRepository) {
-        this.coachRepository = coachRepository;
-    }
+    private CoachRepository coachRepository;
+
 
     @Override
     public String apply(Coach coach){

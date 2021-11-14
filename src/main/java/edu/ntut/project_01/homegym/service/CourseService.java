@@ -2,6 +2,7 @@ package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,4 +35,7 @@ public interface CourseService {
     Optional<Course> findById(Integer id);
 
     void save(Course course);
+
+    Integer countStar(Integer courseId);
+
 }

@@ -86,7 +86,7 @@
                         <div class="d-flex">
                             <p class="me-3 badge bg-secondary bg-dark">{{course.partOfBody}}</p>
                         </div>
-                        <h5>{{coachName}}教練</h5>
+                        <h5>{{coachName}} 教練</h5>
                         <p>{{course.courseInfo}}</p>
                         <p>價錢：$ <span>{{course.price}}</span></p>
                         <div class="d-flex flex-column w-50 ">
@@ -166,20 +166,20 @@
                         <div v-if="courseComment !=''">
                         <div class="col-10 m-auto pt-5">
                             <!-- 留言項目 -->
-                            <div class="mb-4 border-bottom" v-for="(item,index) in courseComment">
+                            <div class="mb-4 border-bottom" v-for="item in courseComment">
                                 <div class="user d-flex mb-2">
-                                    <img class="rounded-circle me-2" src="https://fakeimg.pl/40x40/" alt="">
+                                    <div class="me-2" style="width: 40px;">
+                                        <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
+                                    </div>
                                     <h5 class="mt-auto">{{item.courseName}}</h5>
                                 </div>
                                 <div class="evaluation mb-2">
                                     <!-- 動態新增星星數 -->
-                                    <i class="fa fa-star" aria-hidden="true" v-for="n in courseComment[index].star" ></i>
+                                    <i class="fa fa-star" aria-hidden="true" v-for="n in item.star" ></i>
                                 </div>
                                 <p>{{item.commentContent}}</p>
                                 <p class="text-end me-2">{{item.commentCreateTime}}</p>
                             </div>
-                            
-                            
                         </div>
                         <!-- 分頁列 -->
                         <nav class="d-flex justify-content-center" aria-label="Page navigation example">

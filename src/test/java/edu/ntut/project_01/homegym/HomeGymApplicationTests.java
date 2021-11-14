@@ -4,10 +4,7 @@ import edu.ntut.project_01.homegym.exception.category.MemberNotExistException;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
-import edu.ntut.project_01.homegym.repository.CourseRepository;
-import edu.ntut.project_01.homegym.repository.FQARepository;
-import edu.ntut.project_01.homegym.repository.MemberRepository;
-import edu.ntut.project_01.homegym.repository.OrdersRepository;
+import edu.ntut.project_01.homegym.repository.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,8 @@ class HomeGymApplicationTests {
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
+    private CourseCommentRepository courseCommntRepository;
+    @Autowired
     private MemberRepository memberRepository;
     @Autowired
     private OrdersRepository ordersRepository;
@@ -39,6 +38,11 @@ class HomeGymApplicationTests {
 
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    void countSyar() {
+        System.out.println(courseCommntRepository.countStar(1));
     }
 
     @Test
