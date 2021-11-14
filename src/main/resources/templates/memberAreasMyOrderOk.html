@@ -117,21 +117,21 @@
                                 </ul>            
                             </div>
                             <!-- 項目卡片 -->
-                            <div class="card mt-3 mb-3">
+                            <div class="card mt-3 mb-3" v-for="(item,index) in currentPage">
                                 <div class="row  d-flex align-items-center">
                                     <div class="col-4 ps-5">
                                         <h6>訂單編號</h6>
-                                        <p>A11111</p>
+                                        <p>HGOD{{currentPage[index].orderId}}</p>
                                     </div>
                                     <div class="col-8">
                                         <div class="row">
                                             <div class="col-6 pt-3">
                                                 <h6>訂單明細</h6>
-                                                <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#orderContent">
+                                                <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" :data-bs-target="'#orderContent'+currentPage[index].orderId">
                                                     查看內容
                                                 </button>
-                                                <h6>價錢</h6>
-                                                <p>1000元</p>
+                                                <h6>總價錢</h6>
+                                                <p>{{currentPage[index].totalPrice}}元</p>
                                             </div>
                                             <div class="col-6 pt-3">
                                                 <h6>付款方式</h6>
@@ -146,7 +146,7 @@
                             </div>
 
                             <!-- 訂單明細內容(彈跳視窗) -->
-                            <div class="modal fade" id="orderContent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" :id="'orderContent'+currentPage[index].orderId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" v-for="(item,index) in currentPage">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -156,22 +156,22 @@
                                         <div class="modal-body">
                                             <ul class="list-group">
                                                 <!-- 課程購買細項項目 -->
-                                                <li class="list-group-item">
+                                                <li class="list-group-item" v-for="(item,index) in orderDetail[index+1]">
                                                     <div class="row align-items-center">
                                                         <div class="col-4">
-                                                            <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
+                                                            <img class="w-100" :src="item.courseImage" alt="">
                                                         </div>
                                                         <div class="col-4 pt-3">
                                                             <h6 class="">課程名稱</h6>
-                                                            <p class="">3333</p>
+                                                            <p class="">{{item.courseName}}</p>
                                                             <h6 class="">價錢</h6>
-                                                            <p class="">CID0315</p>
+                                                            <p class="">{{item.price}}元</p>
                                                         </div>
                                                         <div class="col-4 pt-3">
                                                             <h6 class="">訓練部位</h6>
-                                                            <p class="">CID0315</p>
-                                                            <h6 class="">評價</h6>
-                                                            <p class="">CID0315</p>
+                                                            <p class="">{{item.partOfBody}}</p>
+                                                            <h6 class="">教練名稱</h6>
+                                                            <p class="">{{item.coachName}}</p>
                                                         </div>
                                                     </div>
                                                 </li>

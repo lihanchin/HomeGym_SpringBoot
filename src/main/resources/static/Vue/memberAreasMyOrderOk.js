@@ -1,7 +1,7 @@
 new Vue({
     el:"#app",
     data:{
-        orderOk:[
+        currentPage:[
             // {
             //     courseName:"2小時全身深層肌肉拉筋",
             //     orderNamber:"A20211005",
@@ -20,11 +20,24 @@ new Vue({
             //     orderPrice:500,
             //     paymentMethod:"信用卡",
             // },
-        ]
+        ],
+        orderDetail:[],
+        totalPage:""
     },
     mounted() {
-        axios.get("http://localhost:8080/OKOrder").then((res) =>{ //memberAreasMyOrderOk.json
-            this.orderOk = res.data
+        let  token = localStorage.getItem("Authorization")
+        axios.get("http://localhost:8080/memberArea/OKOrder",{
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) =>{
+                this.currentPage = res.data.currentPage;
+                this.orderDetail = res.data.orderDetail;
+                this.totalPage = res.data.totalPage;
+            console.log(res.data)
+
+            // window.location.reload()
+            // this.orderOk = res.data.OKOrder
         })
     },
 })

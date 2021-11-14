@@ -46,22 +46,6 @@ public class MemberAreaController {
         return ResponseEntity.ok().body(memberInfo);
     }
 
-    //會員資料
-    @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> showMemberInfo(HttpServletRequest httpServletRequest) {
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
-        Member member = memberService.findMemberByToken(authorizationHeader);
-        Map<String,Object> memberInfo = new HashMap<>();
-        memberInfo.put("memberImage" ,member.getMemberImage());
-        memberInfo.put("mimeType" ,member.getMimeType());
-        memberInfo.put("name" ,member.getName());
-        memberInfo.put("email" ,member.getEmail());
-        memberInfo.put("birthday" ,member.getBirthday());
-        memberInfo.put("phone" ,member.getPhone());
-
-        return ResponseEntity.ok().body(memberInfo);
-    }
-
     //更改密碼(OK)
     @PostMapping("/changePassword")
     public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> oldAndNewPassword, HttpServletRequest httpServletRequest) {
@@ -80,6 +64,7 @@ public class MemberAreaController {
 
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+
         totalPage = orderService.totalPageByStatus(memberId, Arrays.asList("付款完成"), orderPageSize);
 
         if (page != null) {
