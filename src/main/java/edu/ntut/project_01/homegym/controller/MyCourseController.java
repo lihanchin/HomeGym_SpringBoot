@@ -27,14 +27,11 @@ public class MyCourseController {
     @Value("${jwt.header}")
     private String requestHeader;
 
+    @Autowired
     private MemberService memberService;
+    @Autowired
     private OrderService orderService;
 
-    @Autowired
-    public MyCourseController(MemberService memberService, OrderService orderService) {
-        this.memberService = memberService;
-        this.orderService = orderService;
-    }
 
     //已買課程分頁(OK)
     @GetMapping("/myCourse/allCourse")

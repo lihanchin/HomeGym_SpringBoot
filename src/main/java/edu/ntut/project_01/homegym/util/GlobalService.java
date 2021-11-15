@@ -20,6 +20,7 @@ public class GlobalService {
 
     //寫進資料夾的方法
     public static String imageSaveToFile(String data, File folder,Integer id,String evt) {
+        System.out.println("data==================================================="+data);
         String s = "static";
         int index = s.length();
         //取名用
@@ -28,6 +29,7 @@ public class GlobalService {
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
+        System.out.println("dataToBase64================================="+dataToBase64);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
         String name = folder.toString().substring(start+index+1)+id.toString();

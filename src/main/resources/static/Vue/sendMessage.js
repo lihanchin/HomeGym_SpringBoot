@@ -9,7 +9,7 @@ new Vue({
     },
     methods: {
         sendMessage(){
-            axios.post(`http://localhost:8080/addMessage`,{
+            axios.post(`/addMessage`,{
                 visitorEmail:this.message.visitorEmail,
                 visitorName:this.message.visitorName,
                 visitorMessage:this.message.visitorMessage,

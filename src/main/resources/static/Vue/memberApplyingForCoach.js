@@ -37,7 +37,7 @@ new Vue({
             console.log(this.coach.skill)
             let  token = localStorage.getItem("Authorization")
             console.log(token)
-            axios.post(`http://localhost:8080/apply`,
+            axios.post(`/apply`,
                 {
                 skill : this.coach.skill,
                 experience:this.coach.experience,
@@ -57,10 +57,9 @@ new Vue({
             }).catch(error =>{
                 console.log(error.response.data.message)
                 window.alert("請重新登入");
-                window.location.replace("http://localhost:8080/");
+                window.location.replace("/");
             })
-            window.location.replace("http://localhost:8080/waiting");
-            // location.assign("http://localhost:8080/waiting")
+            window.location.replace("/waiting");
             this.coach.skill ="";
             this.coach.experience ="";
             this.coach.account ="";

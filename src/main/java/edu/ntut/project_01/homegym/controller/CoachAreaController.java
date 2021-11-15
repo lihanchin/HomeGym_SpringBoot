@@ -43,7 +43,7 @@ public class CoachAreaController {
     @Value("${jwt.header}")
     private String authorization;
 
-    //會員資料
+
     @GetMapping("/")
     public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);

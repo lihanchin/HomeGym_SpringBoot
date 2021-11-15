@@ -45,10 +45,10 @@ public class ShowViewController {
     @GetMapping("/apply")
     public String showEmptyForm() {
 
-        return "memberAreasApplicationCoach" ; //成為教練
+        return "memberAreaApplyForCoach"; //成為教練
     }
 
-    @GetMapping("/check")
+    @GetMapping("/checkout")
     public String checkout() {
 
         return "checkout" ; //金流結帳畫面
@@ -56,16 +56,24 @@ public class ShowViewController {
 
     @GetMapping("/NGOrder")
     public String ngOrder() {
-        return "memberAreasMyOrderNg" ; //訂單交易失敗
+        return "memberAreaMyOrderNg"; //訂單交易失敗
     }
 
 	@GetMapping("/OKOrder")
     public String okOrder() {
-        return "memberAreasMyOrderOk" ; //訂單交易成功
+        return "memberAreaMyOrderOk"; //訂單交易成功
     }
-    
 
+    @GetMapping("/member")
+    public String showMemberInfo() {
 
+        return "memberAreaIntroduction" ; // 要導入的html
+    }
+
+    @GetMapping("/revisePassword")
+    public String revisePassword() {
+        return "memberAreaRevisePassword";
+    }
 
     //驗證(OK)
     @GetMapping("/memberVerification")
@@ -74,19 +82,24 @@ public class ShowViewController {
 		return "registated";
 	}
 
-    @GetMapping("/CoachIntroduction")
+    @GetMapping("/coachArea")
     public String coachAreasIntroduction() {
 
-        return "coachAreasIntroduction" ; //教練專區
+        return "coachAreaIntroduction"; //教練專區
     }
 
 
     @GetMapping("/CoachCourse")
     public String coach() {
 
-        return "coachAreasUploadedCourse" ; //教練專區
+        return "coachAreaUploadedCourse"; //教練專區
     }
 
+
+    @GetMapping("/myCourse")
+    public String showMyCourse() {
+        return "myCoursesAreaPurchasedCourse";
+    }
 
 
 

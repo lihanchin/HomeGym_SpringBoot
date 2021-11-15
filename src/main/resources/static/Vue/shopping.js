@@ -12,7 +12,7 @@ new Vue({
         },
         filter(){
             let partOfBody = this.partOfBody
-            axios.get("http://localhost:8080/store/allCourse?partOfBody="+partOfBody).then((res) =>{
+            axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
                 console.log(res.data)
                 this.shoppingCourse = res.data.currentPage;
                 this.totalPage = res.data.totalPage;
@@ -21,7 +21,7 @@ new Vue({
         clickPage(index){
             let partOfBody = this.partOfBody
             let pageNo = index+1
-            axios.get("http://localhost:8080/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+            axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
                 console.log(res.data)
                 this.shoppingCourse = res.data.currentPage;
                 this.totalPage = res.data.totalPage;
@@ -29,7 +29,7 @@ new Vue({
         }
     },
     mounted() {
-        axios.get("http://localhost:8080/store/").then((res) =>{
+        axios.get("/store/").then((res) =>{
 
             console.log(res.data)
             console.log(res.data.firstPage)

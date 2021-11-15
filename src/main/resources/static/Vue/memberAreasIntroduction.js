@@ -31,7 +31,7 @@ new Vue({
             item.name = this.cacheName
             item.phone = this.cachePhone
 
-            axios.put(`http://localhost:8080/memberArea/edit`,{
+            axios.put(`/memberArea/edit`,{
                 memberId: this.memberProfile.memberId,
                 memberImage: this.memberProfile.memberImage,
                 name: this.memberProfile.name,
@@ -53,7 +53,7 @@ new Vue({
     },
     mounted() {
 
-        axios.get("http://localhost:8080/memberArea/", {
+        axios.get("/memberArea/", {
             headers: {
                 Authorization: token
             }
@@ -64,7 +64,7 @@ new Vue({
         }).catch(error =>{
             console.log(error.response.data.message)
             window.alert("請重新登入");
-            window.location.replace("http://localhost:8080/");
+            window.location.replace("/");
         })
     }
 });

@@ -18,7 +18,7 @@ new Vue({
             
             console.log(this.cacheContent);
 
-            axios.put(`http://localhost:3000/uploadedCourse/${key}`,{
+            axios.put(`/uploadedCourse/${key}`,{
 
                 courseNmae:this.cacheContent.courseNmae,
                 img: this.cacheContent.img,
@@ -38,7 +38,7 @@ new Vue({
         },
         searchCourse(keyword){
             let  token = localStorage.getItem("Authorization")
-            axios.get(`http://localhost:8080/coachArea/keyword?keyword=${keyword}`,{
+            axios.get(`/coachArea/keyword?keyword=${keyword}`,{
                 headers: {
                     Authorization: token
                 }
@@ -53,7 +53,7 @@ new Vue({
     },
     mounted() {
         let  token = localStorage.getItem("Authorization")
-        axios.get("http://localhost:8080/coachArea/mycourse",{
+        axios.get("/coachArea/mycourse",{
             headers: {
                 Authorization: token
             }

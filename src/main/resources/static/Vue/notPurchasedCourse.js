@@ -31,13 +31,13 @@ new Vue({
         },
     },
     mounted() {
-        axios.get("http://localhost:8080/store/"+id).then((res) =>{
+        axios.get("/store/"+id).then((res) =>{
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName
         });
 
-        axios.get("http://localhost:8080/course/"+id+"/showComment").then((res) =>{
+        axios.get("/course/"+id+"/showComment").then((res) =>{
             this.courseComment = res.data.courseComment
             this.totalPage = res.data.totalPage
         });

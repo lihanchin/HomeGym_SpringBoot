@@ -27,7 +27,7 @@ new Vue({
     methods: {
         videoUpload(){
 
-            axios.post(`http://localhost:8080/course/upload`,
+            axios.post(`/course/upload`,
                 {
                     coursePath :this.video.videoupload,
                     courseName:this.video.videoName,
@@ -78,7 +78,7 @@ new Vue({
             item.experience = this.cacheExperience
             item.coachInfo = this.cacheCoachInfo
 
-            axios.put(`http://localhost:8080/coachArea/editInfo`,{
+            axios.put(`/coachArea/editInfo`,{
                 coachId: this.coach.coachId,
                 coachImage: this.coach.coachImage,
                 specialty: this.coach.skill,
@@ -147,7 +147,7 @@ new Vue({
 
     },
     mounted() {
-        axios.get("http://localhost:8080/coachArea/", {
+        axios.get("/coachArea/", {
             headers: {
                 Authorization: token
             }

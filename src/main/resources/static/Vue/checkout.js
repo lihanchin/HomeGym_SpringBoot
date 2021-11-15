@@ -17,7 +17,7 @@ new Vue({
             courseId.push(id)
         });
         console.log(courseId)
-        axios.post(`http://localhost:8080/test/buySoomething`,
+        axios.post(`/test/buySoomething`,
 
                 courseId
 

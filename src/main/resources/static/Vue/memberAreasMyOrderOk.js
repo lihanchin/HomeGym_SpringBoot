@@ -7,7 +7,7 @@ new Vue({
     },
     mounted() {
         let  token = localStorage.getItem("Authorization")
-        axios.get("http://localhost:8080/memberArea/OKOrder",{
+        axios.get("/memberArea/OKOrder",{
                 headers: {
                     Authorization: token
                 }

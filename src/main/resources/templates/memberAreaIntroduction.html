@@ -8,9 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/all.min.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 </head>
 <body>
+
 <!-- 導覽列 10/3更新-->
 <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
     <div class="container-fluid">
@@ -297,146 +297,119 @@
 </div>
 
 <div id="app">
-        <!-- 課程 -->
-        <section class="course mt-5 mb-3">
-            <div class="container">
+        <!-- 導覽列<第二層> -->
+        <nav class="nav_second"> 
+            <div class="nav d-flex align-items-center border-bottom border-top">
+                    <a class="nav-link" href="/">首頁</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a class="nav-link" href="/member">會員中心</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a class="nav-link" href="/member">會員資料</a>
+            </div>
+        </nav>
+    
+        
+        <!-- 會員資料 -->
+        <section class="coach_introduction">
+            <div class="container-fluid">
                 <div class="row">
-                    <!-- 課程影片 -->
-                    <div class="col-7">
-                        <video class="w-100" src="./video/video.mp4" controls></video>
-                    </div>
-                    <!-- 課程資訊 -->
-                    <div class="col-5 pe-5 d-flex flex-column justify-content-center">
-                        <h2>{{course.courseName}}</h2>
-                        <div class="d-flex">
-                            <p class="me-3 badge bg-secondary bg-dark">{{course.partOfBody}}</p>
+                    <!-- 側導覽列 -->
+                    <div class="side_bar col-2 p-0">
+                        <div class="list-group rounded-0 mt-2">
+                            <a href="/member" class="list-group-item list-group-item-action d-flex flex-column align-items-center p-3 active" aria-current="true">
+                                <i class="fa fa-user fs-3" aria-hidden="true"></i>
+                                <p class="m-auto">會員資料</p> 
+                            </a>
+                            <a href="/OKOrder" class="list-group-item list-group-item-action  d-flex flex-column align-items-center p-3">
+                                <i class="fa fa-list-alt fs-3" aria-hidden="true"></i>
+                                <p class="m-auto">我的訂單</p> 
+                            </a>
                         </div>
-                        <h5>{{coachName}} 教練</h5>
-                        <p>{{course.courseInfo}}</p>
-                        <p>價錢：$ <span>{{course.price}}</span></p>
-                        <div class="d-flex flex-column w-50 ">
-                            <div class="like_btn">
-                                <button type="button" class="btn btn-outline-primary mb-2" @click="shoppingToggle">
-                                    <div v-if="shopping.isLike">
-                                        <div v-html="shopping.islinkIcon"></div>
-                                    </div>
-                                    <div v-else>
-                                        <div v-html="shopping.notLinkIcon"></div>
-                                    </div>
+                    </div>
+                    <!-- 會員資料內容 -->
+                    <div class="col-10 mb-6">
+                        <div class="container p-3">
+                            <div class="navbar mb-2 ps-2">
+                                <button type="button" class="btn btn-outline-primary" @click="editMember(memberProfile)" v-if="cacheContent.memberId !== memberProfile.memberId"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                    編輯資料
                                 </button>
-                                <button type="button" class="btn btn-outline-primary" @click="keepToggle">
-                                    <div v-if="keep.isLike">
-                                        <div v-html="keep.islinkIcon"></div>
-                                    </div>
-                                    <div v-else>
-                                        <div v-html="keep.notLinkIcon"></div>
-                                    </div>
-                                </button> 
-                            </div> 
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </section>
-    
-        
-        <!-- 課程說明、課程評論 -->
-        <section class="course_explanation">
-            <div class="container">
-                <!-- 導覽分頁按鈕 -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="course_explanation_tab" data-bs-toggle="tab" data-bs-target="#course_explanation" type="button" role="tab" aria-controls="home" aria-selected="true">課程說明</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="course_comment_tab" data-bs-toggle="tab" data-bs-target="#course_comment" type="button" role="tab" aria-controls="profile" aria-selected="false">課程評論</button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <!-- 課程說明 -->
-                    <div class="tab-pane fade show active mb-6" id="course_explanation" role="tabpanel" aria-labelledby="course_explanation_tab">
-                        <div class="col-10 m-auto pt-5">
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>器材需求</h5>
-                                <p>{{course.equipment}}</p>
+                                <button type="button" class="btn btn-outline-primary" @click="editMemberDone(memberProfile)" v-if="cacheContent.memberId === memberProfile.memberId"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                    編輯完成
+                                </button>
                             </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程適合程度</h5>
-                                <p>{{course.level}}</p>
-                            </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程介紹</h5>
-                                <p>{{course.courseInfo}}</p>
-                            </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>教練簡介</h5>
-                                <div class="row">
+                            <div class="container ps-0">
+                                <div class="row p-3 border-bottom border-2">
                                     <div class="col-2">
-                                        <img class="mb-2 img-fluid" :src="coach.coachImage" alt="">
-        
+                                        <h5>大頭照</h5>
                                     </div>
-                                    <div class="col-10 d-flex flex-column justify-content-center">
-                                        <p><span>教練名稱：</span> {{coachName}}</p>
-                                        <p><span>專長：</span> {{coach.skill}}</p>
-                                        <p><span>經歷：</span> {{coach.experience}}</p>
-        
+                                    <div class="col-6">
+                                        <form action="" method="GET">
+                                            <div class="col-7 mb-3">
+                                                <img class="p-2 img-fluid" :src="memberProfile.memberImage" alt="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <!-- 綁定顯示圖片(upPicture.js)方法 -->
+                                                <input class="form-control w-75" type="file" @change="selectedImg" v-if="cacheContent.memberId === memberProfile.memberId" accept="image/*">
+                                                
+                                            </div>
+                                        </form>
+                                    </div> 
+                                    
+                                </div>
+                                <div class="row p-3 border-bottom border-2">
+                                    <div class="col-2">
+                                        <h5>姓名</h5>
                                     </div>
+                                    <div class="col-6">
+                                        <p v-if="cacheContent.memberId !== memberProfile.memberId">{{memberProfile.name}}</p>
+                                        <input class="form-control" v-if="cacheContent.memberId === memberProfile.memberId" v-model="cacheName">
+                                    </div>
+                                    
+                                </div>
+                                <div class="row p-3 border-bottom border-2">
+                                    <div class="col-2">
+                                        <h5>電子郵件</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <p>{{memberProfile.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row p-3 border-bottom border-2">
+                                    <div class="col-2">
+                                        <h5>密碼</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <p>不顯示</p>
+                                    </div>
+                                    <a type="button" href="/revisePassword" class="btn btn-outline-primary col-md-2 col-sm-3"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                        更改密碼
+                                    </a>
+                                </div>
+                                <div class="row p-3 border-bottom border-2">
+                                    <div class="col-2">
+                                        <h5>生日</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <p>{{memberProfile.birthday}}</p>
+                                    </div>
+                                </div>
+                                <div class="row p-3">
+                                    <div class="col-2">
+                                        <h5>電話</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <p v-if="cacheContent.memberId !== memberProfile.memberId">{{memberProfile.phone}}</p>
+                                        <input class="form-control" v-if="cacheContent.memberId === memberProfile.memberId" v-model="cachePhone"></input>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 課程評論 -->
-                    <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
-                        <div v-if="courseComment !=''">
-                        <div class="col-10 m-auto pt-5">
-                            <!-- 留言項目 -->
-                            <div class="mb-4 border-bottom" v-for="item in courseComment">
-                                <div class="user d-flex mb-2">
-                                    <div class="me-2" style="width: 40px;">
-                                        <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
-                                    </div>
-                                    <h5 class="mt-auto">{{item.courseName}}</h5>
-                                </div>
-                                <div class="evaluation mb-2">
-                                    <!-- 動態新增星星數 -->
-                                    <i class="fa fa-star" aria-hidden="true" v-for="n in item.star" ></i>
-                                </div>
-                                <p>{{item.commentContent}}</p>
-                                <p class="text-end me-2">{{item.commentCreateTime}}</p>
-                            </div>
-                        </div>
-                        <!-- 分頁列 -->
-                        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
-                            <ul class="pagination">
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            </ul>
-                        </nav>
-                        </div>
-                        <div v-else>
-                            <div class="container p-4 d-flex align-items-center  justify-content-center " style="height: 50vh;">
-                                <div class="px-5 py-5  border-primary ">
-                                    <h3 class="text-center">目前尚無評價</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
                 </div>
             </div>
         </section>
+
     </div>
 
 
@@ -450,6 +423,7 @@
 <!-- Vue -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
-<script src="./Vue/notPurchasedCourse.js"></script>
 <script src="./Vue/navContent.js"></script>
+<script src="./Vue/memberAreasIntroduction.js"></script>
+
 </html>

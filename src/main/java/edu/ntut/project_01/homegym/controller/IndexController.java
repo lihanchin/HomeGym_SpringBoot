@@ -43,7 +43,7 @@ public class IndexController {
 //    }
 
     //註冊(加入Security)(OK)
-    @PostMapping("/registrations")
+    @PostMapping("/regist")
     public ResponseEntity<Map<String, Object>> registrations(@RequestBody Member member) {
         return authService.register(member);
     }

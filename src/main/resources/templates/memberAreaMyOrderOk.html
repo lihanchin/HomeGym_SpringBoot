@@ -8,7 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/all.min.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
+
+
 </head>
 <body>
 <!-- 導覽列 10/3更新-->
@@ -297,152 +298,146 @@
 </div>
 
 <div id="app">
-        <!-- 課程 -->
-        <section class="course mt-5 mb-3">
-            <div class="container">
+        <!-- 導覽列<第二層> -->
+        <nav> 
+            <div class="nav d-flex align-items-center border-bottom border-top">
+                    <a class="nav-link" href="/">首頁</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a class="nav-link" href="/member">會員中心</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a class="nav-link" href="/OKOrder">我的訂單</a>
+            </div>
+        </nav>
+    
+        <!-- 訂單OK -->
+        <section class="uploaded_course">
+            <div class="container-fluid">
                 <div class="row">
-                    <!-- 課程影片 -->
-                    <div class="col-7">
-                        <video class="w-100" src="./video/video.mp4" controls></video>
-                    </div>
-                    <!-- 課程資訊 -->
-                    <div class="col-5 pe-5 d-flex flex-column justify-content-center">
-                        <h2>{{course.courseName}}</h2>
-                        <div class="d-flex">
-                            <p class="me-3 badge bg-secondary bg-dark">{{course.partOfBody}}</p>
+                    <!-- 側導覽列 -->
+                    <div class="side_bar col-md-2 col-sm-12 p-0">
+                        <div class="list-group rounded-0 mt-2">
+                            <a href="/member" class="list-group-item list-group-item-action d-flex flex-column align-items-center p-3" aria-current="true">
+                                <i class="fa fa-user fs-3" aria-hidden="true"></i>
+                                <p class="m-auto">會員資料</p> 
+                            </a>
+                            <a href="/OKOrder" class="list-group-item list-group-item-action active  d-flex flex-column align-items-center p-3">
+                                <i class="fa fa-list-alt fs-3" aria-hidden="true"></i>
+                                <p class="m-auto">我的訂單</p> 
+                            </a>
                         </div>
-                        <h5>{{coachName}} 教練</h5>
-                        <p>{{course.courseInfo}}</p>
-                        <p>價錢：$ <span>{{course.price}}</span></p>
-                        <div class="d-flex flex-column w-50 ">
-                            <div class="like_btn">
-                                <button type="button" class="btn btn-outline-primary mb-2" @click="shoppingToggle">
-                                    <div v-if="shopping.isLike">
-                                        <div v-html="shopping.islinkIcon"></div>
+                    </div>
+                    <!-- 內容 -->
+                    <div class="col-md-10 col-sm-12">
+                        <div class="ordered container ps-3 pe-3">
+                            <!-- 分頁選項 -->
+                            <div class="mt-3">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="/OKOrder" class="nav-link active">已完成訂單</a></li>
+                                    <li class="nav-item"><a href="/NGOrder" class="nav-link ">交易失敗</a></li>
+                                </ul>            
+                            </div>
+                            <!-- 項目卡片 -->
+                            <div class="card mt-3 mb-3" v-for="(item,index) in currentPage">
+                                <div class="row  d-flex align-items-center">
+                                    <div class="col-4 ps-5">
+                                        <h6>訂單編號</h6>
+                                        <p>HGOD{{currentPage[index].orderId}}</p>
                                     </div>
-                                    <div v-else>
-                                        <div v-html="shopping.notLinkIcon"></div>
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-6 pt-3">
+                                                <h6>訂單明細</h6>
+                                                <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" :data-bs-target="'#orderContent'+currentPage[index].orderId">
+                                                    查看內容
+                                                </button>
+                                                <h6>總價錢</h6>
+                                                <p>{{currentPage[index].totalPrice}}元</p>
+                                            </div>
+                                            <div class="col-6 pt-3">
+                                                <h6>付款方式</h6>
+                                                <p>信用卡</p>
+                                                <h6>訂單狀態</h6>
+                                                <p>交易成功</p>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                </button>
-                                <button type="button" class="btn btn-outline-primary" @click="keepToggle">
-                                    <div v-if="keep.isLike">
-                                        <div v-html="keep.islinkIcon"></div>
+                                </div>
+                            </div>
+
+                            <!-- 訂單明細內容(彈跳視窗) -->
+                            <div class="modal fade" :id="'orderContent'+currentPage[index].orderId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" v-for="(item,index) in currentPage">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">訂單明細內容</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-group">
+                                                <!-- 課程購買細項項目 -->
+                                                <li class="list-group-item" v-for="(item,key) in orderDetail[currentPage[index].orderId]">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-4">
+                                                            <img class="w-100" :src="item.courseImage" alt="">
+                                                        </div>
+                                                        <div class="col-4 pt-3">
+                                                            <h6 class="">課程名稱</h6>
+                                                            <p class="">{{item.courseName}}</p>
+                                                            <h6 class="">價錢</h6>
+                                                            <p class="">{{item.price}}元</p>
+                                                        </div>
+                                                        <div class="col-4 pt-3">
+                                                            <h6 class="">訓練部位</h6>
+                                                            <p class="">{{item.partOfBody}}</p>
+                                                            <h6 class="">教練名稱</h6>
+                                                            <p class="">{{item.coachName}}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                                        </div>
                                     </div>
-                                    <div v-else>
-                                        <div v-html="keep.notLinkIcon"></div>
-                                    </div>
-                                </button> 
-                            </div> 
-                        </div>  
+                                </div>
+                            </div>
+
+                            
+                            
+                            <!-- 分頁 -->
+                            <nav aria-label="Page navigation example" class="mb-5">
+                                <ul class="pagination justify-content-center">
+                                  <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                      <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                  </li>
+                                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-    
-        
-        <!-- 課程說明、課程評論 -->
-        <section class="course_explanation">
-            <div class="container">
-                <!-- 導覽分頁按鈕 -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="course_explanation_tab" data-bs-toggle="tab" data-bs-target="#course_explanation" type="button" role="tab" aria-controls="home" aria-selected="true">課程說明</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="course_comment_tab" data-bs-toggle="tab" data-bs-target="#course_comment" type="button" role="tab" aria-controls="profile" aria-selected="false">課程評論</button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <!-- 課程說明 -->
-                    <div class="tab-pane fade show active mb-6" id="course_explanation" role="tabpanel" aria-labelledby="course_explanation_tab">
-                        <div class="col-10 m-auto pt-5">
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>器材需求</h5>
-                                <p>{{course.equipment}}</p>
-                            </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程適合程度</h5>
-                                <p>{{course.level}}</p>
-                            </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>課程介紹</h5>
-                                <p>{{course.courseInfo}}</p>
-                            </div>
-                            <div class="m-2">
-                                <h5><i class="fa fa-arrow-circle-right me-3" aria-hidden="true"></i>教練簡介</h5>
-                                <div class="row">
-                                    <div class="col-2">
-                                        <img class="mb-2 img-fluid" :src="coach.coachImage" alt="">
-        
-                                    </div>
-                                    <div class="col-10 d-flex flex-column justify-content-center">
-                                        <p><span>教練名稱：</span> {{coachName}}</p>
-                                        <p><span>專長：</span> {{coach.skill}}</p>
-                                        <p><span>經歷：</span> {{coach.experience}}</p>
-        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <!-- 課程評論 -->
-                    <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
-                        <div v-if="courseComment !=''">
-                        <div class="col-10 m-auto pt-5">
-                            <!-- 留言項目 -->
-                            <div class="mb-4 border-bottom" v-for="item in courseComment">
-                                <div class="user d-flex mb-2">
-                                    <div class="me-2" style="width: 40px;">
-                                        <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
-                                    </div>
-                                    <h5 class="mt-auto">{{item.courseName}}</h5>
-                                </div>
-                                <div class="evaluation mb-2">
-                                    <!-- 動態新增星星數 -->
-                                    <i class="fa fa-star" aria-hidden="true" v-for="n in item.star" ></i>
-                                </div>
-                                <p>{{item.commentContent}}</p>
-                                <p class="text-end me-2">{{item.commentCreateTime}}</p>
-                            </div>
-                        </div>
-                        <!-- 分頁列 -->
-                        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
-                            <ul class="pagination">
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            </ul>
-                        </nav>
-                        </div>
-                        <div v-else>
-                            <div class="container p-4 d-flex align-items-center  justify-content-center " style="height: 50vh;">
-                                <div class="px-5 py-5  border-primary ">
-                                    <h3 class="text-center">目前尚無評價</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                </div>
-            </div>
-        </section>
+
     </div>
 
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
 <!-- quiz -->
 <script src="./js/quiz_questions.js"></script>
 <!-- 導覽列顯示購物車商品 -->
@@ -450,6 +445,6 @@
 <!-- Vue -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
-<script src="./Vue/notPurchasedCourse.js"></script>
 <script src="./Vue/navContent.js"></script>
+<script src="./Vue/memberAreasMyOrderOk.js"></script>
 </html>
