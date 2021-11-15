@@ -23,8 +23,13 @@ import ecpay.payment.integration.domain.QueryCreditCardPeriodInfoObj;
 import ecpay.payment.integration.domain.QueryTradeInfoObj;
 import ecpay.payment.integration.domain.QueryTradeObj;
 import ecpay.payment.integration.domain.TradeNoAioObj;
+import org.springframework.beans.factory.annotation.Value;
 
 public class ExampleAllInOne {
+
+	@Value("${hg.url}")
+	private static String ourUrl;
+
 	public static AllInOne all;
 	public static void main(String[] args) {
 		initial();
@@ -143,9 +148,9 @@ public class ExampleAllInOne {
 		obj.setTotalAmount(price);
 		obj.setTradeDesc("HomeGym~~~");
 		obj.setItemName(orderItems);
-		obj.setReturnURL("http://localhost:8080/ecpayResponse");
+		obj.setReturnURL(ourUrl + "/ecpayResponse");
 		obj.setNeedExtraPaidInfo("Y");
-		obj.setClientBackURL("http://localhost:8080/");
+		obj.setClientBackURL(ourUrl);
 		String form = all.aioCheckOut(obj, null);
 		return form;
 	}

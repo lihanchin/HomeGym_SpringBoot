@@ -10,8 +10,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Table(name = "`member`")
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "member")
 public class Member {
     @Id
     @Column(name = "member_id")
@@ -36,10 +36,12 @@ public class Member {
     @CreatedDate
     @Column(name = "create_time")
     private Date createTime;
+
     private String mimeType;
+
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    Set<Orders> orders = new HashSet<>();
+    private Set<Orders> orders = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.PERSIST)
