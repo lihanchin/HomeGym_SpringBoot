@@ -3,6 +3,7 @@ package edu.ntut.project_01.homegym.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -14,13 +15,15 @@ public class MailUtil {
     private SimpleMailMessage message;
     private String verifiedPath;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Value("${hg.url}")
+    private String ourUrl;
 
     @Autowired
     private JavaMailSender mailSender;
 
     public void sendMail(String code, String memberEmail){
 
-        verifiedPath = "http://localhost:8080/memberVerification?code="+code;
+        verifiedPath = ourUrl+"/memberVerification?code="+code;
 
         message = new SimpleMailMessage();
         message.setFrom("homegym_ntut_pj01@outlook.com");
