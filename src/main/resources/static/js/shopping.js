@@ -32,7 +32,7 @@ function doFirst(){
         total = document.createElement('p')
         total.className="mb-2 me-2 d-flex justify-content-end"
         checkoutLink = document.createElement('a')
-        checkoutLink.setAttribute('href','./shoppingCart.html')
+        checkoutLink.setAttribute('href','/shoppingCart')
         checkoutLink.className="btn btn-primary d-block"
         checkoutLink.innerText='前往結帳'
         lastDiv = document.createElement('div')
@@ -152,7 +152,7 @@ function addCountArea(){                                    //建構前往結帳
     total = document.createElement('p')
     total.className="mb-2 me-2 d-flex justify-content-end"
     checkoutLink = document.createElement('a')
-    checkoutLink.setAttribute('href','./shoppingCart.html')
+    checkoutLink.setAttribute('href','/shoppingCart')
     checkoutLink.className="btn btn-primary d-block"
     checkoutLink.innerText='前往結帳'
     lastDiv = document.createElement('div')

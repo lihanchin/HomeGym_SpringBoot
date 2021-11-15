@@ -132,6 +132,8 @@ public class CourseController {
         String equipment = coachInfo.get("equipment").toString();
         String level = coachInfo.get("level").toString();
         String courseInfo = coachInfo.get("courseInfo").toString();
+        String courseImage = coachInfo.get("courseImage").toString();
+
 
         //存影片到
         File videoFolder = new File("src/main/resources/static/video");
@@ -141,6 +143,15 @@ public class CourseController {
         }
 
         String videoCoachPath = GlobalService.imageSaveToFile(coursePath, videoFolder,coachId,".mp4");
+
+        //存影片照片到
+        File courseImageFolder = new File("src/main/resources/static/courseImage");
+        System.out.println(courseImageFolder);
+        if (!courseImageFolder.exists()) {
+            courseImageFolder.mkdirs();
+        }
+
+        String courseImagePath = GlobalService.imageSaveToFile(courseImage, courseImageFolder,coachId,"jpg");
 
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
@@ -158,6 +169,7 @@ public class CourseController {
         course.setCoursePath(videoCoachPath);
         course.setChecked(0);
         course.setPass(0);
+        course.setCourseImage(courseImagePath);
         courseService.save(course);
     }
 

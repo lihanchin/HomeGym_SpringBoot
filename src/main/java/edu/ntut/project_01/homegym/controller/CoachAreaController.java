@@ -43,7 +43,7 @@ public class CoachAreaController {
     @Value("${jwt.header}")
     private String authorization;
 
-
+    //載入教練資料
     @GetMapping("/")
     public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
         authorizationHeader = httpServletRequest.getHeader(HEADER);
@@ -52,6 +52,7 @@ public class CoachAreaController {
         return ResponseEntity.ok().body(coach);
     }
 
+    //顯示課程
     @GetMapping("/mycourse")
     ResponseEntity<Map<String, Object>> coachmycourse(@RequestParam(required = false) Integer page,HttpServletRequest httpServletRequest){
 
@@ -70,8 +71,7 @@ public class CoachAreaController {
         return ResponseEntity.ok().body(storeDetail);
     }
 
-
-
+    //我的課程關鍵字搜尋
     @GetMapping("/keyword")
     public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword, HttpServletRequest httpServletRequest){
         String header= httpServletRequest.getHeader(authorization);
@@ -81,11 +81,13 @@ public class CoachAreaController {
         return courseService.findCoursesByKeyword(keyword);
     }
 
+    //編輯教練資料
     @PutMapping("/editInfo")
     public ResponseEntity<Map<String,Object>> editCoachInfo(@RequestBody Coach coach, HttpServletRequest httpServletRequest){
         authorizationHeader = httpServletRequest.getHeader(HEADER);
         coachId = memberService.findMemberByToken(authorizationHeader).getCoach().getCoachId();
         Map<String,Object> editResponse = new HashMap<>();
+
         String message = coachService.edit(coach,coachId);
 
         editResponse.put("coachInfo", coachRepository.findById(coachId));

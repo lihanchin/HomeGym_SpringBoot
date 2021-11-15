@@ -123,7 +123,7 @@ function createBlankArea(){
     text.className="mb-5"
     text.innerText='尚未選購課程'
     let link = document.createElement('a')
-    link.setAttribute('href','./shopping.html')
+    link.setAttribute('href','/shop')
     link.innerText='前往選購'
     div.appendChild(text)
     div.appendChild(link)

@@ -4,7 +4,6 @@ new Vue({
     data:{
         //資料庫來的資料
         memberProfile:{},
-
         cacheContent:{},
         cacheName:"",
         cachePhone:"",

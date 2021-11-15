@@ -85,12 +85,13 @@ function doFirst(){
     let list = document.querySelectorAll('.addButton');     //按了加入購物車
     for(let i = 0; i < list.length; i++){
          list[i].addEventListener('click',function() {
-
+            console.log("按下加入購物車")
              let classInfo = document.querySelector(`#${this.id} input`).value;
              console.log(classInfo)
              if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                  textDivId.remove(textId)
                  addCountArea()
+                 console.log("準備加入localstorage")
                  addClass(this.id,classInfo);
              }else{                                         //加入時購物車已經有東西
                  addClass(this.id,classInfo);

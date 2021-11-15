@@ -21,10 +21,23 @@ new Vue({
             price:'',
             equipment:'',
             level:'',
-            videoInfo:''
+            videoInfo:'',
+            image:''
         }
     },
     methods: {
+
+        selectedCoachImg(evt){ //讀取圖片
+            console.log(evt)
+            const file = evt.target.files.item(0)
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.addEventListener('load',this.coachImageLoaded);
+        },
+        coachImageLoaded(evt){ //更新圖片路徑
+            console.log((evt))
+            this.video.image = evt.target.result
+        },
         videoUpload(){
 
             axios.post(`/course/upload`,
@@ -36,6 +49,7 @@ new Vue({
                     equipment:this.video.equipment,
                     level:this.video.level,
                     courseInfo:this.video.videoInfo,
+                    courseImage:this.video.image,
                 },
                 {
                     headers: {
@@ -81,8 +95,8 @@ new Vue({
             axios.put(`/coachArea/editInfo`,{
                 coachId: this.coach.coachId,
                 coachImage: this.coach.coachImage,
-                specialty: this.coach.skill,
-                experience: this.coach.experience,
+                skill: this.cacheSkill,
+                experience: this.cacheExperience,
                 coachInfo: this.coach.coachInfo
 
             },{
@@ -92,8 +106,6 @@ new Vue({
             }).then((res) =>{
                 console.log(res);
             })
-
-
             this.cacheSkill ='';
             this.cacheExperience ='';
             this.cacheCoachInfo ='';
