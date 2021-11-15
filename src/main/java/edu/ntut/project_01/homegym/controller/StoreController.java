@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,14 @@ public class StoreController {
 
         final Integer page = 0;
         Page<Course> showCourse = courseService.findAllCourse(page, size);
+        for(Course course:showCourse.getContent()){
+            String name = course.getCoach().getMember().getName();
+            if(!course.getCourseComments().isEmpty()){
+                Integer star = courseService.countStar(course.getCourseId());
+                course.setStar(star);
+            }
+            course.setCoachName(name);
+        }
         Map<String, Object> storeDetail = new HashMap<>();
         storeDetail.put("firstPage", showCourse.getContent());
         storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -43,15 +52,24 @@ public class StoreController {
     }
 
     //商城分頁(OK)
-    @GetMapping("/allCourse/")
+    @GetMapping("/allCourse")
     ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
-
+        System.out.println("page+partOfBody======================================="+page+partOfBody);
         Integer totalPage;
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
 
+
         if( page == null && partOfBody == null){
             showCourse = courseService.findAllCourse(0, size);
+            for(Course course:showCourse.getContent()){
+                String name = course.getCoach().getMember().getName();
+                if(!course.getCourseComments().isEmpty()){
+                    Integer star = courseService.countStar(course.getCourseId());
+                    course.setStar(star);
+                }
+                course.setCoachName(name);
+            }
             storeDetail = new HashMap<>();
             storeDetail.put("currentPage", showCourse.getContent());
             storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -63,6 +81,14 @@ public class StoreController {
                 totalPage = courseService.getAllCoursesTotalPage(size);
                 if (page <= totalPage) {
                     showCourse = courseService.findAllCourse(page - 1, size);
+                    for(Course course:showCourse.getContent()){
+                        String name = course.getCoach().getMember().getName();
+                        if(!course.getCourseComments().isEmpty()){
+                            Integer star = courseService.countStar(course.getCourseId());
+                            course.setStar(star);
+                        }
+                        course.setCoachName(name);
+                    }
                     storeDetail = new HashMap<>();
                     storeDetail.put("currentPage", showCourse.getContent());
                     storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -72,6 +98,14 @@ public class StoreController {
                 totalPage = courseService.getCoursesTotalPageByFilter(partOfBody, size);
                 if (page <= totalPage) {
                     showCourse = courseService.findCourseByFilter(partOfBody, page-1, size);
+                    for(Course course:showCourse.getContent()){
+                        String name = course.getCoach().getMember().getName();
+                        if(!course.getCourseComments().isEmpty()){
+                            Integer star = courseService.countStar(course.getCourseId());
+                            course.setStar(star);
+                        }
+                        course.setCoachName(name);
+                    }
                     storeDetail = new HashMap<>();
                     storeDetail.put("currentPage", showCourse.getContent());
                     storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -81,6 +115,14 @@ public class StoreController {
             throw new QueryException("查無此頁面");
         } else {
             showCourse = courseService.findCourseByFilter(partOfBody, 0, size);
+            for(Course course:showCourse.getContent()){
+                String name = course.getCoach().getMember().getName();
+                if(!course.getCourseComments().isEmpty()){
+                    Integer star = courseService.countStar(course.getCourseId());
+                    course.setStar(star);
+                }
+                course.setCoachName(name);
+            }
             storeDetail = new HashMap<>();
             storeDetail.put("currentPage", showCourse.getContent());
             storeDetail.put("totalPage", showCourse.getTotalPages());
@@ -88,9 +130,10 @@ public class StoreController {
         }
     }
 
-    //課程詳細頁(包含評價、教練資訊)
+    //課程詳細頁(包含教練資訊)
     @GetMapping("/{id}")
     Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
+
 
         Map<String,Object> map = new HashMap<>();
         Optional<Course> course  = courseService.findById(id);
@@ -98,22 +141,10 @@ public class StoreController {
             Coach coach = course.get().getCoach();
             String coachName = coach.getMember().getName();
             List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
-            System.out.println(commentlist);
-            if(commentlist != null){
-                for (CourseComment comment:commentlist){
-                    String name = comment.getMember().getName();
-                    byte[] memberImage = comment.getMember().getMemberImage();
-                    String mimeType = comment.getMember().getMimeType();
-                    comment.setMemberImage(memberImage);
-                    comment.setMemberName(name);
-                    comment.setMineType(mimeType);
-                }
 
-            }
             map.put("course",course.get());
             map.put("coach",coach);
             map.put("coachName",coachName);
-            map.put("commentlist",commentlist);
         }else {
             System.out.println("無資料");
         }

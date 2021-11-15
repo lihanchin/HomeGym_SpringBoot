@@ -6,15 +6,14 @@ import edu.ntut.project_01.homegym.util.GlobalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -36,16 +35,8 @@ public class CourseController {
     @Value("${jwt.header}")
     private String authorization;
 
-    //算星星
-    public Map<String, Object> countStar() {
-        Integer star = courseCommentService.countStar();
-        Map<String, Object> map = new HashMap<>();
-        map.put("star", star);
-        return map;
-    }
 
-
-
+    //輸入留言
     @PostMapping ("/addComment/{courseId}")
     public void addComment(@RequestBody CourseComment courseComment,@PathVariable Integer courseId,HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -61,7 +52,7 @@ public class CourseController {
 
     }
 
-
+    //輸入FQA
     @PostMapping ("/addFQA/{courseId}")
     public void addFQA(@RequestBody FQA fqaInput , @PathVariable Integer courseId, HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -77,6 +68,7 @@ public class CourseController {
 
     }
 
+    //輸入FQAReply
     @PostMapping ("/addFQAReply/{fqaId}")
     public void addFQAReply(@RequestBody FQAReply fqaReplyInput, @PathVariable Integer fqaId,HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -92,7 +84,7 @@ public class CourseController {
 
     }
 
-
+    //顯示已買課程詳細頁(包含FQA、FQAReply)
     @GetMapping ("/{id}")
     public  Map<String,Object> showFQA(@PathVariable Integer id,HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -125,7 +117,7 @@ public class CourseController {
         return map;
     }
 
-
+    //上傳影片
     @PostMapping("/upload")
     public void Coach(@RequestBody Map<String, Object> coachInfo,HttpServletRequest request) {
         String header= request.getHeader(authorization);
@@ -140,6 +132,8 @@ public class CourseController {
         String equipment = coachInfo.get("equipment").toString();
         String level = coachInfo.get("level").toString();
         String courseInfo = coachInfo.get("courseInfo").toString();
+        String courseImage = coachInfo.get("courseImage").toString();
+
 
         //存影片到
         File videoFolder = new File("src/main/resources/static/video");
@@ -149,6 +143,15 @@ public class CourseController {
         }
 
         String videoCoachPath = GlobalService.imageSaveToFile(coursePath, videoFolder,coachId,".mp4");
+
+        //存影片照片到
+        File courseImageFolder = new File("src/main/resources/static/courseImage");
+        System.out.println(courseImageFolder);
+        if (!courseImageFolder.exists()) {
+            courseImageFolder.mkdirs();
+        }
+
+        String courseImagePath = GlobalService.imageSaveToFile(courseImage, courseImageFolder,coachId,"jpg");
 
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
@@ -166,7 +169,54 @@ public class CourseController {
         course.setCoursePath(videoCoachPath);
         course.setChecked(0);
         course.setPass(0);
+        course.setCourseImage(courseImagePath);
         courseService.save(course);
+    }
+
+    //顯示留言
+    @GetMapping("/{id}/showComment")
+    public Map<String,Object> showComment(@PathVariable Integer id, @RequestParam(required = false) Integer pageNo){
+        Optional<Course> course  = courseService.findById(id);
+        Page<CourseComment> courseComments;
+        Map<String,Object> map = new HashMap<>();
+
+        //如果點頁數
+        if(pageNo!=null){
+            courseComments = courseCommentService.findCourseComment(id,pageNo,5);
+            if(course.isPresent()){
+                if(courseComments != null){
+                    for (CourseComment comment : courseComments.getContent()){
+                        String name = comment.getMember().getName();
+                        byte[] memberImage = comment.getMember().getMemberImage();
+                        String mimeType = comment.getMember().getMimeType();
+                        comment.setMemberImage(memberImage);
+                        comment.setMemberName(name);
+                        comment.setMineType(mimeType);
+                    }
+                }
+            }
+            map.put("courseComment",courseComments.getContent());
+            map.put("totalPage",courseComments.getTotalPages());
+            return map;
+        }
+
+        //第一頁
+        courseComments = courseCommentService.findCourseComment(id,0,5);
+        if(course.isPresent()){
+            if(courseComments != null){
+                for (CourseComment comment : courseComments.getContent()){
+                    String name = comment.getMember().getName();
+                    byte[] memberImage = comment.getMember().getMemberImage();
+                    String mimeType = comment.getMember().getMimeType();
+                    comment.setMemberImage(memberImage);
+                    comment.setMemberName(name);
+                    comment.setMineType(mimeType);
+                }
+            }
+        }
+        map.put("courseComment",courseComments.getContent());
+        map.put("totalPage",courseComments.getTotalPages());
+        return map;
     }
 
 }

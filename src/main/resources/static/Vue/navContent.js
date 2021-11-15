@@ -1,5 +1,5 @@
 new Vue({
-    el:"#app",
+    el:"#nav",
     data:{
         status:'',
     },
@@ -13,7 +13,7 @@ new Vue({
         let  token = localStorage.getItem("Authorization")
         console.log("token========"+token)
         if(token!==null){
-            axios.get(`http://localhost:8080/`,{
+            axios.get(`/`,{
                 headers: {
                     Authorization: token
                 }
@@ -30,9 +30,6 @@ new Vue({
     }
 })
 
-
-
-// let localStorage = localStorage;
 new Vue({
     el:"#nav_content",
     data:{
@@ -51,7 +48,7 @@ new Vue({
     },
     methods: {
         memberLogin(){
-            axios.post(`http://localhost:8080/login`,{
+            axios.post(`/login`,{
                 username : this.login.email,
                 password:this.login.password,
             }).then((res) =>{
@@ -63,7 +60,7 @@ new Vue({
         },
 
         memberSignUp(){
-            axios.post(`http://localhost:8080/registrations`,{
+            axios.post(`/regist`,{
                 email : this.signup.email,
                 password:this.signup.password,
                 name:this.signup.name,

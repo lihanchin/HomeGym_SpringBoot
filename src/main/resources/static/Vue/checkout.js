@@ -1,5 +1,5 @@
 let storage = localStorage;
-
+let  token = localStorage.getItem("Authorization")
 new Vue({
     el:"#app",
     data:{
@@ -17,11 +17,11 @@ new Vue({
             courseId.push(id)
         });
         console.log(courseId)
-        axios.post(`http://localhost:8080/test/buySoomething`,
-
-                courseId
-
-        ).then((res) =>{
+        axios.post(`/checkout`,courseId , {
+            headers: {
+                Authorization: token
+            }
+        }).then((res) =>{
             console.log(res)
             this.paymentPage = res.data.paymentPage;
             $('#app').html(res.data.paymentPage);

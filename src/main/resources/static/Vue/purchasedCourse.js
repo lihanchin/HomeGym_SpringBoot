@@ -49,7 +49,7 @@ new Vue({
             let comment =this.courseComment.CommentInput; //留言input
             console.log("準備請求")
 
-            axios.post(`http://localhost:8080/course/addComment/${id}`,
+            axios.post(`/course/addComment/${id}`,
                 {
                     star : star,
                     commentContent : comment,
@@ -62,7 +62,7 @@ new Vue({
 
                 console.log(res);
                 console.log("請求結束")
-                axios.get("http://localhost:8080/store/"+id).then((res) =>{
+                axios.get("/store/"+id).then((res) =>{
                     console.log(res);
                     this.course = res.data.course
                     this.coach = res.data.coach
@@ -85,7 +85,7 @@ new Vue({
             console.log("通過檢查")
             let comment =this.fqaInput.fqaContent; //留言input
             console.log("準備請求")
-            axios.post(`http://localhost:8080/course/addFQA/${id}`,
+            axios.post(`/course/addFQA/${id}`,
                 {
                     fqaContent:comment,
                 }, {
@@ -94,7 +94,7 @@ new Vue({
                     }
                 }).then((res) =>{
                     console.log(res);
-                    axios.get("http://localhost:8080/course/"+id, {
+                    axios.get("/course/"+id, {
                         headers: {
                             Authorization: token
                         }
@@ -130,7 +130,7 @@ new Vue({
             let index = fqaId-1;
             let comment =this.fqaReplyInput.fqaReplyContent; //留言input
             console.log("準備請求")
-            axios.post(`http://localhost:8080/course/addFQAReply/${fqaId}`,
+            axios.post(`/course/addFQAReply/${fqaId}`,
                 {
                     fqaReplyContent:comment,
                 },{
@@ -139,7 +139,7 @@ new Vue({
                     }
                 }).then((res) =>{
                     console.log(res);
-                    axios.get("http://localhost:8080/course/"+id, {
+                    axios.get("/course/"+id, {
                         headers: {
                             Authorization: token
                         }
@@ -166,7 +166,7 @@ new Vue({
         }
     },
     mounted() {
-        axios.get("http://localhost:8080/store/"+id).then((res) =>{
+        axios.get("/store/"+id).then((res) =>{
             console.log(res);
             this.course = res.data.course
             this.coach = res.data.coach
@@ -186,7 +186,7 @@ new Vue({
         }).catch(error =>{
             console.log(error.response.data.message)
             window.alert("請重新登入");
-            window.location.replace("http://localhost:8080/");
+            window.location.replace("/");
         })
     }
 });

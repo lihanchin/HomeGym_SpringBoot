@@ -3,21 +3,33 @@ new Vue({
     data:{
         totalPage:"",
         CourseValue:"",
-        coachNameList:[],
         shoppingCourse:[],
         partOfBody:"",
-        page:""
     },
     methods: {
         pushCourseValue(item){
             this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'https://fakeimg.pl/500x400/';
         },
         filter(){
-
+            let partOfBody = this.partOfBody
+            axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
+                console.log(res.data)
+                this.shoppingCourse = res.data.currentPage;
+                this.totalPage = res.data.totalPage;
+            })
         },
+        clickPage(index){
+            let partOfBody = this.partOfBody
+            let pageNo = index+1
+            axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+                console.log(res.data)
+                this.shoppingCourse = res.data.currentPage;
+                this.totalPage = res.data.totalPage;
+            })
+        }
     },
     mounted() {
-        axios.get("http://localhost:8080/store/").then((res) =>{ //shoppingdate.json
+        axios.get("/store/").then((res) =>{
 
             console.log(res.data)
             console.log(res.data.firstPage)
@@ -48,10 +60,10 @@ function doFirst(){
     }else{                                                  //如果localStorage有東西
         let itemString = localStorage.getItem('addItemList');
         items = itemString.substr(0, itemString.length - 2).split('， '); //id名稱的陣列
-        // console.log(items);
+        console.log(items);
         for(let i = 0; i < items.length; i++){
             let classInfo = localStorage.getItem(items[i]) //課程資訊
-            // console.log(classInfo)
+            console.log(classInfo)
             createList(classInfo);
             let classPrice = parseInt(classInfo.split('|')[2]) //pirce
             // console.log(classPrice)
@@ -73,12 +85,13 @@ function doFirst(){
     let list = document.querySelectorAll('.addButton');     //按了加入購物車
     for(let i = 0; i < list.length; i++){
          list[i].addEventListener('click',function() {
-
+            console.log("按下加入購物車")
              let classInfo = document.querySelector(`#${this.id} input`).value;
              console.log(classInfo)
              if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                  textDivId.remove(textId)
                  addCountArea()
+                 console.log("準備加入localstorage")
                  addClass(this.id,classInfo);
              }else{                                         //加入時購物車已經有東西
                  addClass(this.id,classInfo);
@@ -93,6 +106,7 @@ function addClass(classId,classValue){                      //加入購物車時
     }else{
         localStorage['addItemList'] += `${classId}， `;
         localStorage.setItem(classId,classValue);
+        console.log("classValue=============="+classValue)
         let name = classValue.split('|')[0];
         let classImg = classValue.split('|')[1];
         let classPrice = classValue.split('|')[2];

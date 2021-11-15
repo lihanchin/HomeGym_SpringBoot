@@ -5,6 +5,7 @@ import edu.ntut.project_01.homegym.repository.CoachRepository;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.util.GlobalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,9 @@ import java.io.File;
 @Transactional
 public class CoachServiceImpl implements CoachService {
 
-    private CoachRepository coachRepository;
     @Autowired
-    public CoachServiceImpl(CoachRepository coachRepository) {
-        this.coachRepository = coachRepository;
-    }
+    private CoachRepository coachRepository;
+
 
     @Override
     public String apply(Coach coach){
@@ -29,18 +28,19 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public String edit(Coach coach, Integer coachId) {
         Coach theCoach = coachRepository.findById(coachId).orElseThrow();
-
+        System.out.println("coach.getSkill()============================"+coach.getSkill());
         theCoach.setSkill(coach.getSkill());
         theCoach.setExperience(coach.getExperience());
         theCoach.setCoachInfo(coach.getCoachInfo());
 
-        if(coach.getCoachImage() != null){
-            File imageFolder = new File("src/main/resources/static/coachImages");
+        if(coach.getCoachImage() != null&& !coach.getCoachImage().equals(theCoach.getCoachImage())){
+            File imageFolder = new File("/src/main/resources/static/coachImages");
             System.out.println(imageFolder);
             if(!imageFolder.exists()){
                 imageFolder.mkdirs();
             }
             String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,coachId,".jpg");
+            System.out.println("coachImagePath======="+coachImagePath);
             theCoach.setCoachImage(coachImagePath);
         }
 

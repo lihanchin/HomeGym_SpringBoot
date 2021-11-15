@@ -2,7 +2,6 @@ package edu.ntut.project_01.homegym.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -33,7 +32,7 @@ public class Coach {
     @Column(name = "check_time")
     private Date checkTime;
     private String pass;
-    @CreatedDate
+
     @Column(name = "apply_time")
     private String applyTime;
 

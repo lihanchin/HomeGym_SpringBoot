@@ -9,6 +9,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.UUID;
 
 @Slf4j
 public class GlobalService {
@@ -20,20 +21,22 @@ public class GlobalService {
 
     //寫進資料夾的方法
     public static String imageSaveToFile(String data, File folder,Integer id,String evt) {
-
-        String s ="static";
+        System.out.println("準備寫進資料夾==============================================");
+        String s = "static";
         int index = s.length();
         //取名用
         int start = folder.toString().lastIndexOf("static");
         String folderPath= folder.toString().substring(start+index);
+        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = folder.toString().substring(start+index+1)+id.toString();
+        String name = folder.toString().substring(start+index+1)+"_"+id.toString();
+        System.out.println("filename======================================================"+name);
         File file = new File(folder,name+evt);
-
+        System.out.println("file.toString()===================================="+file.toString());
         try {
             OutputStream out = new FileOutputStream(file);
             out.write(bytes);
@@ -43,7 +46,7 @@ public class GlobalService {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-
-        return folderPath+"\\"+name+evt;
+        System.out.println("存到資料庫的名字=============="+folderPath+"\\"+name+"_"+uuid+evt);
+        return folderPath+"\\"+name+"_"+uuid+evt;
     }
 }

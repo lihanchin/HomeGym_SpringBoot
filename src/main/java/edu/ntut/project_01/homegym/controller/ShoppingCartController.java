@@ -39,7 +39,7 @@ public class ShoppingCartController {
     }
 
     //目前只差接不到綠界傳回來的參數
-    @PostMapping("/shoppingCart")
+    @PostMapping("/checkout")
     ResponseEntity<Map> useECPAY(@RequestBody String[] checkOut, HttpServletRequest httpServletRequest) {
 
 //        綠界產生訂單需要的參數

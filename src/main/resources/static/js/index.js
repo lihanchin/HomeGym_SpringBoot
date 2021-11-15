@@ -23,8 +23,29 @@ function subimtShow(){
     },1000);
 }
 
+//動畫
+VanillaTilt.init(document.querySelectorAll(".box"), {
+    max: 30,
+    speed: 400,
+    glare: true,
+    transition:true,
+    "max-glare": 1
+});
+let box = document.querySelector(".box");
+let ani = document.querySelector(".ani")
+box.addEventListener("mouseover",function(){
+    box.classList.add("active");
+});
+box.addEventListener("mouseout",function(){
+    box.classList.remove("active")
+});
 
-////////
+ani.addEventListener("animationend",function(){
+    ani.classList.add("scal")
+});
+
+
+
 
 
 
