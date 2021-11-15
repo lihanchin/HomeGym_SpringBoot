@@ -8,7 +8,7 @@ new Vue({
     },
     methods: {
         pushCourseValue(item){
-            this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'https://fakeimg.pl/500x400/';
+            this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'/product?id='+item.courseId;
         },
         filter(){
             let partOfBody = this.partOfBody
