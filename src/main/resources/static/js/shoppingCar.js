@@ -129,4 +129,3 @@ function createBlankArea(){
     document.getElementById('cartList').appendChild(div)
 }
 
-window.addEventListener('load', doFirst);
