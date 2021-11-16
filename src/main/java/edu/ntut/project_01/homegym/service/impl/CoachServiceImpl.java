@@ -34,13 +34,15 @@ public class CoachServiceImpl implements CoachService {
         theCoach.setCoachInfo(coach.getCoachInfo());
 
         if(coach.getCoachImage() != null&& !coach.getCoachImage().equals(theCoach.getCoachImage())){
+            System.out.println("通過判斷=================================================================================");
             File imageFolder = new File("/src/main/resources/static/coachImages");
             System.out.println(imageFolder);
             if(!imageFolder.exists()){
                 imageFolder.mkdirs();
             }
+            System.out.println(coach.getCoachImage()+"coach.getCoachImage()==========================================================================");
             String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,coachId,".jpg");
-            System.out.println("coachImagePath======="+coachImagePath);
+            System.out.println("coachImagePath========================================================================"+coachImagePath);
             theCoach.setCoachImage(coachImagePath);
         }
 

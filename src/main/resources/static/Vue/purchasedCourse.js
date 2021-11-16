@@ -22,6 +22,7 @@ new Vue({
         fqaUserIndex:'',
         //接收後端留言評價
         comment:[ ],
+        totalPage:"",
         //接收後端留言評價
         coachName:[ ],
         //接收後課程資料
@@ -54,20 +55,15 @@ new Vue({
                     star : star,
                     commentContent : comment,
                 }, {
-
                     headers: {
                         Authorization: token
                     }
                 }).then((res) =>{
-
                 console.log(res);
                 console.log("請求結束")
-                axios.get("/store/"+id).then((res) =>{
-                    console.log(res);
-                    this.course = res.data.course
-                    this.coach = res.data.coach
-                    this.coachName = res.data.coachName
-                    this.comment = res.data.commentlist
+                axios.get("/course/"+id+"/showComment").then((res) =>{
+                    this.comment = res.data.courseComment
+                    this.totalPage = res.data.totalPage
                 });
             })
 
@@ -188,5 +184,10 @@ new Vue({
             window.alert("請重新登入");
             window.location.replace("/");
         })
+
+        axios.get("/course/"+id+"/showComment").then((res) =>{
+            this.comment = res.data.courseComment
+            this.totalPage = res.data.totalPage
+        });
     }
 });
