@@ -62,9 +62,8 @@ public class CoachAreaController {
         System.out.println(coachId);
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
-
-
         showCourse = courseService.findCourseByCoachArea(coachId, 0, size);
+        System.out.println(showCourse);
         storeDetail = new HashMap<>();
         storeDetail.put("currentPage", showCourse.getContent());
         storeDetail.put("totalPage", showCourse.getTotalPages());

@@ -1,5 +1,5 @@
 new Vue({
-    el:"#app",
+    el:"#course",
     data:{
         currentPage:[],
         totalPage:"",

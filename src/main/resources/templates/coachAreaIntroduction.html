@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="./css/all.min.css">
 </head>
 <body>
-
-
-
     <!-- 導覽列 10/3更新-->
     <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
         <div class="container-fluid">
@@ -352,7 +349,9 @@
                                 <div class="col-6">
                                     <form action="" method="GET">
                                         <div class="col-7 mb-3">
-                                            <img class="p-2 img-fluid" id="output" :src="coach.coachImage" alt="">
+                                            <div style="height: 200px; width: 200px; overflow: hidden; display: flex; align-items:center ">
+                                                <img class="p-2 img-fluid" id="output" :src="coach.coachImage" alt="">
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <!-- 綁定顯示圖片(upPicture.js)方法 -->

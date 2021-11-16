@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -37,6 +39,14 @@ public class CourseCommentServiceImpl implements CourseCommentService {
     public Page<CourseComment> findCourseComment(Integer courseId, Integer pageNo, Integer size) {
         PageRequest pageRequest = PageRequest.of(pageNo, size);
         return courseCommentRepository.findCourseCommentByCourse_CourseId(courseId,pageRequest);
+    }
+
+    @Override
+    public Map<String, Object> counntStarAndComment(Integer courseId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("commentAmount",courseCommentRepository.countComment(courseId).intValue());
+        map.put("star",courseCommentRepository.countStar(courseId));
+        return map;
     }
 
 

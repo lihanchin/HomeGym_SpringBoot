@@ -48,7 +48,7 @@ public class ShowViewController {
         return "memberAreaApplyForCoach"; //成為教練
     }
 
-    @GetMapping("/checkout")
+    @GetMapping("/check")
     public String checkout() {
 
         return "checkout" ; //金流結帳畫面

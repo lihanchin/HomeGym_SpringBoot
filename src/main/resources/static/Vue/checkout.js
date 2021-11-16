@@ -1,4 +1,4 @@
-let storage = localStorage;
+
 let  token = localStorage.getItem("Authorization")
 new Vue({
     el:"#app",
@@ -6,7 +6,7 @@ new Vue({
         paymentPage:"",
     },
     mounted() {
-        let itemString = storage.getItem('addItemList');
+        let itemString = localStorage.getItem('addItemList');
         items = itemString.substr(0, itemString.length - 2).split('， ');
 
         courseId = [];
