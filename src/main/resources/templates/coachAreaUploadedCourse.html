@@ -296,8 +296,138 @@
             </div>
 
         </div>
-
         <div id="app">
+        <!-- 上傳畫面，彈跳視窗 -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">上傳課程</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="dropArea" class="modal-body d-flex justify-content-center pt-6 pb-6">
+                        <form class="box d-flex flex-column align-items-center" action="" method="GET">
+                            <i class="fa fa-cloud-upload fs-1" aria-hidden="true"></i>
+                            <h3 class="mb-3">將你要上傳的影片拖曳到這裡</h3>
+                            <p class="mb-3">影片在審核通過前會呈現私人狀態</p>
+                            <form action="" method="GET">
+                                <div class="mb-3">
+                                    <input class="form-control" type="file" id="fileupload" @change="fileChange()"
+                                           accept="video/*">
+                                </div>
+                            </form>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btCancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelInputFile()">取消</button>
+                        <button id="nextStep" type="button" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" >下一步</button>
+                        <!-- <button id="nextStep" type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">下一步</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上傳完畢填寫資料，彈跳視窗 -->
+        <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel2">編輯課程</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="needs_validation_up_video" novalidate>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <video :src="video.videoupload" id="courseVideo" class="w-100"></video>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 row">
+                                            <label for="course_name" class="col-sm-2 col-form-label">課程名稱</label>
+                                            <div class="col-10">
+                                                <input type="text" class="form-control" id="course_name" value="" v-model="video.videoName"  placeholder="請輸入">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-sm-2 col-form-label">課程分類</label>
+                                            <div class="col-10">
+                                                <select class="form-select mb-3" id="course_classification" aria-label="Default select example" v-model="video.partOfBody">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label class="col-sm-2 col-form-label">課程圖片</label>
+                                            <div class="col-10">
+                                                <input class="form-control" type="file" accept="image/*" @change="selectedCoachImg" >
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="course_price" class="col-sm-2 col-form-label">課程售價</label>
+                                            <div class="col-10">
+                                                <input type="text" class="form-control" id="course_price" value="" v-model="video.price"  placeholder="請輸入">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="course_equipment" class="col-sm-2 col-form-label">課程器材</label>
+                                            <div class="col-10">
+                                                <input type="text" class="form-control" id="course_equipment" value="" v-model="video.equipment"  placeholder="請輸入">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="course_fit_person" class="col-sm-2 col-form-label">適合哪些人</label>
+                                        <div class="col-12">
+                                            <textarea type="text" class="form-control" id="course_fit_person" rows="5"  v-model="video.level"  value=""  placeholder="請輸入"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="course_content" class="col-sm-2 col-form-label">課程介紹</label>
+                                        <div class="col-12">
+                                            <textarea type="text" class="form-control" id="course_content" rows="5" value=""  v-model="video.videoInfo"   placeholder="請輸入"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary " data-bs-target="#staticBackdrop" data-bs-toggle="modal" data-bs-dismiss="modal">回上一步</button>
+                        <button id="submit_up_video" type="submit" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal" @click="videoUpload">送出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上傳送出，待審查，彈跳視窗 -->
+        <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel3">上傳完成</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-5">
+                        <p class="text-center fs-5">目前課程已送去審核</p>
+                        <p class="text-center fs-5">審核時間約3~5天</p>
+                        <p class="text-center fs-5">審核結果出來時</p>
+                        <p class="text-center fs-5">會寄送Email通知</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-dismiss="modal">完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div id="course">
         <!-- 導覽列<第二層> -->
          <nav class="nav_second"> 
              <div class="nav d-flex align-items-center border-bottom border-top">
@@ -422,138 +552,7 @@
                  </div>
              </div>
          </section>
-
-            <!-- 上傳畫面，彈跳視窗 -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">上傳課程</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div id="dropArea" class="modal-body d-flex justify-content-center pt-6 pb-6">
-                            <form class="box d-flex flex-column align-items-center" action="" method="GET">
-                                <i class="fa fa-cloud-upload fs-1" aria-hidden="true"></i>
-                                <h3 class="mb-3">將你要上傳的影片拖曳到這裡</h3>
-                                <p class="mb-3">影片在審核通過前會呈現私人狀態</p>
-                                <form action="" method="GET">
-                                    <div class="mb-3">
-                                        <input class="form-control" type="file" id="fileupload" @change="fileChange()"
-                                               accept="video/*">
-                                    </div>
-                                </form>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="btCancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelInputFile()">取消</button>
-                            <button id="nextStep" type="button" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" >下一步</button>
-                            <!-- <button id="nextStep" type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">下一步</button> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 上傳完畢填寫資料，彈跳視窗 -->
-            <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel2">編輯課程</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form id="needs_validation_up_video" novalidate>
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <video :src="video.videoupload" id="courseVideo" class="w-100"></video>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="mb-3 row">
-                                                <label for="course_name" class="col-sm-2 col-form-label">課程名稱</label>
-                                                <div class="col-10">
-                                                    <input type="text" class="form-control" id="course_name" value="" v-model="video.videoName"  placeholder="請輸入">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label class="col-sm-2 col-form-label">課程分類</label>
-                                                <div class="col-10">
-                                                    <select class="form-select mb-3" id="course_classification" aria-label="Default select example" v-model="video.partOfBody">
-                                                        <option selected>Open this select menu</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label class="col-sm-2 col-form-label">課程圖片</label>
-                                                <div class="col-10">
-                                                    <input class="form-control" type="file" accept="image/*" @change="selectedCoachImg" >
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="course_price" class="col-sm-2 col-form-label">課程售價</label>
-                                                <div class="col-10">
-                                                    <input type="text" class="form-control" id="course_price" value="" v-model="video.price"  placeholder="請輸入">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="course_equipment" class="col-sm-2 col-form-label">課程器材</label>
-                                                <div class="col-10">
-                                                    <input type="text" class="form-control" id="course_equipment" value="" v-model="video.equipment"  placeholder="請輸入">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label for="course_fit_person" class="col-sm-2 col-form-label">適合哪些人</label>
-                                            <div class="col-12">
-                                                <textarea type="text" class="form-control" id="course_fit_person" rows="5"  v-model="video.level"  value=""  placeholder="請輸入"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <label for="course_content" class="col-sm-2 col-form-label">課程介紹</label>
-                                            <div class="col-12">
-                                                <textarea type="text" class="form-control" id="course_content" rows="5" value=""  v-model="video.videoInfo"   placeholder="請輸入"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <button class="btn btn-outline-primary " data-bs-target="#staticBackdrop" data-bs-toggle="modal" data-bs-dismiss="modal">回上一步</button>
-                            <button id="submit_up_video" type="submit" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal" @click="videoUpload">送出</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 上傳送出，待審查，彈跳視窗 -->
-            <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered ">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalToggleLabel3">上傳完成</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body p-5">
-                            <p class="text-center fs-5">目前課程已送去審核</p>
-                            <p class="text-center fs-5">審核時間約3~5天</p>
-                            <p class="text-center fs-5">審核結果出來時</p>
-                            <p class="text-center fs-5">會寄送Email通知</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" data-bs-dismiss="modal">完成</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-    </div>
+        </div>
 
     
 </body>
@@ -567,5 +566,6 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
 <script src="./Vue/coachAreasUploadedCourse.js"></script>
+<script src="./Vue/coachAreasIntroduction.js"></script>
 <script src="./Vue/navContent.js"></script>
 </html>

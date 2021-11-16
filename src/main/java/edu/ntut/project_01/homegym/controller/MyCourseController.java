@@ -38,6 +38,7 @@ public class MyCourseController {
     ResponseEntity<Map<String, Object>> myCourse(@RequestParam(required = false) Integer page, HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(requestHeader);
         Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+        System.out.println("memberId=========="+memberId);
         Integer totalPage = orderService.totalPageByStatus(memberId,Arrays.asList("付款完成"),pageSize);
         Map<String, Object> courseResponse = new HashMap<>();
         PageRequest pageRequest;

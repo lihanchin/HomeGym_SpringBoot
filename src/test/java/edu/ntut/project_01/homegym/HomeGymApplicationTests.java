@@ -25,18 +25,22 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeGymApplicationTests {
-//    @Autowired
-//    private CourseRepository courseRepository;
-//    @Autowired
-//    private MemberRepository memberRepository;
-//    @Autowired
-//    private OrdersRepository ordersRepository;
-//    @Autowired
-//    private JavaMailSender mailSender;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private CourseCommentRepository coursecCommentRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private OrdersRepository ordersRepository;
+    @Autowired
+    private JavaMailSender mailSender;
 //
-//    @Test
-//    void contextLoads() {
-//    }
+    @Test
+    void countComment() {
+        System.out.println(coursecCommentRepository.countStar(3));
+
+    }
 //
 //    @Test
 //    void insertTest() {

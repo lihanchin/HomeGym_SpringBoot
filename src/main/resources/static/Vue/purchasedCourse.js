@@ -37,6 +37,7 @@ new Vue({
             memberImage:""
         }
 
+
     },
     methods: {
 
@@ -179,11 +180,12 @@ new Vue({
             this.member.memberName = res.data.name
             this.member.memberImage = 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
             this.fqa = res.data.fqaList
-        }).catch(error =>{
-            console.log(error.response.data.message)
-            window.alert("請重新登入");
-            window.location.replace("/");
         })
+        //     .catch(error =>{
+        //     console.log(error.response.data.message)
+        //     window.alert("請重新登入");
+        //     window.location.replace("/");
+        // })
 
         axios.get("/course/"+id+"/showComment").then((res) =>{
             this.comment = res.data.courseComment

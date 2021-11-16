@@ -18,7 +18,7 @@ new Vue({
                     Authorization: token
                 }
             }).then((res) =>{
-                console.log(res)
+                console.log(res.data)
                 this.status="登入"
             }).catch(error =>{
                 console.log(error.response.data)
@@ -52,8 +52,10 @@ new Vue({
                 username : this.login.email,
                 password:this.login.password,
             }).then((res) =>{
+                console.log("登入中")
                 console.log(res.data.JWT)
                 localStorage.setItem("Authorization","Bearer "+res.data.JWT);
+                console.log("登入結束")
                 window.location.reload()
             })
 

@@ -17,7 +17,7 @@ new Vue({
             courseId.push(id)
         });
         console.log(courseId)
-        axios.post(`/check`,courseId , {
+        axios.post(`/checkout`,courseId , {
             headers: {
                 Authorization: token
             }

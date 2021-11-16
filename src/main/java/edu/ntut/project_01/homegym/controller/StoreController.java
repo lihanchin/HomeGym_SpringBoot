@@ -3,6 +3,7 @@ package edu.ntut.project_01.homegym.controller;
 import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.CourseComment;
+import edu.ntut.project_01.homegym.service.CourseCommentService;
 import edu.ntut.project_01.homegym.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.QueryException;
@@ -25,6 +26,8 @@ public class StoreController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CourseCommentService courseCommentService;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${course.countsPerPage}")
@@ -39,8 +42,8 @@ public class StoreController {
         for(Course course:showCourse.getContent()){
             String name = course.getCoach().getMember().getName();
             if(!course.getCourseComments().isEmpty()){
-                Integer star = courseService.countStar(course.getCourseId());
-                course.setStar(star);
+                Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+                course.setStarAndComment(amount);
             }
             course.setCoachName(name);
         }
@@ -65,8 +68,8 @@ public class StoreController {
             for(Course course:showCourse.getContent()){
                 String name = course.getCoach().getMember().getName();
                 if(!course.getCourseComments().isEmpty()){
-                    Integer star = courseService.countStar(course.getCourseId());
-                    course.setStar(star);
+                    Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+                    course.setStarAndComment(amount);
                 }
                 course.setCoachName(name);
             }
@@ -84,8 +87,8 @@ public class StoreController {
                     for(Course course:showCourse.getContent()){
                         String name = course.getCoach().getMember().getName();
                         if(!course.getCourseComments().isEmpty()){
-                            Integer star = courseService.countStar(course.getCourseId());
-                            course.setStar(star);
+                            Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+                            course.setStarAndComment(amount);
                         }
                         course.setCoachName(name);
                     }
@@ -101,8 +104,8 @@ public class StoreController {
                     for(Course course:showCourse.getContent()){
                         String name = course.getCoach().getMember().getName();
                         if(!course.getCourseComments().isEmpty()){
-                            Integer star = courseService.countStar(course.getCourseId());
-                            course.setStar(star);
+                            Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+                            course.setStarAndComment(amount);
                         }
                         course.setCoachName(name);
                     }
@@ -118,8 +121,8 @@ public class StoreController {
             for(Course course:showCourse.getContent()){
                 String name = course.getCoach().getMember().getName();
                 if(!course.getCourseComments().isEmpty()){
-                    Integer star = courseService.countStar(course.getCourseId());
-                    course.setStar(star);
+                    Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+                    course.setStarAndComment(amount);
                 }
                 course.setCoachName(name);
             }
@@ -130,7 +133,7 @@ public class StoreController {
         }
     }
 
-    //課程詳細頁(包含教練資訊)
+    //未購買課程詳細頁(包含教練資訊)
     @GetMapping("/{id}")
     Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
 
@@ -138,6 +141,10 @@ public class StoreController {
         Map<String,Object> map = new HashMap<>();
         Optional<Course> course  = courseService.findById(id);
         if(course.isPresent()){
+            if(!course.get().getCourseComments().isEmpty()){
+                Map<String,Object> amount = courseCommentService.counntStarAndComment(course.get().getCourseId());
+                course.get().setStarAndComment(amount);
+            }
             Coach coach = course.get().getCoach();
             String coachName = coach.getMember().getName();
             List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());

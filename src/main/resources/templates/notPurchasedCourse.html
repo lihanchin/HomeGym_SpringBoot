@@ -302,38 +302,36 @@
             <div class="container">
                 <div class="row">
                     <!-- 課程影片 -->
-                    <div class="col-7">
-                        <video class="w-100" src="./video/video.mp4" controls></video>
+                    <div class="col-8">
+                        <video class="w-100" :src="course.coursePath" controls></video>
                     </div>
                     <!-- 課程資訊 -->
-                    <div class="col-5 pe-5 d-flex flex-column justify-content-center">
-                        <h2>{{course.courseName}}</h2>
-                        <div class="d-flex">
-                            <p class="me-3 badge bg-secondary bg-dark">{{course.partOfBody}}</p>
+                    <div class="col-4 pe-5 d-flex flex-column justify-content-around ">
+                        <div>
+                            <div class="evaluation d-flex">
+                                <h3 class="me-3">{{course.courseName}}</h3>
+                                <div class="stars d-flex flex-row-reverse justify-content-end align-items-center" >
+                                    ({{course.starAndComment.commentAmount}})
+                                    <i class="fa fa-star" aria-hidden="true" v-for="n in course.starAndComment.star" ></i>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <p class="me-3 badge bg-secondary bg-dark">{{course.partOfBody}}</p>
+                            </div>
+                            <h5>{{coachName}} 教練</h5>
                         </div>
-                        <h5>{{coachName}} 教練</h5>
-                        <p>{{course.courseInfo}}</p>
-                        <p>價錢：$ <span>{{course.price}}</span></p>
-                        <div class="d-flex flex-column w-50 ">
-                            <div class="like_btn">
-                                <button type="button" class="btn btn-outline-primary mb-2" @click="shoppingToggle">
-                                    <div v-if="shopping.isLike">
-                                        <div v-html="shopping.islinkIcon"></div>
-                                    </div>
-                                    <div v-else>
-                                        <div v-html="shopping.notLinkIcon"></div>
-                                    </div>
-                                </button>
-                                <button type="button" class="btn btn-outline-primary" @click="keepToggle">
-                                    <div v-if="keep.isLike">
-                                        <div v-html="keep.islinkIcon"></div>
-                                    </div>
-                                    <div v-else>
-                                        <div v-html="keep.notLinkIcon"></div>
-                                    </div>
-                                </button> 
-                            </div> 
-                        </div>  
+                        <div class="like_btn">
+                            <p>價錢：$ <span>{{course.price}}</span></p>
+                            <button type="button" class="btn btn-outline-primary mb-2" @click="shoppingToggle">
+                                <div v-if="shopping.isLike">
+                                    <div v-html="shopping.islinkIcon"></div>
+                                </div>
+                                <div v-else>
+                                    <div v-html="shopping.notLinkIcon"></div>
+                                </div>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
