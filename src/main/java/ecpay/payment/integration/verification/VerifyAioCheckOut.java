@@ -1,5 +1,6 @@
 package ecpay.payment.integration.verification;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import ecpay.payment.integration.exception.EcpayException;
 
 public class VerifyAioCheckOut extends PaymentVerifyBase {
 
-	public VerifyAioCheckOut(){
+	public VerifyAioCheckOut() throws IOException {
 		super();
 	}
 	

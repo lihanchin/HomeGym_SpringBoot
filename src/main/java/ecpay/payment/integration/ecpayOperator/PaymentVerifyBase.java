@@ -1,11 +1,14 @@
 package ecpay.payment.integration.ecpayOperator;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -14,12 +17,14 @@ import ecpay.payment.integration.exception.EcpayException;
 
 public class PaymentVerifyBase{
 	//設定EcpayPayment.xml的path
-	protected String confPath = "src/main/java/ecpay/payment/integration/config/EcpayPayment.xml";
+//	protected String confPath = "src/main/java/ecpay/payment/integration/config/EcpayPayment.xml";
 	protected Document doc;
-	public PaymentVerifyBase(){
+	public PaymentVerifyBase() throws IOException {
 //		URL fileURL = this.getClass().getResource(confPath);
 //		doc = EcpayFunction.xmlParser(fileURL.toString());
-		doc = EcpayFunction.xmlParser(confPath);
+//		doc = EcpayFunction.xmlParser(confPath);
+		Resource resource = new ClassPathResource("EcpayPayment.xml");
+		doc = EcpayFunction.newDocumentFromInputStream(resource.getInputStream());
 		doc.getDocumentElement().normalize();
 	}
 	

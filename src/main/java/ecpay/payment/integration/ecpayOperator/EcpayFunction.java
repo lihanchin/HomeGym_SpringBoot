@@ -1,9 +1,6 @@
 package ecpay.payment.integration.ecpayOperator;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -34,10 +31,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import ecpay.payment.integration.config.EcpayConfig;
 import ecpay.payment.integration.errorMsg.ErrorMessage;
 import ecpay.payment.integration.exception.EcpayException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * 共用函式
@@ -259,7 +260,30 @@ public class EcpayFunction {
 		}
 		
 	}
-	
+
+	public static Document newDocumentFromInputStream(InputStream in) {
+		DocumentBuilderFactory factory = null;
+		DocumentBuilder builder = null;
+		Document ret = null;
+
+		try {
+			factory = DocumentBuilderFactory.newInstance();
+			builder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ret = builder.parse(new InputSource(in));
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+
 	/**
 	 * 信任所有憑證.
 	 * @param connection

@@ -33,7 +33,7 @@ public class GlobalService {
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = folder.toString().substring(start+index+1)+"_"+id.toString();
+        String name = folder.toString().substring(start+index+1)+id.toString();
         System.out.println("filename======================================================"+name);
         File file = new File(folder,name+evt);
         System.out.println("file.toString()===================================="+file.toString());
@@ -47,6 +47,6 @@ public class GlobalService {
             System.out.println("失敗");
         }
         System.out.println("存到資料庫的名字=============="+folderPath+"\\"+name+"_"+uuid+evt);
-        return folderPath+"\\"+name+"_"+uuid+evt;
+        return folderPath+"\\"+name+evt;
     }
 }

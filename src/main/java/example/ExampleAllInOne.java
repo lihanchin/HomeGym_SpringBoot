@@ -2,9 +2,7 @@ package example;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.UUID;
+import java.util.*;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
@@ -27,10 +25,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class ExampleAllInOne {
 
-	@Value("${hg.url}")
-	private static String ourUrl;
-
 	public static AllInOne all;
+	private static final Calendar currentTime = Calendar.getInstance(Locale.CHINESE);
 	public static void main(String[] args) {
 		initial();
 //		System.out.println("compare CheckMacValue method testing result: " + cmprChkMacValue());
@@ -139,14 +135,13 @@ public class ExampleAllInOne {
 		return form;
 	}
 	
-	public static String genAioCheckOutALL(String orderId, String price, String orderItems){
-
+	public static String genAioCheckOutALL(String orderId, String price, String orderItems, String ourUrl){
 		AioCheckOutALL obj = new AioCheckOutALL();
 		obj.setMerchantTradeNo(orderId);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		obj.setMerchantTradeDate(sdf.format(new Date(System.currentTimeMillis())));
+		obj.setMerchantTradeDate(sdf.format(currentTime.getTime()));
 		obj.setTotalAmount(price);
-		obj.setTradeDesc("HomeGym~~~");
+		obj.setTradeDesc("HomeGym");
 		obj.setItemName(orderItems);
 		obj.setReturnURL(ourUrl + "/ecpayResponse");
 		obj.setNeedExtraPaidInfo("Y");

@@ -1,8 +1,11 @@
 package ecpay.payment.integration;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -30,15 +33,17 @@ public class AllInOneBase {
 	protected static Document verifyDoc;
 	protected static String[] ignorePayment;
 	public AllInOneBase(){
-//		try{
+		try{
 			Document doc;
 			/* when using web project*/
-//			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 //			String configPath = URLDecoder.decode(classLoader.getResource("/payment_conf.xml").getPath(), "UTF-8");
+			Resource resource = new ClassPathResource("payment_conf.xml");
 //			doc = EcpayFunction.xmlParser(configPath);
+			doc = EcpayFunction.newDocumentFromInputStream(resource.getInputStream());
 			/* when using testing code*/
-			String paymentConfPath = "./src/main/resources/payment_conf.xml";
-			doc = EcpayFunction.xmlParser(paymentConfPath);
+//			String paymentConfPath = "./src/main/resources/payment_conf.xml";
+//			doc = EcpayFunction.xmlParser(paymentConfPath);
 			
 			doc.getDocumentElement().normalize();
 			//OperatingMode
@@ -71,8 +76,10 @@ public class AllInOneBase {
 			if(HashKey == null){
 				throw new EcpayException(ErrorMessage.MInfo_NOT_SETTING);
 			}
-//		} catch(UnsupportedEncodingException e){
-//			e.printStackTrace();
-//		}
+		} catch(UnsupportedEncodingException e){
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
