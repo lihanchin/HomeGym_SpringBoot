@@ -52,15 +52,13 @@
                         </ul>
                     </div>
                 </li>
-                <img class="member_img ms-4 rounded-circle" src="https://fakeimg.pl/50x50/" alt="...">
+                <div class=" ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
+                    <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
+                </div>
                 <li class="nav-item">
-                    <div class="top ms-3 text-center " v-if="status =='登入'">
-                        <span class="text-white">Ruby |</span>
-                        <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#" @click="logout">登出</a>
-                    </div>
-                    <div class="top ms-3 text-center "v-if="status =='登出'">
-                        <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊 |</a>
-                        <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
+                    <div class="top ms-3 text-center " >
+                        <a class="text-white" id="changeName">{{memberName}} |</a><!--姓名/註冊-->
+                        <a class="text-white" href="" data-bs-toggle="modal" :data-bs-target="statusTarget" id="changeStatus">{{status}}</a>
                     </div>
 
                     <div class="buttom text-center ms-3 dropdown">
@@ -303,12 +301,12 @@
                     <div class="col-11 m-auto">
                         <div class="evaluation d-flex justify-content-between">
                             <h3>{{course.courseName}}</h3>
-                            <div class="stars d-flex flex-row-reverse justify-content-end align-items-center" >
-<!--                                ({{course.starAndComment.commentAmount}})-->
-                                <i class="fa fa-star" aria-hidden="true" v-for="n in course.starAndComment.star" :key="n"></i>
-                            </div>
                         </div>
                         <video class="w-100" :src="course.coursePath" controls></video>
+                        <div class="stars d-flex flex-row-reverse justify-content-start align-items-center" >
+                            ({{starAndComment.commentAmount}})
+                            <i class="fa fa-star" aria-hidden="true" v-for="n in starAndComment.star" :key="n"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -330,7 +328,7 @@
                       <button class="nav-link" id="course_fqa_tab" data-bs-toggle="tab" data-bs-target="#course_fqa" type="button" role="tab" aria-controls="profile" aria-selected="false">FQA</button>
                     </li>
                 </ul>
-                
+
                 <div class="tab-content" id="myTabContent">
                     <!-- 課程說明 -->
                     <div class="tab-pane fade show active mb-6" id="course_explanation" role="tabpanel" aria-labelledby="course_explanation_tab">
@@ -357,13 +355,13 @@
                                         <p><span>教練名稱：</span> {{coachName}}</p>
                                         <p><span>專長：</span> {{coach.skill}}</p>
                                         <p><span>經歷：</span> {{coach.experience}}</p>
-        
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-    
+
                     <!-- 課程評論 -->
                     <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
                        <div  v-if="comment !=''">
@@ -439,8 +437,8 @@
                             </ul>
                         </nav>
                     </div>
-                    
-    
+
+
                     <!-- FQA -->
                     <div class="tab-pane fade" id="course_fqa" role="tabpanel" aria-labelledby="profile-tab">
                         <!-- 送出發問 <FQA> -->

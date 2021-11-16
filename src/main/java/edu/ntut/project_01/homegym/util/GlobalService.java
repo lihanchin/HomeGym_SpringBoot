@@ -1,17 +1,11 @@
 package edu.ntut.project_01.homegym.util;
 
-import lombok.extern.slf4j.Slf4j;
 
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialClob;
 import java.io.*;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.UUID;
 
-@Slf4j
+
 public class GlobalService {
 
     public static byte[] hgImg(){
@@ -27,7 +21,7 @@ public class GlobalService {
         //取名用
         int start = folder.toString().lastIndexOf("static");
         String folderPath= folder.toString().substring(start+index);
-        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
+//        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);

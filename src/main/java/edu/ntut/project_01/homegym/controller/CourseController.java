@@ -3,7 +3,6 @@ package edu.ntut.project_01.homegym.controller;
 import edu.ntut.project_01.homegym.model.*;
 import edu.ntut.project_01.homegym.service.*;
 import edu.ntut.project_01.homegym.util.GlobalService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/course")
 public class CourseController {

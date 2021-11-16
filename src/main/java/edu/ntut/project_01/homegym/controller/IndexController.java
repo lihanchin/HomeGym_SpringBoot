@@ -7,7 +7,7 @@ import edu.ntut.project_01.homegym.model.Visitor;
 import edu.ntut.project_01.homegym.service.AuthService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.service.VisitorService;
-import lombok.extern.slf4j.Slf4j;
+import edu.ntut.project_01.homegym.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
+
 @RestController
 public class IndexController {
 
@@ -32,15 +33,20 @@ public class IndexController {
 
     @Value("${jwt.header}")
     private String authorization;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-//    //檢查JWT
-//    @GetMapping("/checkStatus")
-//    public String checkStatus( HttpServletRequest request) {
-//
-//        String header= request.getHeader(authorization);
-//        Member member = memberService.findMemberByToken(header);
-//        return "registated";
-//    }
+    //檢查JWT
+    @GetMapping("/checkStatus")
+    public Map<String,Object> checkStatus( HttpServletRequest request) {
+        Map<String,Object> map = new HashMap<>();
+        String header= request.getHeader(authorization);
+        Member member = memberService.findMemberByToken(header);
+        map.put("name",member.getName());
+        map.put("mimeType",member.getMimeType());
+        map.put("memberImage",member.getMemberImage());
+        return map;
+    }
 
     //註冊(加入Security)(OK)
     @PostMapping("/regist")
@@ -59,7 +65,7 @@ public class IndexController {
     //登入(加入Security)(OK)
     @PostMapping("/login")
     public ResponseEntity<Map<String,Object>> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
-       log.info("準備傳回會員資料");
+
         System.out.println(authRequest.getUsername());
         System.out.println(authRequest.getPassword());
         return authService.login(authRequest.getUsername(), authRequest.getPassword());

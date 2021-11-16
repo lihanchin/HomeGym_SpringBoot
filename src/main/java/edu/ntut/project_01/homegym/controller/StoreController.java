@@ -5,7 +5,6 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.CourseComment;
 import edu.ntut.project_01.homegym.service.CourseCommentService;
 import edu.ntut.project_01.homegym.service.CourseService;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.QueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/store")
 public class StoreController {
@@ -141,7 +139,7 @@ public class StoreController {
         Map<String,Object> map = new HashMap<>();
         Optional<Course> course  = courseService.findById(id);
         if(course.isPresent()){
-            if(!course.get().getCourseComments().isEmpty()){
+            if(!course.get().getCourseComments().isEmpty()&&course.get().getCourseComments()!=null){
                 Map<String,Object> amount = courseCommentService.counntStarAndComment(course.get().getCourseId());
                 course.get().setStarAndComment(amount);
             }

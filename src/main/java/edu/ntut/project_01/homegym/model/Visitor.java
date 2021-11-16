@@ -18,15 +18,26 @@ public class Visitor {
     private String visitorName;
     @Column(name = "visitor_message")
     private String visitorMessage;
+    @Column(name = "visitor_time")
+    private String visitorTime;
 
     public Visitor() {
     }
 
-    public Visitor(Integer visitorId, String visitorEmail, String visitorName, String visitorMessage) {
+    public Visitor(Integer visitorId, String visitorEmail, String visitorName, String visitorMessage, String visitorTime) {
         this.visitorId = visitorId;
         this.visitorEmail = visitorEmail;
         this.visitorName = visitorName;
         this.visitorMessage = visitorMessage;
+        this.visitorTime = visitorTime;
+    }
+
+    public String getVisitorTime() {
+        return visitorTime;
+    }
+
+    public void setVisitorTime(String visitorTime) {
+        this.visitorTime = visitorTime;
     }
 
     public Integer getVisitorId() {

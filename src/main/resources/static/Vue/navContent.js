@@ -1,31 +1,71 @@
 new Vue({
     el:"#nav",
     data:{
+        memberName:'註冊',
+        memberImage:'null',
+        statusTarget:'',
         status:'',
     },
     methods:{
-        logout(){
-            localStorage.removeItem("Authorization");
-            window.location.reload()
-        },
+
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
         console.log("token========"+token)
+
         if(token!==null){
-            axios.get(`/`,{
+            axios.get(`/checkStatus`,{
                 headers: {
                     Authorization: token
                 }
-            }).then((res) =>{
-                console.log(res.data)
-                this.status="登入"
-            }).catch(error =>{
-                console.log(error.response.data)
+            }).then((res) =>{ //登入時
+                console.log(res)
+                console.log("22222222")
+                //名字那行
+                window.addEventListener("load", ()=>{
+                    let changeStatus = document.querySelector('#changeStatus');
+
+                    changeStatus.addEventListener("click", function (){
+                        localStorage.removeItem("Authorization");
+                        window.location.reload()
+                    });
+                });
+                //登出那行
+                this.statusTarget="#"
+                console.log("登入000000000000000000000")
+                this.memberName=res.data.name
+                this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
+                console.log("登入11111111111111111111111")
                 this.status="登出"
+
+            }).catch((error) =>{ //登出時
+                window.alert("已逾期")
+                localStorage.removeItem("Authorization");
+                window.location.reload()
+                //註冊那行
+                var name = document.getElementById('changeName');
+                name.setAttribute('data-bs-toggle','modal')
+                name.setAttribute('data-bs-target','#signup')
+
+                //登入那行
+                this.statusTarget="#login"
+                this.status="登入"
             })
         }
-        this.status="登出"
+            console.log("8888888")
+            //註冊那行
+            var name = document.getElementById('changeName');
+            name.setAttribute('data-bs-toggle','modal')
+            name.setAttribute('data-bs-target','#signup')
+
+            //登入那行
+            this.statusTarget="#login"
+
+            this.status="登入"
+
+
+
+        console.log("9999999999")
 
     }
 })
@@ -44,6 +84,7 @@ new Vue({
             phone:'',
             birthday:'',
         },
+        memberId:''
 
     },
     methods: {
@@ -70,8 +111,13 @@ new Vue({
                 birthday:this.signup.birthday
 
             }).then((res) =>{
+                console.log("回傳memberId")
                 console.log(res);
+                this.memberId = res.data
 
+            }).catch((erro)=>{
+                console.log(erro);
+                window.alert("請記得連網並一定要輸入可以收信的信箱")
             })
             this.signup.email ="";
             this.signup.password ="";
@@ -79,13 +125,21 @@ new Vue({
             this.signup.phone ="";
             this.signup.birthday ="";
 
+        },
+
+        reSendEmail(){
+            let id = this.memberId.memberId
+            console.log("id--======="+id)
+            axios.get(`/registrations/memberVerification/sendAgain/${id}`,{
+            }).then((res) =>{
+                window.alert("已重寄驗證信");
+            })
         }
         
-    },
+    }
+
 
 });
-
-
 
 
 

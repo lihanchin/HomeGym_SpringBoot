@@ -1,18 +1,20 @@
-let storage = localStorage;
+
 function doFirst(){
-	let itemString = storage.getItem('addItemList');
+    // console.log("itemString=====================")
+	let itemString = localStorage.getItem('addItemList');
     items = itemString.substr(0, itemString.length - 2).split('， ');
     // console.log(items);
     
     total = 0
-    if(storage['addItemList'] == ''){
+    if(localStorage['addItemList'] == ''){
+        // console.log("createBlankArea=====================")
         createBlankArea();
     }else{
-
         //取storage
+        console.log("取localstorage=====================")
         for(let i = 0; i < items.length; i++){
-            let classInfo = storage.getItem(items[i])
-            // console.log(classInfo)
+            let classInfo = localStorage.getItem(items[i])
+            // console.log("classInfo================="+classInfo)
             createCartList(items[i],classInfo);
             let classPrice = parseInt(classInfo.split('|')[2])
             // console.log(classPrice)
@@ -129,4 +131,4 @@ function createBlankArea(){
     div.appendChild(link)
     document.getElementById('cartList').appendChild(div)
 }
-
+window.addEventListener('load',doFirst);

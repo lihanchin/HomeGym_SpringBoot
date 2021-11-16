@@ -18,7 +18,11 @@ new Vue({
         course:{},
         coach:{},
         coachName:"",
-        totalPage:""
+        totalPage:"",
+        starAndComment:{
+            courseStar:0,
+            commentAmount:0
+        }
     },
     methods: {
         keepToggle: function(){
@@ -32,6 +36,10 @@ new Vue({
     },
     mounted() {
         axios.get("/store/"+id).then((res) =>{
+            if(res.data.course.starAndComment!=null){
+                this.starAndComment = res.data.course.starAndComment
+
+            }
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName

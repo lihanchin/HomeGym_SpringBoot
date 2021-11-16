@@ -54,17 +54,14 @@
                                 </ul>
                             </div>
                         </li>
-                        <img class="member_img ms-4 rounded-circle" src="https://fakeimg.pl/50x50/" alt="...">
+                        <div class=" ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
+                            <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
+                        </div>
                         <li class="nav-item">
-                            <div class="top ms-3 text-center " v-if="status =='登入'">
-                                <span class="text-white">Ruby |</span>
-                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#" @click="logout">登出</a>
+                            <div class="top ms-3 text-center " >
+                                <a class="text-white" id="changeName">{{memberName}} |</a><!--姓名/註冊-->
+                                <a class="text-white" href="" data-bs-toggle="modal" :data-bs-target="statusTarget" id="changeStatus">{{status}}</a>
                             </div>
-                            <div class="top ms-3 text-center "v-if="status =='登出'">
-                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊 |</a>
-                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
-                            </div>
-
                             <div class="buttom text-center ms-3 dropdown">
                                 <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
                                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">

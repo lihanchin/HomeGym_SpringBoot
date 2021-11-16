@@ -22,9 +22,9 @@ public class Orders {
     private Integer totalPrice;
     @Column(name = "order_status")
     private String orderStatus;
-    @CreatedDate
+
     @Column(name = "order_time")
-    private Date orderTime;
+    private String orderTime;
 
     @ManyToOne
     @JsonIgnore
@@ -45,7 +45,7 @@ public class Orders {
         this.courses = courses;
     }
 
-    public Orders(String orderId, Integer totalPrice, String orderStatus, Date orderTime, Member member, Set<Course> courses) {
+    public Orders(String orderId, Integer totalPrice, String orderStatus, String orderTime, Member member, Set<Course> courses) {
         this.orderId = orderId;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
@@ -78,11 +78,11 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
-    public Date getOrderTime() {
+    public String getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(Date orderTime) {
+    public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
     }
 

@@ -26,7 +26,9 @@ new Vue({
         //接收後端留言評價
         coachName:[ ],
         //接收後課程資料
-        course:{ },
+        course:{
+            starAndComment:[]
+        },
         //接收後端教練資料
         coach:{ },
         //接收後端FQA
@@ -35,6 +37,10 @@ new Vue({
         member:{
             memberName:"",
             memberImage:""
+        },
+        starAndComment:{
+            courseStar:0,
+            commentAmount:0
         }
 
 
@@ -141,7 +147,7 @@ new Vue({
                             Authorization: token
                         }
                     }).then((res) =>{
-                        console.log(res);
+                        // console.log(res);
                         this.member.memberName = res.data.name
                         this.member.memberImage = 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
                         this.fqa = res.data.fqaList
@@ -164,7 +170,14 @@ new Vue({
     },
     mounted() {
         axios.get("/store/"+id).then((res) =>{
-            console.log(res);
+            console.log("1111")
+            console.log(res.data);
+            if(res.data.course.starAndComment!=null){
+                this.starAndComment = res.data.course.starAndComment
+
+            }
+
+
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName
@@ -176,7 +189,7 @@ new Vue({
                 Authorization: token
             }
         }).then((res) =>{
-            console.log(res);
+            // console.log(res);
             this.member.memberName = res.data.name
             this.member.memberImage = 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
             this.fqa = res.data.fqaList

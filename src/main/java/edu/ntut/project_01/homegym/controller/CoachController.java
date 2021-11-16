@@ -5,7 +5,6 @@ import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.service.CoachService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.util.GlobalService;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Slf4j
+
 @Controller
 public class CoachController {
 

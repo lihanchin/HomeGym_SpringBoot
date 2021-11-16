@@ -57,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<Map<String, Object>> register(Member member) {
+        System.out.println("近來註冊");
         Map<String, Object> memberInfo = new HashMap<>();
         if (!memberRepository.existsMemberByEmail(member.getEmail())) {
             final String rawPassword = member.getPassword();
@@ -69,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
             memberRepository.save(member);
             mailUtil.sendMail(member.getCode(), member.getEmail());
             memberInfo.put("memberId", memberRepository.findMemberByEmail(member.getEmail()).orElseThrow().getMemberId());
+            System.out.println("id媽啊啊啊啊啊啊錒啊啊啊啊啊啊啊啊啊啊"+memberRepository.findMemberByEmail(member.getEmail()).orElseThrow().getMemberId());
             return ResponseEntity.ok().body(memberInfo);
         }
         throw new RegistrationException("此帳號已被使用");
