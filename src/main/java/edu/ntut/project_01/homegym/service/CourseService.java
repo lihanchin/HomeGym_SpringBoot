@@ -27,7 +27,7 @@ public interface CourseService {
     String upload(@RequestBody Course course);
 
     //透過關鍵字篩選課程列表
-    ResponseEntity<List<Course>> findCoursesByKeyword(String keyword);
+    Page<Course> findCoursesByKeyword(String keyword, Integer page, Integer size);
 
     //在教練專區利用Id抓出來的課程，進行分頁還有總頁數
     Page<Course> findCourseByCoachArea (Integer coachId, Integer page, Integer size);

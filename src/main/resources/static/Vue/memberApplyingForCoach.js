@@ -37,7 +37,7 @@ new Vue({
             console.log(this.coach.skill)
             let  token = localStorage.getItem("Authorization")
             console.log(token)
-            axios.post(`/apply`,
+            axios.post(`/coachApply`,
                 {
                 skill : this.coach.skill,
                 experience:this.coach.experience,

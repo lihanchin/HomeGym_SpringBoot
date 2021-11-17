@@ -1,10 +1,12 @@
 package edu.ntut.project_01.homegym.controller;
 
 import edu.ntut.project_01.homegym.model.AuthRequest;
+import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 
 import edu.ntut.project_01.homegym.model.Visitor;
 import edu.ntut.project_01.homegym.service.AuthService;
+import edu.ntut.project_01.homegym.service.CourseService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.service.VisitorService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
@@ -17,24 +19,32 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 @RestController
 public class IndexController {
 
-    @Autowired
     private AuthService authService;
-    @Autowired
     private MemberService memberService;
-    @Autowired
     private VisitorService visitorService;
-
+    private CourseService courseService;
+    private JwtUtil jwtUtil;
 
     @Value("${jwt.header}")
     private String authorization;
+    @Value("${course.countsPerPage}")
+    private Integer SIZE;
+
     @Autowired
-    private JwtUtil jwtUtil;
+    public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, JwtUtil jwtUtil) {
+        this.authService = authService;
+        this.memberService = memberService;
+        this.visitorService = visitorService;
+        this.courseService = courseService;
+        this.jwtUtil = jwtUtil;
+    }
 
     //檢查JWT
     @GetMapping("/checkStatus")
@@ -54,8 +64,6 @@ public class IndexController {
         return authService.register(member);
     }
 
-
-
     //重寄驗證信(OK)
     @GetMapping("/registrations/memberVerification/sendAgain/{memberId}")
     public ResponseEntity<String> sendVerificationAgain(@PathVariable Integer memberId) {
@@ -71,7 +79,13 @@ public class IndexController {
         return authService.login(authRequest.getUsername(), authRequest.getPassword());
     }
 
-
+    @GetMapping("/keyword")
+    public ResponseEntity<List<Course>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page){
+        if(page != null && page!=0){
+            return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,page-1,SIZE).getContent());
+        }
+        return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,0,SIZE).getContent());
+    }
 
     //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)
     @GetMapping("/hello")

@@ -34,7 +34,7 @@ public class MyCourseController {
 
 
     //已買課程分頁(OK)
-    @GetMapping("/myCourse/allCourse")
+    @GetMapping("/myCourses/allCourse")
     ResponseEntity<Map<String, Object>> myCourse(@RequestParam(required = false) Integer page, HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(requestHeader);
         Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();

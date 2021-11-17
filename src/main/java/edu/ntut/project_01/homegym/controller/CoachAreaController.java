@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 
 @RestController
+@PreAuthorize("hasRole('COACH')")
 @RequestMapping("/coachArea")
 public class CoachAreaController {
 
@@ -72,12 +74,12 @@ public class CoachAreaController {
 
     //我的課程關鍵字搜尋
     @GetMapping("/keyword")
-    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword, HttpServletRequest httpServletRequest){
-        String header= httpServletRequest.getHeader(authorization);
-        Member member = memberService.findMemberByToken(header);
-        Integer coachId = member.getCoach().getCoachId();
-
-        return courseService.findCoursesByKeyword(keyword);
+    public ResponseEntity<List<Course>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page,HttpServletRequest httpServletRequest){
+        if(page != null){
+            return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,page,size).getContent());
+        }
+        page = 1;
+        return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,page,size).getContent());
     }
 
     //編輯教練資料

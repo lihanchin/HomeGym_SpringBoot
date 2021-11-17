@@ -66,13 +66,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<List<Course>> findCoursesByKeyword(String keyword) {
-        Optional<List<Course>> courseListByKeyword = courseRepository.findCoursesByCourseNameContaining(keyword);
-        if (courseListByKeyword.isPresent() && courseListByKeyword.get().size() != 0) {
-            return ResponseEntity.ok().body(courseListByKeyword.get());
-            // courseListByKeyword.get();    //如果有過 才會回傳courseListByKeyword(是一個list)
-        }
-        throw new QueryException("查無此關鍵字影片");
+    public Page<Course> findCoursesByKeyword(String keyword, Integer page, Integer size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return courseRepository.findCoursesByCourseNameContaining(keyword, pageRequest);
     }
 
     @Override

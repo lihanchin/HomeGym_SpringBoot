@@ -1,3 +1,4 @@
+let  token = localStorage.getItem("Authorization")
 new Vue({
     el:"#app",
     data:{
@@ -6,8 +7,7 @@ new Vue({
         shoppingCourse:[],
     },
     mounted() {
-        let  token = localStorage.getItem("Authorization")
-        axios.get("/myCourse/allCourse",{
+        axios.get("/myCourses/allCourse",{
             headers: {
                 Authorization: token
             }
