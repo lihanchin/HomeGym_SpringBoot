@@ -107,6 +107,11 @@ public class ShowViewController {
         return "myCoursesAreaPurchasedCourse";
     }
 
+    @GetMapping("/homegymteam")
+    public String showHomeGymTeam() {
+        return "team";
+    }
+
 
 
 }
