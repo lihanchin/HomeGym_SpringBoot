@@ -13,27 +13,53 @@ new Vue({
         },
         filter(){
             let partOfBody = this.partOfBody
-            axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
-                console.log(res.data)
-                this.shoppingCourse = res.data.currentPage;
-                this.totalPage = res.data.totalPage;
-            })
+            console.log("partOfBody---------"+partOfBody)
+            if (partOfBody!=''){
+                axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
+                    console.log("#3333333")
+                    // console.log(res.data)
+                    this.shoppingCourse = res.data.currentPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }else {
+                axios.get("/store/").then((res) =>{
+                    // console.log(res.data)
+                    // console.log(res.data.firstPage)
+                    console.log("000000")
+                    this.shoppingCourse = res.data.firstPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }
+
+
         },
         clickPage(index){
             let partOfBody = this.partOfBody
             let pageNo = index+1
-            axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
-                console.log(res.data)
-                this.shoppingCourse = res.data.currentPage;
-                this.totalPage = res.data.totalPage;
-            })
-        }
+            if(partOfBody!=''){
+                axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+                    // console.log(res.data)
+                    console.log("555555")
+                    this.shoppingCourse = res.data.currentPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }else {
+                axios.get("/store/allCourse?page="+pageNo).then((res) =>{
+                    // console.log(res.data)
+                    console.log("222222")
+                    this.shoppingCourse = res.data.currentPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }
+
+
+        },
     },
     mounted() {
         axios.get("/store/").then((res) =>{
 
-            console.log(res.data)
-            console.log(res.data.firstPage)
+            // console.log(res.data)
+            // console.log(res.data.firstPage)
             this.shoppingCourse = res.data.firstPage;
             this.totalPage = res.data.totalPage;
         })

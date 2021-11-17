@@ -11,7 +11,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 </head>
 <body>
-<!-- 導覽列 10/3更新-->
+<!-- 導覽列 11/16更新-->
 <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
     <div class="container-fluid">
         <div class="navbar-brand d-flex align-items-center">
@@ -185,7 +185,7 @@
                     <div class="modal-footer">
                         <div class="m-auto">
                             <button type="button" onclick="clearFormContent()" class="btn btn-outline-secondary me-3" data-bs-dismiss="modal">取消</button>
-                            <button class="btn btn-outline-primary disabled" @click="memberSignUp()" type="button" id="btn_signup" data-bs-target="#signup_success" data-bs-toggle="modal" data-bs-dismiss="modal">註冊</button>
+                            <button class="btn btn-outline-primary disabled" @click="memberSignUp" type="button" id="btn_signup" data-bs-target="#signup_success" data-bs-toggle="modal" data-bs-dismiss="modal">註冊</button>
                         </div>
                     </div>
                 </form>
@@ -206,7 +206,7 @@
                     <p class="me-3">已將驗證信送至Email</p>
                     <div class="d-flex align-items-end">
                         <!-- 綁定resendMail()方法 -->
-                        <button class="btn btn-outline-primary me-3" id="btResend" onclick="resendMail()">重新發一次驗證信</button>
+                        <button class="btn btn-outline-primary me-3" id="btResend" onclick="resendMail()" @click="reSendEmail">重新發一次驗證信</button>
                         <!-- 動態新增秒數 -->
                         <div class="text-muted" id="countSeconds"></div>
                     </div>
@@ -298,7 +298,7 @@
         <section class="course mt-5 mb-3">
             <div class="container">
                 <div class="row">
-                    <!-- 課程影片 -->
+                    <!-- 課程圖片 -->
                     <div class="col-md-9 col-sm-12">
                         <div style="aspect-ratio: 6 / 4; overflow: hidden;" class="d-flex justify-content-center">
                             <img class="" :src="course.courseImage" controls>
