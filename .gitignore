@@ -34,3 +34,4 @@ build/
 service-logs
 service-logs/all.log
 service-logs
+logs
