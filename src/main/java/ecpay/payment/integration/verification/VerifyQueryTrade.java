@@ -1,5 +1,6 @@
 package ecpay.payment.integration.verification;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import org.w3c.dom.Element;
@@ -11,7 +12,7 @@ import ecpay.payment.integration.errorMsg.ErrorMessage;
 import ecpay.payment.integration.exception.EcpayException;
 
 public class VerifyQueryTrade extends PaymentVerifyBase{
-	public VerifyQueryTrade(){
+	public VerifyQueryTrade() throws IOException {
 		super();
 	}
 	

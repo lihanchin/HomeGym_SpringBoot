@@ -1,5 +1,6 @@
 package ecpay.payment.integration;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,6 +180,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		}catch(Exception e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -206,6 +210,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		}catch(Exception e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -254,6 +261,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		} catch (IOException e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -286,6 +296,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		}catch (IOException e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -319,6 +332,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		}catch (IOException e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -347,6 +363,9 @@ public class AllInOne extends AllInOneBase{
 			e2.ShowExceptionMessage();
 			log.error(e2.getNewExceptionMessage());
 			throw new EcpayException(e2.getNewExceptionMessage());
+		}catch (IOException e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return result;
 	}
@@ -469,6 +488,9 @@ public class AllInOne extends AllInOneBase{
 			e.ShowExceptionMessage();
 			log.error(e.getNewExceptionMessage());
 			throw new EcpayException(e.getNewExceptionMessage());
+		}catch (IOException e){
+			log.error(e.getMessage());
+			throw new EcpayException(e.getMessage());
 		}
 		return out.toString();
 	}
