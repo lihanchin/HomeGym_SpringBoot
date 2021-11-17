@@ -35,7 +35,7 @@ public class CoachServiceImpl implements CoachService {
 
         if(coach.getCoachImage() != null&& !coach.getCoachImage().equals(theCoach.getCoachImage())){
             System.out.println("通過判斷=================================================================================");
-            File imageFolder = new File("/src/main/resources/static/coachImages");
+            File imageFolder = new File("src/main/resources/static/coachImages");
             System.out.println(imageFolder);
             if(!imageFolder.exists()){
                 imageFolder.mkdirs();
