@@ -364,7 +364,9 @@
                                     <div class="card w-100 h-100 cart">
 
                                         <div class="position-relative">
-                                            <img :src="item.courseImage" class="card-img-top" alt="...">
+                                            <div class=" imageBox">
+                                                <img :src="item.courseImage" class="card-img-top" alt="...">
+                                            </div>
                                             <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
                                                 <a class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
                                                     <input type="hidden" :value="CourseValue" >
