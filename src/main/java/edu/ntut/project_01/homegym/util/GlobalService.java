@@ -21,7 +21,7 @@ public class GlobalService {
         //取名用
         int start = folder.toString().lastIndexOf("static");
         String folderPath= folder.toString().substring(start+index);
-//        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
+        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);

@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.model.CourseComment;
 import edu.ntut.project_01.homegym.repository.CoachRepository;
 import edu.ntut.project_01.homegym.repository.CourseCommentRepository;
 import edu.ntut.project_01.homegym.service.CourseCommentService;
+import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

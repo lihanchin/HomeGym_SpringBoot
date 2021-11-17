@@ -33,6 +33,22 @@ new Vue({
             this.shopping.isLike = !this.shopping.isLike;
             console.log(this.shopping.isLike);
         },
+        clickPage(index){
+            console.log(index)
+
+            let pageNo = index+1
+            console.log(pageNo)
+            axios.get("/course/"+id+"/showComment?pageNo="+pageNo).then((res) =>{
+                // console.log(res.data)
+                console.log("555555")
+                console.log(res.data)
+                this.courseComment = res.data.courseComment;
+                this.totalPage = res.data.totalPage;
+            })
+        },
+        pushCourseValue(item){
+            this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'/product?id='+item.courseId;
+        },
     },
     mounted() {
         axios.get("/store/"+id).then((res) =>{

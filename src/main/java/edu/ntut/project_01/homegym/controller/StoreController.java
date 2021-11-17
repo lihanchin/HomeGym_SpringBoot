@@ -145,7 +145,6 @@ public class StoreController {
             }
             Coach coach = course.get().getCoach();
             String coachName = coach.getMember().getName();
-            List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
 
             map.put("course",course.get());
             map.put("coach",coach);

@@ -31,7 +31,7 @@ public class Course {
 
     @Column(name = "part_of_body")
     private String partOfBody;
-    @Column(name = "course_image")
+    @Column(name = "course_image",columnDefinition = "LONGTEXT")
     private String courseImage;
     @CreatedDate
     @Column(name = "upload_time")

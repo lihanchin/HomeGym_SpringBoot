@@ -7,11 +7,36 @@ new Vue({
         status:'',
     },
     methods:{
+        cleartest(){
+            console.log(this.status)
+            console.log(status)
+            console.log(this.memberName)
+            return
+            localStorage.clear();
+            console.log("333")
+            if(this.status=="登出"){
+                window.location.reload()
+
+            }
+        },
 
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
         // console.log("token========"+token)
+
+        // window.addEventListener("load", () =>{
+        //     let changeStatus = document.getElementById('changeStatus');
+        //     // console.log(changeStatus)
+        //     console.log("changeStatus")
+        //     changeStatus.addEventListener("click",
+        //             function (){
+        //
+        //             localStorage.clear();
+        //             window.location.reload()
+        //         }
+        //     );
+        // });
 
         if(token!==null){
             axios.get(`/checkStatus`,{
@@ -24,16 +49,22 @@ new Vue({
                 this.memberName=res.data.name
                 this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
                 this.status="登出"
-                window.addEventListener("load", ()=>{
-                    let changeStatus = document.querySelector('#changeStatus');
-                    changeStatus.addEventListener("click", function (){
-                        localStorage.clear();
-                        window.location.reload()
-                    });
-                });
+                // window.addEventListener("load", ()=>{
+                //     let changeStatus = document.getElementById('changeStatus');
+                //     console.log(changeStatus)
+                //     console.log("changeStatus")
+                //     changeStatus.addEventListener("click", cleartest()
+                //     //     function (){
+                //     //     localStorage.clear();
+                //     //     window.location.reload()
+                //     // }
+                //     );
+                // });
+                console.log("在登入")
+                let abcd = document.querySelector(".abcd");
+                abcd.setAttribute("id","changeStatus");
+
                 //登出那行
-
-
             }).catch((error) =>{ //登出時
                 // window.alert("已逾期,請重新登入")
                 localStorage.clear();
@@ -61,6 +92,19 @@ new Vue({
             // console.log("9999999999")
 
         }
+
+        window.addEventListener("load", () =>{
+            let changeStatus = document.getElementById('changeStatus');
+            // console.log(changeStatus)
+            console.log("changeStatus")
+            changeStatus.addEventListener("mousedown",
+                function (){
+
+                    localStorage.clear();
+                    window.location.reload()
+                }
+            );
+        });
 
     }
 })
