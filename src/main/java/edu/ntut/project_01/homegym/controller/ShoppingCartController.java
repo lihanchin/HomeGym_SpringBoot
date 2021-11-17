@@ -8,6 +8,8 @@ import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
 import example.ExampleAllInOne;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -26,10 +28,14 @@ public class ShoppingCartController {
     private static AllInOne all;
     @Value("${jwt.header}")
     private String HEADER;
+    @Value("${hg.url}")
+    private String ourUrl;
     private String authorizationHeader;
     private CourseRepository courseRepository;
     private MemberService memberService;
     private OrdersRepository ordersRepository;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public ShoppingCartController(CourseRepository courseRepository, MemberService memberService, OrdersRepository ordersRepository) {
@@ -59,14 +65,14 @@ public class ShoppingCartController {
             Optional<Course> course = courseRepository.findById(Integer.valueOf(checkOut[i]));
             orderCourses.add(course.orElseThrow());
 
-                String courseName = course.get().getCourseName();
-                Integer coursePrice = course.get().getPrice();
-                orderPriceAmount += coursePrice;
-                if (i == 0) {
-                    orderItems.append(courseName + " 價錢：" + coursePrice);
-                } else {
-                    orderItems.append(" # " + courseName + " 價錢：" + coursePrice);
-                }
+            String courseName = course.get().getCourseName();
+            Integer coursePrice = course.get().getPrice();
+            orderPriceAmount += coursePrice;
+            if (i == 0) {
+                orderItems.append(courseName + " 價錢：" + coursePrice);
+            } else {
+                orderItems.append(" # " + courseName + " 價錢：" + coursePrice);
+            }
 
         }
 
@@ -78,7 +84,7 @@ public class ShoppingCartController {
         ExampleAllInOne exampleAllInOne = new ExampleAllInOne();
         ExampleAllInOne.initial();
         Map<String, String> map = new HashMap<>();
-        String paymentPage = exampleAllInOne.genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString());
+        String paymentPage = exampleAllInOne.genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), ourUrl);
         if (paymentPage != null) {
             map.put("paymentPage", paymentPage);
             System.out.println(paymentPage);
@@ -90,18 +96,33 @@ public class ShoppingCartController {
 
 
     @PostMapping("/ecpayResponse")
-    public String ecpayResponse(Map<String, Object> ecPayResponse) {
-        String orderId = ecPayResponse.get("MerchantTradeNo").toString();
-        Integer paymentStatus = Integer.valueOf(ecPayResponse.get("RtnCode").toString());
+    public String ecpayResponse(@RequestBody String ecPayResponse) {
+
+        String[] responses = ecPayResponse.split("&");
+        Map<String, String> detail = new HashMap<>();
+
+        for (int i = 1; i < responses.length; i++) {
+            String[] detailKeyAndValue = responses[i].split("=");
+            if (detailKeyAndValue.length == 1) {
+                detail.put(detailKeyAndValue[0], "none");
+            } else {
+                detail.put(detailKeyAndValue[0], detailKeyAndValue[1]);
+            }
+
+        }
+        logger.info("ecpayResponse: (Map)" + detail);
+
+        String orderId = detail.get("MerchantTradeNo");
+        Integer paymentStatus = Integer.valueOf(detail.get("RtnCode"));
 
         Optional<Orders> order = ordersRepository.findById(orderId);
         if (paymentStatus == 1) {
             order.orElseThrow().setOrderStatus("付款成功");
         } else {
-            order.orElseThrow().setOrderStatus("付款失敗");
+            order.orElseThrow().setOrderStatus("付款失敗" + paymentStatus);
         }
         ordersRepository.save(order.get());
-        return "OK";
+        return "1|OK";
     }
 }
 

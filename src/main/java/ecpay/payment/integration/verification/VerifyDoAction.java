@@ -1,5 +1,6 @@
 package ecpay.payment.integration.verification;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -10,7 +11,7 @@ import ecpay.payment.integration.exception.EcpayException;
 
 public class VerifyDoAction extends PaymentVerifyBase {
 
-	public VerifyDoAction(){
+	public VerifyDoAction() throws IOException {
 		super();
 	}
 	

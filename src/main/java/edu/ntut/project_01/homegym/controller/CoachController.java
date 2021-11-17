@@ -54,7 +54,7 @@ public class CoachController {
         String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,memberId,".jpg");
 
         //存到certification
-        File certificationFolder = new File("src/main/resources/static/certification");
+        File certificationFolder = new File("src/main/resources/static/cerification");
         System.out.println(certificationFolder);
         if(!certificationFolder.exists()){
             certificationFolder.mkdirs();

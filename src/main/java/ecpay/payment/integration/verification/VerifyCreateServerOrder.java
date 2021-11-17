@@ -1,5 +1,6 @@
 package ecpay.payment.integration.verification;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import org.w3c.dom.Element;
@@ -12,7 +13,7 @@ import ecpay.payment.integration.ecpayOperator.PaymentVerifyBase;
 
 public class VerifyCreateServerOrder extends PaymentVerifyBase{
 	
-	public VerifyCreateServerOrder(){
+	public VerifyCreateServerOrder() throws IOException {
 		super();
 	}
 	
