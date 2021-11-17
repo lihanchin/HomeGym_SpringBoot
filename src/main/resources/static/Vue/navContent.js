@@ -13,13 +13,17 @@ new Vue({
         let  token = localStorage.getItem("Authorization")
         // console.log("token========"+token)
 
-        // if(token!==null){
+        if(token!==null){
             axios.get(`/checkStatus`,{
                 headers: {
                     Authorization: token
                 }
             }).then((res) =>{ //登入時
-
+                console.log("登入中")
+                this.statusTarget="#"
+                this.memberName=res.data.name
+                this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
+                this.status="登出"
                 window.addEventListener("load", ()=>{
                     let changeStatus = document.querySelector('#changeStatus');
                     changeStatus.addEventListener("click", function (){
@@ -28,13 +32,9 @@ new Vue({
                     });
                 });
                 //登出那行
-                this.statusTarget="#"
-                this.memberName=res.data.name
-                this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
-                this.status="登出"
 
-            })
-                .catch((error) =>{ //登出時
+
+            }).catch((error) =>{ //登出時
                 // window.alert("已逾期,請重新登入")
                 localStorage.clear();
                 // window.location.replace("/");
@@ -48,19 +48,19 @@ new Vue({
                 this.statusTarget="#login"
                 this.status="登入"
             })
-        // }else {
+        }else {
             //註冊那行
-            // var name = document.getElementById('changeName');
-            // name.setAttribute('data-bs-toggle','modal')
-            // name.setAttribute('data-bs-target','#signup')
-            // name.setAttribute('href','')
-            // //登入那行
-            // this.statusTarget="#login"
-            //
-            // this.status="登入"
+            var name = document.getElementById('changeName');
+            name.setAttribute('data-bs-toggle','modal')
+            name.setAttribute('data-bs-target','#signup')
+            name.setAttribute('href','')
+            //登入那行
+            this.statusTarget="#login"
+
+            this.status="登入"
             // console.log("9999999999")
 
-        // }
+        }
 
     }
 })
@@ -92,7 +92,15 @@ new Vue({
                 // console.log(res.data.JWT)
                 localStorage.setItem("Authorization","Bearer "+res.data.JWT);
                 // console.log("登入結束")
+                var loginBtn = document.getElementById('loginBtn');
+                loginBtn.setAttribute('data-bs-dismiss','modal')
                 window.location.reload()
+
+            }).catch((err)=>{
+                let error = document.querySelector(".errortext");
+                console.error(err)
+                // window.alert("輸入錯誤")
+                    error.classList.add('show');
             })
 
         },

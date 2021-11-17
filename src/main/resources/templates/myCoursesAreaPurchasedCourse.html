@@ -99,7 +99,7 @@
                         <label for="password" class="form-label">密碼</label>
                         <!-- 密碼正則表達式 -->
                         <input class="form-control" type="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$" v-model.trim="login.password" required></input>
-                        <p class="text-danger invalid-feedback">信箱或密碼錯誤</p>
+                        <p class="text-danger hide errortext">信箱或密碼錯誤</p>
                     </div>
                 </div>
                 <div class="text-end pe-3">
@@ -108,7 +108,7 @@
                 <div class="modal-footer">
                     <div class="m-auto">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
-                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" data-bs-dismiss="modal">登入</button>
+                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
                     </div>
                 </div>
                 <!--                    </form>-->
@@ -339,14 +339,14 @@
                                         <i class="fa fa-star" aria-hidden="true" v-for="n in item.star"></i>
                                     </div>
                                 </div>
-
-                                <h5 class="card-title" >{{item.courseName}}</h5>
-                                <div class="d-flex">
-                                    <p class="me-3 badge bg-secondary bg-dark">{{item.partOfBody}}</p>
-<!--                                    <p class="me-3 badge bg-secondary bg-dark">buyedCourse[index].locationTag</p>-->
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 class="card-title">{{item.courseName}}</h5>
+                                    <h6 class="pe-3">{{item.coachName}} 教練</h6>
                                 </div>
-                                <h6 class="pe-3">{{item.coachName}}</h6>
-                                <p class="card-text">{{item.courseInfo}}</p>
+                                <div >
+                                    <p class="me-3 badge bg-secondary bg-dark">{{item.partOfBody}}</p>
+                                </div>
+<!--                                <p class="card-text">{{item.courseInfo}}</p>-->
                                 <a :href=`/course?id=${item.courseId}` class="btn btn-primary d-block mt-auto">課程觀看</a>
                             </div>
                         </div>

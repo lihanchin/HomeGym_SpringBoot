@@ -99,7 +99,7 @@
                         <label for="password" class="form-label">密碼</label>
                         <!-- 密碼正則表達式 -->
                         <input class="form-control" type="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$" v-model.trim="login.password" required></input>
-                        <p class="text-danger invalid-feedback">信箱或密碼錯誤</p>
+                        <p class="text-danger hide errortext">信箱或密碼錯誤</p>
                     </div>
                 </div>
                 <div class="text-end pe-3">
@@ -108,7 +108,7 @@
                 <div class="modal-footer">
                     <div class="m-auto">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
-                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" data-bs-dismiss="modal">登入</button>
+                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
                     </div>
                 </div>
                 <!--                    </form>-->
@@ -477,23 +477,23 @@
                                  <!-- 已上傳課程項目 <動態新增> -->
                                  <div class="card d-flex flex-row row mb-3" v-for="(item,index) in currentPage" >
                                      <div class="card-header col-3 d-flex align-items-center border-0">
-                                         <img :src="currentPage[index].courseImage" class="card-img-top w-100" alt="...">
+                                         <img :src="item.courseImage" class="card-img-top w-100" alt="...">
                                      </div>
                                      <div class="card-body col-7 justify-content-between d-flex flex-column">
                                          <div>
                                              <div class="d-flex justify-content-between">
-                                                 <h5 class="card-title mt-4">{{currentPage[index].courseName}}</h5>
+                                                 <h5 class="card-title mt-4">{{item.courseName}}</h5>
                                                  <div class="star">
-<!--                                                     <i class="fa fa-star" aria-hidden="true" v-for="n in uploadedCourse[index].star"></i>-->
+                                                     <i class="fa fa-star" aria-hidden="true" v-for="n in item.star"></i>
                                                  </div>
                                              </div>
                                              <div class="d-flex">
-                                                 <p class="me-3 badge bg-secondary bg-dark">課程編號:HGCS{{currentPage[index].courseId}}</p>
-                                                 <p class="me-3 badge bg-secondary bg-dark">課程分類:{{currentPage[index].partOfBody}}</p>
+                                                 <p class="me-3 badge bg-secondary bg-dark">課程編號:HGCS{{item.courseId}}</p>
+                                                 <p class="me-3 badge bg-secondary bg-dark">課程分類:{{item.partOfBody}}</p>
                                              </div>
                                          </div>
 <!--                                         v-if="item.id !== cacheContent.id"-->
-                                         <p class="card-text mb-auto" >{{currentPage[index].courseInfo}}</p>
+<!--                                         <p class="card-text mb-auto" >{{item.courseInfo}}</p>-->
 <!--                                         <textarea class="form-control" rows="6" v-if="item.id === cacheContent.id" v-model="cacheTitle" ></textarea>-->
 
 <!--                                         <button  class="btn btn-outline-primary" @click="editContent(item)" v-if="item.id !== cacheContent.id"><i class="fa fa-pencil" aria-hidden="true"></i>-->
@@ -502,33 +502,34 @@
 <!--                                         <button  class="btn btn-outline-primary" @click="editDone(item)" v-if="item.id === cacheContent.id"><i class="fa fa-pencil" aria-hidden="true"></i>-->
 <!--                                             編輯完成 -->
 <!--                                         </button>-->
-                                         <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" :data-bs-target="'#course'+currentPage[index].courseId">
+                                         <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" :data-bs-target="'#course'+item.courseId">
                                              影片內容
                                          </button>
                                      </div>
                                      <div class="card-footer d-flex flex-column justify-content-center align-items-center col-2 border-0">
-                                         <p class="text-warning" v-if="currentPage[index].pass==0">
+                                         <p class="text-warning" v-if="item.pass==0">
                                              狀態：審核中
                                          </p>
-                                         <p class="text-primary" v-if="currentPage[index].checked==1">
+                                         <p class="text-primary" v-if="item.checked==1">
                                              狀態：審核通過
                                          </p>
-                                         <p class="text-danger" v-if="currentPage[index].checked==0&currentPage[index].pass==1">
+                                         <p class="text-danger" v-if="item.checked==0&item.pass==1">
                                              狀態：審核未過
                                          </p>
-                                         <p>審核時間:{{currentPage[index].checkTime}}</p>
+<!--                                         <p>申請時間:{{item.uploadTime}}</p>-->
+                                         <p>審核時間:{{item.checkTime}}</p>
                                      </div>
 
                                      <!--   影片點擊<彈跳視窗>    -->
-                                     <div class="modal fade" :id="'course'+currentPage[index].courseId" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                     <div class="modal fade" :id="'course'+item.courseId" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                          <div class="modal-dialog modal-lg modal-dialog-centered">
                                              <div class="modal-content">
                                                  <div class="modal-header">
-                                                     <h5 class="modal-title" id="exampleModalLabel">{{currentPage[index].courseName}}</h5>
+                                                     <h5 class="modal-title" id="exampleModalLabel">{{item.courseName}}</h5>
                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                  </div>
                                                  <div class="modal-body">
-                                                     <video class="w-100" :src="currentPage[index].coursePath" controls></video>
+                                                     <video class="w-100" :src="item.coursePath" controls></video>
 
                                                  </div>
 

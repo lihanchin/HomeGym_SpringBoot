@@ -13,7 +13,7 @@
 </head>
 <body>
 <!-- 導覽列 11/16更新-->
-<nav class="mmain_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
+<nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
     <div class="container-fluid">
         <div class="navbar-brand d-flex align-items-center">
             <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
@@ -100,7 +100,7 @@
                         <label for="password" class="form-label">密碼</label>
                         <!-- 密碼正則表達式 -->
                         <input class="form-control" type="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$" v-model.trim="login.password" required></input>
-                        <p class="text-danger invalid-feedback">信箱或密碼錯誤</p>
+                        <p class="text-danger hide errortext">信箱或密碼錯誤</p>
                     </div>
                 </div>
                 <div class="text-end pe-3">
@@ -109,7 +109,7 @@
                 <div class="modal-footer">
                     <div class="m-auto">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
-                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" data-bs-dismiss="modal">登入</button>
+                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
                     </div>
                 </div>
                 <!--                    </form>-->
