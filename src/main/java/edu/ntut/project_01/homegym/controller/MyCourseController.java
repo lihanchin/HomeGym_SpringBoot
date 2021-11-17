@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,31 +33,17 @@ public class MyCourseController {
     @Autowired
     private OrderService orderService;
 
-
     //已買課程分頁(OK)
     @GetMapping("/myCourses/allCourse")
-    ResponseEntity<Map<String, Object>> myCourse(@RequestParam(required = false) Integer page, HttpServletRequest request) {
+    ResponseEntity<Map<String, Object>> myCourse(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(requestHeader);
         Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
-        Integer totalPage = orderService.totalPageByStatus(memberId,Arrays.asList("付款完成"),pageSize);
         Map<String, Object> courseResponse = new HashMap<>();
-        PageRequest pageRequest;
-        Page<Orders> ordersPage;
-        if (page != null) {
-            if (page > 0 && page<= totalPage) {
-                pageRequest = PageRequest.of(page-1 ,pageSize);
-                ordersPage =orderService.findOrdersByMemberIdAndStatus(memberId, Arrays.asList("付款完成"),pageRequest);
-                courseResponse.put("totalPage", totalPage);
-                courseResponse.put("courseList", orderService.statusOrderDetail(ordersPage));
-                return ResponseEntity.ok().body(courseResponse);
-            }
-            throw new QueryException("頁數不得小於、等於0");
-        }
-        pageRequest = PageRequest.of(0 ,pageSize);
-        ordersPage =orderService.findOrdersByMemberIdAndStatus(memberId, Arrays.asList("付款完成"),pageRequest);
 
-        courseResponse.put("totalPage", totalPage);
-        courseResponse.put("courseList", orderService.statusOrderDetail(ordersPage));
+        List<Orders> okOrders =orderService.findOrdersByMemberIdAndOKStatus(memberId, "付款成功");
+
+
+        courseResponse.put("courseList", orderService.okStatusCourses(okOrders));
         return ResponseEntity.ok().body(courseResponse);
 
     }

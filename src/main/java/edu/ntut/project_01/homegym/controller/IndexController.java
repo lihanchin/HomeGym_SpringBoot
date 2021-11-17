@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -79,12 +78,18 @@ public class IndexController {
         return authService.login(authRequest.getUsername(), authRequest.getPassword());
     }
 
+    //關鍵字查詢
     @GetMapping("/keyword")
-    public ResponseEntity<List<Course>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page){
+    public ResponseEntity<Map<String,Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page){
+        Map<String,Object> response = new HashMap<>();
         if(page != null && page!=0){
-            return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,page-1,SIZE).getContent());
+            response.put("courseList",courseService.findCoursesByKeyword(keyword,page-1,SIZE).getContent());
+            response.put("totalPage",courseService.findCoursesByKeyword(keyword,page-1,SIZE).getTotalPages());
+        }else {
+            response.put("courseList",courseService.findCoursesByKeyword(keyword,0,SIZE).getContent());
+            response.put("totalPage",courseService.findCoursesByKeyword(keyword,0,SIZE).getTotalPages());
         }
-        return ResponseEntity.ok().body(courseService.findCoursesByKeyword(keyword,0,SIZE).getContent());
+        return ResponseEntity.ok().body(response);
     }
 
     //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)

@@ -17,5 +17,5 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     Page<Course> findCourseByCoach_CoachId(Integer coachId, Pageable pageable);
     //從課程Table中抓，利用課程名稱做關鍵字查詢在首頁和教練專區都有使用到
     Page<Course> findCoursesByCourseNameContaining(String keyword, Pageable pageable);   //一個interface
-
+    Page<Course> findCoursesByCoach_CoachIdAndCourseNameContaining(Integer coachId, String keyword, Pageable pageable);
 }

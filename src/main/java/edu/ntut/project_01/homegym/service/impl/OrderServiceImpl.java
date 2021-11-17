@@ -27,21 +27,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Orders> findOrdersByMemberIdAndStatus(Integer memberId, Collection<String> status, Pageable pageable) {
-        System.out.println("memberId"+memberId+"==================");
-        System.out.println("status"+status.toString()+"=====================");
-        System.out.println("pageable"+pageable.toString()+"=====================");
-        Page<Orders> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusIn(memberId, status, pageable);
-        System.out.println(okOrders.getContent());
-        if (okOrders != null) {
-            return okOrders;
+    public List<Orders> findOrdersByMemberIdAndOKStatus(Integer memberId, String status) {
+        Optional<List<Orders>> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusContaining(memberId, status);
+        if (okOrders.isPresent()) {
+            return okOrders.get();
         }
         throw new QueryException("會員尚無已完成訂單");
     }
 
+
     @Override
-    public Integer totalPageByStatus(Integer memberId, Collection<String> status, Integer size) {
-        Optional<List<Orders>> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusIn(memberId, status);
+    public Page<Orders> findOrdersByMemberIdAndStatus(Integer memberId, String status, Pageable pageable) {
+        System.out.println("memberId" + memberId + "==================");
+        System.out.println("status" + status + "=====================");
+        System.out.println("pageable" + pageable.toString() + "=====================");
+        Page<Orders> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusContaining(memberId, status, pageable);
+        System.out.println(okOrders.getContent());
+        return okOrders;
+
+    }
+
+    @Override
+    public Integer totalPageByStatus(Integer memberId, String status, Integer size) {
+        Optional<List<Orders>> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusContaining(memberId, status);
         if (okOrders.isPresent()) {
             return (int) Math.ceil(okOrders.get().size() / (double) size);
         }
@@ -54,11 +62,11 @@ public class OrderServiceImpl implements OrderService {
         List<Course> courseList = new ArrayList<>();
         String coachName;
 
-        for (Orders o : orders) {
+        for (Orders o : orders.getContent()) {
 //            System.out.println("訂單人姓名＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝" + o.getMember().getName());
 
             Set<Course> courses = o.getCourses();
-            for(Course v: courses){
+            for (Course v : courses) {
                 coachName = v.getCoach().getMember().getName();
                 System.out.println(coachName);
                 v.setCoachName(coachName);
@@ -72,15 +80,31 @@ public class OrderServiceImpl implements OrderService {
         return courseList;
     }
 
+    @Override
+    public List<Course> okStatusCourses(List<Orders> orders) {
+        List<Course> courseList = new ArrayList<>();
+        String coachName;
+
+        for (Orders o : orders) {
+            Set<Course> courses = o.getCourses();
+            for (Course v : courses) {
+                coachName = v.getCoach().getMember().getName();
+                System.out.println(coachName);
+                v.setCoachName(coachName);
+            }
+            courseList.addAll(courses);
+        }
+        return courseList;
+    }
 
     @Override
-    public Map<String, Object> orderPage(Integer memberId, Collection<String> status, Integer page, Integer totalPage) {
+    public Map<String, Object> orderPage(Integer memberId, String status, Integer page, Integer totalPage) {
         System.out.println("進入orderpage方法====================");
         PageRequest pageRequest = PageRequest.of(page, totalPage);
         Page<Orders> currentPage = findOrdersByMemberIdAndStatus(memberId, status, pageRequest);
         Map<String, Object> orderPageResponse = new HashMap<>();
-        System.out.println("currentPage.getContent()=============="+currentPage.getContent());
-        System.out.println("statusOrderDetail(currentPage)=============="+statusOrderDetail(currentPage));
+        System.out.println("currentPage.getContent()==============" + currentPage.getContent());
+        System.out.println("statusOrderDetail(currentPage)==============" + statusOrderDetail(currentPage));
         orderPageResponse.put("currentPage", currentPage.getContent());
         orderPageResponse.put("totalPage", currentPage.getTotalPages());
         orderPageResponse.put("orderDetail", statusOrderDetail(currentPage));
