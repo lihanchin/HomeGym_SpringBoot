@@ -12,41 +12,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
 @RestController
+@PreAuthorize("hasRole('COACH')")
 @RequestMapping("/coachArea")
 public class CoachAreaController {
 
     @Value("${course.countsPerPage}")
     private Integer size;
     @Value("${jwt.header}")
-    private String HEADER;
+    private String authorization;
     private String authorizationHeader;
     private Integer coachId;
 
-    @Autowired
     private CourseService courseService;
-    @Autowired
     private CoachService coachService;
-    @Autowired
     private CoachRepository coachRepository;
-    @Autowired
     private MemberService memberService;
 
-    @Value("${jwt.header}")
-    private String authorization;
+    @Autowired
+    public CoachAreaController(CourseService courseService, CoachService coachService, CoachRepository coachRepository, MemberService memberService) {
+        this.courseService = courseService;
+        this.coachService = coachService;
+        this.coachRepository = coachRepository;
+        this.memberService = memberService;
+    }
 
     //載入教練資料
     @GetMapping("/")
     public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        authorizationHeader = httpServletRequest.getHeader(authorization);
         Member member = memberService.findMemberByToken(authorizationHeader);
         Coach coach = member.getCoach();
         return ResponseEntity.ok().body(coach);
@@ -54,15 +56,21 @@ public class CoachAreaController {
 
     //顯示課程
     @GetMapping("/mycourse")
-    ResponseEntity<Map<String, Object>> coachmycourse(@RequestParam(required = false) Integer page,HttpServletRequest httpServletRequest){
+    ResponseEntity<Map<String, Object>> coachmycourse(@RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
 
-        String header= httpServletRequest.getHeader(authorization);
+        String header = httpServletRequest.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
         Integer coachId = member.getCoach().getCoachId();
         System.out.println(coachId);
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
-        showCourse = courseService.findCourseByCoachArea(coachId, 0, size);
+
+        if (page != null) {
+            showCourse = courseService.findCourseByCoachArea(coachId, page, size);
+        } else {
+            showCourse = courseService.findCourseByCoachArea(coachId, 0, size);
+        }
+
         System.out.println(showCourse);
         storeDetail = new HashMap<>();
         storeDetail.put("currentPage", showCourse.getContent());
@@ -72,28 +80,37 @@ public class CoachAreaController {
 
     //我的課程關鍵字搜尋
     @GetMapping("/keyword")
-    public ResponseEntity<List<Course>> keyword(@RequestParam(required = false) String keyword, HttpServletRequest httpServletRequest){
-        String header= httpServletRequest.getHeader(authorization);
+    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page, HttpServletRequest httpServletRequest) {
+
+        String header = httpServletRequest.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
         Integer coachId = member.getCoach().getCoachId();
+        Map<String, Object> response = new HashMap<>();
 
-        return courseService.findCoursesByKeyword(keyword);
+        if (page != null) {
+            response.put("courseList", courseService.findCoursesByCoachAndName(coachId, keyword, page - 1, size).getContent());
+            response.put("totalPage", courseService.findCoursesByCoachAndName(coachId, keyword, page - 1, size).getTotalPages());
+        } else {
+            response.put("courseList", courseService.findCoursesByCoachAndName(coachId, keyword, 0, size).getContent());
+            response.put("totalPage", courseService.findCoursesByCoachAndName(coachId, keyword, 0, size).getTotalPages());
+        }
+
+        return ResponseEntity.ok().body(response);
     }
 
     //編輯教練資料
     @PutMapping("/editInfo")
-    public ResponseEntity<Map<String,Object>> editCoachInfo(@RequestBody Coach coach, HttpServletRequest httpServletRequest){
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
+    public ResponseEntity<Map<String, Object>> editCoachInfo(@RequestBody Coach coach, HttpServletRequest httpServletRequest) {
+        authorizationHeader = httpServletRequest.getHeader(authorization);
         coachId = memberService.findMemberByToken(authorizationHeader).getCoach().getCoachId();
-        Map<String,Object> editResponse = new HashMap<>();
+        Map<String, Object> editResponse = new HashMap<>();
 
-        String message = coachService.edit(coach,coachId);
+        String message = coachService.edit(coach, coachId);
 
         editResponse.put("coachInfo", coachRepository.findById(coachId));
-        editResponse.put("message",message);
+        editResponse.put("message", message);
 
         return ResponseEntity.ok().body(editResponse);
     }
-
 
 }

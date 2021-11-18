@@ -14,8 +14,10 @@ public interface OrdersRepository extends JpaRepository<Orders,String> {
     Page<Orders> findOrdersByOrderStatusIn(Collection<String> orderStatus, Pageable pageable);
 
     //依照memberId尋找「自訂狀態」的訂單，並分頁
-    Page<Orders> findOrdersByMember_MemberIdAndOrderStatusIn(Integer memberId, Collection<String> orderStatus, Pageable pageable);
+    Page<Orders> findOrdersByMember_MemberIdAndOrderStatusContaining(Integer memberId, String orderStatus, Pageable pageable);
 
     //依照memberId尋找「自訂狀態」的訂單
-    Optional<List<Orders>> findOrdersByMember_MemberIdAndOrderStatusIn(Integer memberId, Collection<String> orderStatus);
+    Optional<List<Orders>> findOrdersByMember_MemberIdAndOrderStatusContaining(Integer memberId, String orderStatus);
+
+    Page<Orders> findOrdersByMember_MemberId(Integer memberId, Pageable pageable);
 }
