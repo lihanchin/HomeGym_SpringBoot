@@ -5,6 +5,7 @@ new Vue({
         memberImage:'null',
         statusTarget:'',
         status:'',
+        search:'',
     },
     methods:{
         cleartest(){
@@ -19,6 +20,8 @@ new Vue({
 
             }
         },
+        searchKeyword(){
+            window.location.replace("/shop?keyword="+this.search);
 
     },
     mounted(){
@@ -105,9 +108,9 @@ new Vue({
                 }
             );
         });
-
     }
-})
+    }
+});
 
 new Vue({
     el:"#nav_content",

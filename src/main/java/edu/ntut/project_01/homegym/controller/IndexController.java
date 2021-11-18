@@ -36,9 +36,9 @@ public class IndexController {
 
     @Value("${jwt.header}")
     private String authorization;
-    @Value("${course.countsPerPage}")
-    private Integer SIZE;
 
+
+    @Autowired
     public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, JwtUtil jwtUtil, MailUtil mailUtil) {
         this.authService = authService;
         this.memberService = memberService;
@@ -48,7 +48,7 @@ public class IndexController {
         this.mailUtil = mailUtil;
     }
 
-    @Autowired
+
 
 
     //檢查JWT
@@ -82,20 +82,6 @@ public class IndexController {
         System.out.println(authRequest.getUsername());
         System.out.println(authRequest.getPassword());
         return authService.login(authRequest.getUsername(), authRequest.getPassword());
-    }
-
-    //關鍵字查詢
-    @GetMapping("/keyword")
-    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page) {
-        Map<String, Object> response = new HashMap<>();
-        if (page != null && page != 0) {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, SIZE).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, SIZE).getTotalPages());
-        } else {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, 0, SIZE).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, 0, SIZE).getTotalPages());
-        }
-        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/addMessage")

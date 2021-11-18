@@ -38,6 +38,13 @@ public class ShowViewController {
 
         return "shopping" ; //商城
     }
+
+    @GetMapping("/shop?keyword={keyword}")
+    public String search() {
+
+        return "shopping" ; //商城
+    }
+
     @GetMapping("/shoppingCart")
     public String checkOut() {
 

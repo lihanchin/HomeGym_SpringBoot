@@ -1,4 +1,5 @@
-
+let keyword = (location.search.split('='))[1]
+let page = (location.search.split('='))[2]
 new Vue({
     el:"#app",
     data:{
@@ -56,14 +57,24 @@ new Vue({
         },
     },
     mounted() {
+
         axios.get("/store/").then((res) =>{
 
             // console.log(res.data)
             // console.log(res.data.firstPage)
             this.shoppingCourse = res.data.firstPage;
             this.totalPage = res.data.totalPage;
-        })
+        }),
+            axios.get("/store?keyword="+keyword+"&page="+page).then((res) =>{
+
+                // console.log(res.data)
+                // console.log(res.data.firstPage)
+                this.shoppingCourse = res.data.firstPage;
+                this.totalPage = res.data.totalPage;
+            })
+
     },
+
 })
 
 

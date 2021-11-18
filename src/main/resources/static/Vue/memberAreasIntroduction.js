@@ -65,5 +65,15 @@ new Vue({
             window.alert("請重新登入");
             window.location.replace("/");
         })
+
+        axios.get("/memberArea/backFromECPay").then((res) =>{
+            console.log(res);
+            window.alert("我要刪掉了")
+            if(res.data!=null){
+                localStorage.removeItem("addItemList")
+            }
+
+
+        })
     }
 });
