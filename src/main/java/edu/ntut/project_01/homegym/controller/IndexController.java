@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -107,6 +109,10 @@ public class IndexController {
 
     @PostMapping("/addMessage")
     public void addMessage(@RequestBody Visitor visitor) {
+        String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+        String messageTime = sdf.format(new Date());
+        visitor.setVisitorTime(messageTime);
         visitorService.addMessage(visitor);
     }
 
