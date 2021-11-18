@@ -36,7 +36,8 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail){
 
-        verifiedPath = ourUrl+"/forget";
+//        verifiedPath = ourUrl+"/forget";
+        verifiedPath = "http://localhost:8080/forgetPasswordInput";
 
         message = new SimpleMailMessage();
         message.setFrom("homegym_ntut_pj01@outlook.com");

@@ -114,6 +114,17 @@ public class ShowViewController {
         return "team";
     }
 
+    @GetMapping("/forgetPasswordCheck")
+    public String showForgetPasswordCheck() {
+        return "forgetPasswordCheck";
+    }
+
+    @GetMapping("/forgetPasswordInput")
+    public String showForgetPasswordInput() {
+        return "forgetPasswordInput";
+    }
+
+
 
 
 }
