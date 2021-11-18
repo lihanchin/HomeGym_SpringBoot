@@ -1,4 +1,5 @@
 
+
 function doFirst(){
     // console.log("itemString=====================")
 	let itemString = localStorage.getItem('addItemList');
@@ -22,6 +23,9 @@ function doFirst(){
         }
         document.getElementById('total').innerText ='NT$'+ total;
     }
+
+    let checkoutBtn = document.getElementById('checkoutBtn');
+    checkoutBtn.addEventListener('click',deleteLocalStorage)
 
 }
 
@@ -131,4 +135,10 @@ function createBlankArea(){
     div.appendChild(link)
     document.getElementById('cartList').appendChild(div)
 }
+
+// function deleteLocalStorage(){
+//     localStorage.removeItem("addItemList")
+// }
+
+
 window.addEventListener('load',doFirst);

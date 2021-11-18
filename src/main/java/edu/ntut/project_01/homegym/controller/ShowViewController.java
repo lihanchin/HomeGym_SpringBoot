@@ -12,6 +12,12 @@ public class ShowViewController {
     @Autowired
     private AuthService authService;
 
+    @GetMapping("/")
+    public String showIndex() {
+
+        return "index" ; //未購買課程畫面
+    }
+
 
     @GetMapping("/product{id}")
     public String showDetil() {
@@ -82,7 +88,7 @@ public class ShowViewController {
 		return "registated";
 	}
 
-    @GetMapping("/coachArea")
+    @GetMapping("/coach")
     public String coachAreasIntroduction() {
 
         return "coachAreaIntroduction"; //教練專區
@@ -99,6 +105,11 @@ public class ShowViewController {
     @GetMapping("/myCourse")
     public String showMyCourse() {
         return "myCoursesAreaPurchasedCourse";
+    }
+
+    @GetMapping("/homegymteam")
+    public String showHomeGymTeam() {
+        return "team";
     }
 
 

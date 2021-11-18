@@ -12313,6 +12313,14 @@ fieldset:disabled .btn {
   }
 }
 
+#nav_content .hide {
+  display: none;
+}
+
+#nav_content .hide.show {
+  display: block;
+}
+
 .hg_title .container-fluid, .hg_title .container-sm, .hg_title .container-md, .hg_title .container-lg, .hg_title .container-xl, .hg_title .container-xxl {
   -webkit-box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
           box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
@@ -13167,6 +13175,11 @@ fieldset:disabled .btn {
   opacity: 1;
 }
 
+.shoppingCar .imageBox {
+  height: 250px;
+  overflow: hidden;
+}
+
 #courseVideo {
   position: relative;
 }
@@ -13243,4 +13256,4 @@ i.fa-bars.my-handle {
 i.fa-star {
   color: gold;
 }
-/*# sourceMappingURL=all.css.map */
+/*# sourceMappingURL=all.min.css.map */

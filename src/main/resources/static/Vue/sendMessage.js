@@ -9,6 +9,7 @@ new Vue({
     },
     methods: {
         sendMessage(){
+            if(!this.message.visitorMessage) return false;
             axios.post(`/addMessage`,{
                 visitorEmail:this.message.visitorEmail,
                 visitorName:this.message.visitorName,

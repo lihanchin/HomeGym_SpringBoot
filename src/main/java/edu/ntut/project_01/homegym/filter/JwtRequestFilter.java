@@ -50,6 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtUtil.extractUsername(jwt);
                 logger.info("checking authentication " + username);
             } catch (ExpiredJwtException e) {
+//                return "redirct:/";
                 logger.error("JWT過期");
                 SecurityContextHolder.getContext().setAuthentication(null);
                 throw new LoginException("請重新登入");

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>厝動HomeGym</title>
+    <!-- 套用CSS -->
+    <link rel="stylesheet" href="./css/all.min.css">
+
+    <style>
+      .side_bar_team li:hover{
+        background: #5476a9;
+        color: white;
+      }
+    </style>
+</head>
+<body>
+  <div id="app" class="mt-5">
+    <div class="container-fluid">
+      <div class="row vh-100">
+        <div class="side_bar_team col-md-3 col-sm-12 bg-dark bg-gradient p-4 mb-3">
+          <h1 class="text-center text-white mb-3">厝動 HomeGym</h1>
+          <h3 class="text-white">簡介</h3>
+          <p></p>
+          
+          <h3 class="text-white">專案開發前準備</h3>
+          <ul class="list-group mb-2">
+            <a  target="_blank" href="#">
+              <li class="list-group-item">主題發想</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/swot-XLMKuE2RRbCAbkjagg35bt">
+              <li class="list-group-item">SWTO分析</li>
+            </a>
+            <a  target="_blank" href="#">
+              <li class="list-group-item">需求分析表</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/homegym-L4jAG9t4uqWPY873RbhBVX">
+              <li class="list-group-item">使用案例圖</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/G3X7wdVuWcUwM9oNF55kvw">
+              <li class="list-group-item">活動圖</li>
+            </a>
+            <a  target="_blank" href="https://dbdiagram.io/d/617a58c4fa17df5ea672ec50">
+              <li class="list-group-item">REModel</li>
+            </a>
+            <a  target="_blank" href="https://balsamiq.cloud/sedbnkz/p2j0leq/r0717">
+              <li class="list-group-item">UI設計</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/homegym-PyhgP8c1xrx3tEiZSx2TcT">
+              <li class="list-group-item">畫面流程架構圖</li>
+            </a>
+
+          </ul>
+          <h3 class="text-white">專案開發資料</h3>
+          <ul class="list-group mb-2">
+            <a  target="_blank" href="https://whimsical.com/Esfqg9wMiG9NUFnqT7ARF2">
+              <li class="list-group-item">架構圖(前台)</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/TBo9gWAexwY94UC2aWJWcA">
+              <li class="list-group-item">架構圖(後台)</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/VgnFgw8fZci6t9cVJ8nCRD">
+              <li class="list-group-item">使用技術</li>
+            </a>
+            <a  target="_blank" href="https://whimsical.com/homegym-Gg2LoPvkL39Xs9q6bUz3ke">
+              <li class="list-group-item">開發日程</li>
+            </a>
+            <a  target="_blank" href="#">
+              <li class="list-group-item">GitHub專題資料(前台)</li>
+            </a>
+            <a  target="_blank" href="#">
+              <li class="list-group-item">GitHub專題資料(後台)</li>
+            </a>
+          </ul>
+        </div>
+        <div class="col-md-9 col-sm-12">
+          <div class="row">
+            <h1 class="text-center p-3 mb-4 bg-primary text-white">團隊介紹</h1>
+            <!--      團員名稱      -->
+            <div class="col-sm-12 col-md-6 col-lg-4" v-for="(item,key) in team" :key="key">
+              <div class="card mb-4">
+                <div class="d-flex justify-content-center" style="aspect-ratio: 4/3; overflow: hidden;">
+                  <img :src="'/imag'+item.imge" class="w-100" />
+                </div>
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <h2 class="card-title fw-bold ">{{item.name}}</h2>
+                    <span class="badge bg-dark my-auto">{{item.Position}}</span>
+                  </div>
+                  <div class="h5 fw-bold ">{{item.Education}}</div>
+                  <p class="card-text">{{item.Introduction}}</p>
+                  <div class="d-flex flex-row-reverse">
+                    <div class="btn btn-primary"  data-bs-toggle="modal" :data-bs-target="'#team'+item.id">專案工作分配</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="modal fade" :id="'team'+item.id" v-for="(item,key) in team" tabindex="-1" aria-labelledby="teamLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="teamLabel">工作分配內容
+                      
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <ul class="list-group">
+                      <li class="list-group-item active">前端</li>
+                        <ul class="list-group" v-for="list in item.frontend">
+                          <li class="list-group-item">
+                            
+                              {{list}}
+                            
+                            <!-- <small>And some small print.</small> -->
+                          </li>
+                        </ul>
+                      <li class="list-group-item active">後端</li>
+                        <ul class="list-group" v-for="list in item.backend">
+                          <li class="list-group-item">{{list}}</li>
+                        </ul>
+                      <li class="list-group-item active">其他</li>
+                        <ul class="list-group" v-for="list in item.other">
+                          <li class="list-group-item">{{list}}</li>
+                        </ul>
+                    </ul>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+            
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Bootstrap5 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.min.js" integrity="sha512-moOI+TZUHlPpmg8wW+TlFopL498fTAoVsAmyffx5d0aq1oWFuAG6f9PTrCLaj5Juvu2zajFBwm2cXN2Bwdh3EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  new Vue({
+    el:"#app",
+    data:{
+      team:[
+        {
+          id:1,
+          name:"陳彥廷",
+          imge:"/photo/01.png",
+          Education:"南台科技大學 應用日文系",
+          Introduction:"",
+          Position:"組長",
+          
+          frontend:["畫面切版","前端JS互動撰寫","前後端Ajax串接","RWD版面調整","Vue.js動態資料處理"],
+          backend:["資料庫統整","Java Servlet後端撰寫","Spring Boot後端撰寫"],
+          other:["簡報內容發想","專案管理","團隊協調"]
+          
+        },
+        {
+          id:2,
+          name:"陳俞安",
+          imge:"/photo/02.png",
+          Education:"東吳大學 社會工作學系",
+          Introduction:"",
+          Position:"副組長",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+        {
+          id:3,
+          name:"秦立翰",
+          imge:"/photo/07.png",
+          Education:"世新大學 行政管理學系",
+          Introduction:"",
+          Position:"後端技術長",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+        {
+          id:4,
+          name:"呂俊逸",
+          imge:"/photo/03.png",
+          Education:"銘傳大學 犯罪防治系",
+          Introduction:"",
+          Position:"組員",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+        {
+          id:5,
+          name:"武彤",
+          imge:"/photo/05.png",
+          Education:"銘傳大學 - 商品設計系",
+          Introduction:"",
+          Position:"組員",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+        {
+          id:6,
+          name:"林新凱",
+          imge:"/photo/06.png",
+          Education:"環球科技大學 行銷管理系",
+          Introduction:"",
+          Position:"組員",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+        {
+          id:7,
+          name:"徐嘉陽",
+          imge:"/photo/04.png",
+          Education:"台北商業大學 會計資訊系",
+          Introduction:"",
+          Position:"組員",
+          
+          frontend:[],
+          backend:[],
+          other:[]
+          
+        },
+      ],
+
+    }
+  })
+</script>
+</html>

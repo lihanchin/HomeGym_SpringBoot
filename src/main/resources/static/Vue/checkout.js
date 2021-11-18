@@ -25,6 +25,9 @@ new Vue({
             console.log(res)
             this.paymentPage = res.data.paymentPage;
             $('#app').html(res.data.paymentPage);
+        }).catch((err)=>{
+            window.location.replace("/");
+            window.alert("請登入會員")
         })
     },
 })

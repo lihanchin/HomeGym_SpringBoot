@@ -38,7 +38,6 @@ public class MyCourseController {
     ResponseEntity<Map<String, Object>> myCourse(@RequestParam(required = false) Integer page, HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(requestHeader);
         Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
-        System.out.println("memberId=========="+memberId);
         Integer totalPage = orderService.totalPageByStatus(memberId,Arrays.asList("付款完成"),pageSize);
         Map<String, Object> courseResponse = new HashMap<>();
         PageRequest pageRequest;
@@ -55,6 +54,7 @@ public class MyCourseController {
         }
         pageRequest = PageRequest.of(0 ,pageSize);
         ordersPage =orderService.findOrdersByMemberIdAndStatus(memberId, Arrays.asList("付款完成"),pageRequest);
+
         courseResponse.put("totalPage", totalPage);
         courseResponse.put("courseList", orderService.statusOrderDetail(ordersPage));
         return ResponseEntity.ok().body(courseResponse);

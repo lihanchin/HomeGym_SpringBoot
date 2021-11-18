@@ -21,7 +21,7 @@ new Vue({
         fqaUser:'',
         fqaUserIndex:'',
         //接收後端留言評價
-        comment:[ ],
+        commentList:[],
         totalPage:"",
         //接收後端留言評價
         coachName:[ ],
@@ -69,7 +69,7 @@ new Vue({
                 console.log(res);
                 console.log("請求結束")
                 axios.get("/course/"+id+"/showComment").then((res) =>{
-                    this.comment = res.data.courseComment
+                    this.commentList = res.data.courseComment
                     this.totalPage = res.data.totalPage
                 });
             })
@@ -166,22 +166,33 @@ new Vue({
             this.fqaUser ='';
             this.fqaReplyInput.fqaReplyContent ='';
             this.fqaUserIndex='';
-        }
+        },
+
+        clickPage(index){
+            console.log(index)
+
+            let pageNo = index+1
+            console.log(pageNo)
+                axios.get("/course/"+id+"/showComment?pageNo="+pageNo).then((res) =>{
+                    // console.log(res.data)
+                    console.log("555555")
+                    console.log(res.data)
+                    this.commentList = res.data.courseComment;
+                    this.totalPage = res.data.totalPage;
+                })
+        },
     },
     mounted() {
         axios.get("/store/"+id).then((res) =>{
-            console.log("1111")
-            console.log(res.data);
+            // console.log("1111")
+            // console.log(res.data);
             if(res.data.course.starAndComment!=null){
                 this.starAndComment = res.data.course.starAndComment
 
             }
-
-
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName
-            this.comment = res.data.commentlist
         });
 
         axios.get("http://localhost:8080/course/"+id, {
@@ -201,7 +212,10 @@ new Vue({
         // })
 
         axios.get("/course/"+id+"/showComment").then((res) =>{
-            this.comment = res.data.courseComment
+            console.log("留言＝＝＝＝＝＝＝＝")
+            console.log(res.data)
+            console.log(res.data.courseComment)
+            this.commentList = res.data.courseComment
             this.totalPage = res.data.totalPage
         });
     }
