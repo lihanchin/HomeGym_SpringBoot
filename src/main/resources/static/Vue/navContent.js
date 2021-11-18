@@ -1,112 +1,44 @@
 new Vue({
     el:"#nav",
     data:{
-        memberName:'註冊',
+        memberName:'',
         memberImage:'null',
         statusTarget:'',
         status:'',
     },
     methods:{
-        cleartest(){
-            console.log(this.status)
-            console.log(status)
-            console.log(this.memberName)
-            return
-            localStorage.clear();
-            console.log("333")
-            if(this.status=="登出"){
-                window.location.reload()
-
-            }
+        logout(){
+            localStorage.removeItem("Authorization");
+            window.location.reload()
         },
-
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
-        // console.log("token========"+token)
-
-        // window.addEventListener("load", () =>{
-        //     let changeStatus = document.getElementById('changeStatus');
-        //     // console.log(changeStatus)
-        //     console.log("changeStatus")
-        //     changeStatus.addEventListener("click",
-        //             function (){
-        //
-        //             localStorage.clear();
-        //             window.location.reload()
-        //         }
-        //     );
-        // });
-
+        console.log("token========"+token)
         if(token!==null){
             axios.get(`/checkStatus`,{
                 headers: {
                     Authorization: token
                 }
             }).then((res) =>{ //登入時
-                console.log("登入中")
-                this.statusTarget="#"
+                console.log(res)
+                this.status="登入"
                 this.memberName=res.data.name
                 this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
+
+            }).catch(error =>{
+                // console.log(error.response.data)
                 this.status="登出"
-                // window.addEventListener("load", ()=>{
-                //     let changeStatus = document.getElementById('changeStatus');
-                //     console.log(changeStatus)
-                //     console.log("changeStatus")
-                //     changeStatus.addEventListener("click", cleartest()
-                //     //     function (){
-                //     //     localStorage.clear();
-                //     //     window.location.reload()
-                //     // }
-                //     );
-                // });
-                console.log("在登入")
-                let abcd = document.querySelector(".abcd");
-                abcd.setAttribute("id","changeStatus");
-
-                //登出那行
-            }).catch((error) =>{ //登出時
-                // window.alert("已逾期,請重新登入")
+                window.alert("已逾期,請重新登入")
                 localStorage.clear();
-                // window.location.replace("/");
-                //註冊那行
-                var name = document.getElementById('changeName');
-                name.setAttribute('data-bs-toggle','modal')
-                name.setAttribute('data-bs-target','#signup')
-                name.setAttribute('href','')
+                window.location.replace("/");
 
-                //登入那行
-                this.statusTarget="#login"
-                this.status="登入"
             })
-        }else {
-            //註冊那行
-            var name = document.getElementById('changeName');
-            name.setAttribute('data-bs-toggle','modal')
-            name.setAttribute('data-bs-target','#signup')
-            name.setAttribute('href','')
-            //登入那行
-            this.statusTarget="#login"
-
-            this.status="登入"
-            // console.log("9999999999")
-
         }
-
-        window.addEventListener("load", () =>{
-            let changeStatus = document.getElementById('changeStatus');
-            // console.log(changeStatus)
-            console.log("changeStatus")
-            changeStatus.addEventListener("mousedown",
-                function (){
-
-                    localStorage.clear();
-                    window.location.reload()
-                }
-            );
-        });
+        this.status="登出"
 
     }
+
 })
 
 new Vue({
