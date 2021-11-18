@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<Map<String, Object>> register(Member member) {
-        System.out.println("近來註冊");
+        System.out.println("進來註冊");
         Map<String, Object> memberInfo = new HashMap<>();
         if (!memberRepository.existsMemberByEmail(member.getEmail())) {
             final String rawPassword = member.getPassword();

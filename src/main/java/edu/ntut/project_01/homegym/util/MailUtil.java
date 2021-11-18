@@ -29,7 +29,20 @@ public class MailUtil {
         message.setFrom("homegym_ntut_pj01@outlook.com");
         message.setTo(memberEmail);
         message.setSubject("主旨：HomeGym註冊驗證信");
-        message.setText(verifiedPath);
+        message.setText("歡迎加入HomeGym" + "\n" + "請點此連結來驗證您的帳號 => " + verifiedPath);
+        mailSender.send(message);
+        logger.info("已寄信");
+    }
+
+    public void sendResetPassword(String memberEmail){
+
+        verifiedPath = ourUrl+"/forget";
+
+        message = new SimpleMailMessage();
+        message.setFrom("homegym_ntut_pj01@outlook.com");
+        message.setTo(memberEmail);
+        message.setSubject("主旨：密碼重置");
+        message.setText("請點此連結重新設置您的密碼 => " + verifiedPath);
         mailSender.send(message);
         logger.info("已寄信");
     }

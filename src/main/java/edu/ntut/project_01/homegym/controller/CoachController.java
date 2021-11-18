@@ -38,7 +38,7 @@ public class CoachController {
     @Value("${jwt.tokenHead}")
     private String tokenHeader;
 
-    @PostMapping("/apply")
+    @PostMapping("/coachApply")
     public String  applyForCoach(@RequestBody Coach coach, HttpServletRequest request){
 
         String header= request.getHeader(authorization);
@@ -74,6 +74,7 @@ public class CoachController {
         coach.setCertification(coach.getCertification());
         coach.setCoachImage(coach.getCoachImage());
         member.setCoach(coach);
+        member.setRole("ROLE_COACH");
         memberService.update(member);
         System.out.println("存取結束");
         return "waitForApplyingForCoach";

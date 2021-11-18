@@ -26,34 +26,34 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeGymApplicationTests {
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private CourseCommentRepository coursecCommentRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private OrdersRepository ordersRepository;
-    @Autowired
-    private JavaMailSender mailSender;
-//
-    @Test
-    void countComment() {
-//        System.out.println(coursecCommentRepository.countStar(3));
-        File file = new File("/coachImages/coachImages1.jpg");
-        System.out.println("file是否存在"+file.exists());
-        System.out.println("file是否可讀"+file.canRead());
-        System.out.println("file是否可讀"+file.canRead());
-        File file4 = new File("/coachImages/coachImages1.jpg");
-        System.out.println("file2是否存在"+file4.exists());
-        System.out.println("file2是否可讀"+file4.canRead());
-        File file3 = new File("/src/main/resources/static/coachImages/coachImages1.jpg");
-        System.out.println("file2是否存在"+file3.exists());
-        System.out.println("file2是否可讀"+file3.canRead());
-        File file2 = new File("C:/Users/USER/Desktop/HomeGym_SpringBoot/src/main/resources/static/coachImages/coachImages1.jpg");
-        System.out.println("file2是否存在"+file2.exists());
-        System.out.println("file2是否可讀"+file2.canRead());
-    }
+//    @Autowired
+//    private CourseRepository courseRepository;
+//    @Autowired
+//    private CourseCommentRepository coursecCommentRepository;
+//    @Autowired
+//    private MemberRepository memberRepository;
+//    @Autowired
+//    private OrdersRepository ordersRepository;
+//    @Autowired
+//    private JavaMailSender mailSender;
+////
+//    @Test
+//    void countComment() {
+////        System.out.println(coursecCommentRepository.countStar(3));
+//        File file = new File("/coachImages/coachImages1.jpg");
+//        System.out.println("file是否存在"+file.exists());
+//        System.out.println("file是否可讀"+file.canRead());
+//        System.out.println("file是否可讀"+file.canRead());
+//        File file4 = new File("/coachImages/coachImages1.jpg");
+//        System.out.println("file2是否存在"+file4.exists());
+//        System.out.println("file2是否可讀"+file4.canRead());
+//        File file3 = new File("/src/main/resources/static/coachImages/coachImages1.jpg");
+//        System.out.println("file2是否存在"+file3.exists());
+//        System.out.println("file2是否可讀"+file3.canRead());
+//        File file2 = new File("C:/Users/USER/Desktop/HomeGym_SpringBoot/src/main/resources/static/coachImages/coachImages1.jpg");
+//        System.out.println("file2是否存在"+file2.exists());
+//        System.out.println("file2是否可讀"+file2.canRead());
+//    }
 //
 //    @Test
 //    void insertTest() {

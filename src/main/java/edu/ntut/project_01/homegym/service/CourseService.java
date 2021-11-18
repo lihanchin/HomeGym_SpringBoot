@@ -2,6 +2,7 @@ package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public interface CourseService {
     String upload(@RequestBody Course course);
 
     //透過關鍵字篩選課程列表
-    ResponseEntity<List<Course>> findCoursesByKeyword(String keyword);
+    Page<Course> findCoursesByKeyword(String keyword, Integer page, Integer size);
 
     //在教練專區利用Id抓出來的課程，進行分頁還有總頁數
     Page<Course> findCourseByCoachArea (Integer coachId, Integer page, Integer size);
@@ -37,5 +38,7 @@ public interface CourseService {
     void save(Course course);
 
     Integer countStar(Integer courseId);
+
+    Page<Course> findCoursesByCoachAndName(Integer coachId, String keyword, Integer page, Integer size);
 
 }
