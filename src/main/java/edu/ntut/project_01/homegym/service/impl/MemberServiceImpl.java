@@ -127,42 +127,39 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void update(Member member) {
-        Optional<Member> member1 = memberRepository.findMemberByMemberId(member.getMemberId());
-        if (member1.isPresent()) {
-            memberRepository.save(member);
-        }
+        memberRepository.save(member);
     }
 
     @Override
-    public Map <String,Object> updateMemberInfo(Integer memberId, String name, String memberImage, String phone) {
-        Map <String,Object> updateMemberInfoResponse = new HashMap<>();
-        Map <String,String> errorMessage = new HashMap<>();
+    public Map<String, Object> updateMemberInfo(Integer memberId, String name, String memberImage, String phone) {
+        Map<String, Object> updateMemberInfoResponse = new HashMap<>();
+        Map<String, String> errorMessage = new HashMap<>();
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         if (memberImage != null) {
             String dataToBase64 = memberImage.substring(memberImage.indexOf(",") + 1);
-            String mimeType = memberImage.substring(5,memberImage.indexOf(";"));
+            String mimeType = memberImage.substring(5, memberImage.indexOf(";"));
             byte[] imageBytes = Base64.getDecoder().decode(dataToBase64);
             member.setMemberImage(imageBytes);
             member.setMimeType(mimeType);
         }
-        if(!phone.equals(member.getPhone())){
-            if(phone.matches("^09[0-9]{8}$")){
+        if (!phone.equals(member.getPhone())) {
+            if (phone.matches("^09[0-9]{8}$")) {
                 member.setPhone(phone);
             }
             errorMessage.put("phoneErrorMessage", "手機號碼格式有誤");
         }
-        if(!name.equals(member.getName())){
+        if (!name.equals(member.getName())) {
             member.setName(name);
         }
         memberRepository.save(member);
-        updateMemberInfoResponse.put("memberImage" ,member.getMemberImage());
-        updateMemberInfoResponse.put("mimeType" ,member.getMimeType());
-        updateMemberInfoResponse.put("name" ,member.getName());
-        updateMemberInfoResponse.put("email" ,member.getEmail());
-        updateMemberInfoResponse.put("birthday" ,member.getBirthday());
-        updateMemberInfoResponse.put("phone" ,member.getPhone());
-        updateMemberInfoResponse.put("errorMessage" ,errorMessage);
+        updateMemberInfoResponse.put("memberImage", member.getMemberImage());
+        updateMemberInfoResponse.put("mimeType", member.getMimeType());
+        updateMemberInfoResponse.put("name", member.getName());
+        updateMemberInfoResponse.put("email", member.getEmail());
+        updateMemberInfoResponse.put("birthday", member.getBirthday());
+        updateMemberInfoResponse.put("phone", member.getPhone());
+        updateMemberInfoResponse.put("errorMessage", errorMessage);
 
         return updateMemberInfoResponse;
     }

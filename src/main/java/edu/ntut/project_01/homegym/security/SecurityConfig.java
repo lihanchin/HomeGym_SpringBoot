@@ -38,11 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/coachArea/**",
-                        "/coachApply",
-                        "/memberArea",
+                        "/coachApply/**",
+                        "/memberArea/**",
                     "/myCourses/**",
                         "/checkout").authenticated()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/**","/forget/**").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -10,6 +10,7 @@ import edu.ntut.project_01.homegym.service.CourseService;
 import edu.ntut.project_01.homegym.service.MemberService;
 import edu.ntut.project_01.homegym.service.VisitorService;
 import edu.ntut.project_01.homegym.util.JwtUtil;
+import edu.ntut.project_01.homegym.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -30,30 +32,34 @@ public class IndexController {
     private VisitorService visitorService;
     private CourseService courseService;
     private JwtUtil jwtUtil;
+    private MailUtil mailUtil;
 
     @Value("${jwt.header}")
     private String authorization;
     @Value("${course.countsPerPage}")
     private Integer SIZE;
 
-    @Autowired
-    public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, JwtUtil jwtUtil) {
+    public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, JwtUtil jwtUtil, MailUtil mailUtil) {
         this.authService = authService;
         this.memberService = memberService;
         this.visitorService = visitorService;
         this.courseService = courseService;
         this.jwtUtil = jwtUtil;
+        this.mailUtil = mailUtil;
     }
+
+    @Autowired
+
 
     //檢查JWT
     @GetMapping("/checkStatus")
-    public Map<String,Object> checkStatus( HttpServletRequest request) {
-        Map<String,Object> map = new HashMap<>();
-        String header= request.getHeader(authorization);
+    public Map<String, Object> checkStatus(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        String header = request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
-        map.put("name",member.getName());
-        map.put("mimeType",member.getMimeType());
-        map.put("memberImage",member.getMemberImage());
+        map.put("name", member.getName());
+        map.put("mimeType", member.getMimeType());
+        map.put("memberImage", member.getMemberImage());
         return map;
     }
 
@@ -71,7 +77,7 @@ public class IndexController {
 
     //登入(加入Security)(OK)
     @PostMapping("/login")
-    public ResponseEntity<Map<String,Object>> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
+    public ResponseEntity<Map<String, Object>> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws AuthenticationException {
 
         System.out.println(authRequest.getUsername());
         System.out.println(authRequest.getPassword());
@@ -80,49 +86,79 @@ public class IndexController {
 
     //關鍵字查詢
     @GetMapping("/keyword")
-    public ResponseEntity<Map<String,Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page){
-        Map<String,Object> response = new HashMap<>();
-        if(page != null && page!=0){
-            response.put("courseList",courseService.findCoursesByKeyword(keyword,page-1,SIZE).getContent());
-            response.put("totalPage",courseService.findCoursesByKeyword(keyword,page-1,SIZE).getTotalPages());
-        }else {
-            response.put("courseList",courseService.findCoursesByKeyword(keyword,0,SIZE).getContent());
-            response.put("totalPage",courseService.findCoursesByKeyword(keyword,0,SIZE).getTotalPages());
+    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page) {
+        Map<String, Object> response = new HashMap<>();
+        if (page != null && page != 0) {
+            response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, SIZE).getContent());
+            response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, SIZE).getTotalPages());
+        } else {
+            response.put("courseList", courseService.findCoursesByKeyword(keyword, 0, SIZE).getContent());
+            response.put("totalPage", courseService.findCoursesByKeyword(keyword, 0, SIZE).getTotalPages());
         }
         return ResponseEntity.ok().body(response);
     }
 
-    //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello world";
-    }
-
-    //測試用(身份驗證阻擋測試)
-    @GetMapping("/hello/RoleAuthorizationTest1")
-    @PreAuthorize("hasRole('MEMBER') OR hasRole('COACH')")
-    public String bothOfRole() {
-        return "教練、會員都看得到喔～～～";
-    }
-
-    //測試用(身份驗證阻擋測試)
-    @GetMapping("/hello/RoleAuthorizationTest2")
-    @PreAuthorize("hasRole('MEMBER')")
-    public String onlyMember() {
-        return "只有會員進得來";
-    }
-
-    //測試用(身份驗證阻擋測試)
-    @GetMapping("/hello/RoleAuthorizationTest3")
-    @PreAuthorize("hasRole('COACH')")
-    public String onlyCoach() {
-        return "只有教練進得來";
-    }
-
     @PostMapping("/addMessage")
-    public void addMessage(@RequestBody Visitor visitor){
+    public void addMessage(@RequestBody Visitor visitor) {
         visitorService.addMessage(visitor);
     }
+
+    //忘記密碼-驗證帳號、寄信
+    @PostMapping("/forget/checkMail")
+    public ResponseEntity<String> checkMailAndSend(@RequestBody String memberEmail) {
+        if (memberService.findMemberByEmail(memberEmail).isPresent()) {
+            mailUtil.sendResetPassword(memberEmail);
+            return ResponseEntity.ok().body("已寄信");
+        }
+        return ResponseEntity.ok().body("您尚未成為我們的會員");
+    }
+
+    //新密碼設定
+    @PostMapping("/forget/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> password) {
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{5,20}$";
+        String memberEmail = password.get("memberEmail");
+        String newPassword = password.get("newPassword");
+        String newPasswordCheck = password.get("newPasswordCheck");
+        if (newPassword.equals(newPasswordCheck)){
+            if(newPassword.matches(regex)){
+                Member member = memberService.findMemberByEmail(memberEmail).orElseThrow();
+                member.setPassword(newPassword);
+                memberService.update(member);
+                return ResponseEntity.ok().body("修改成功");
+            }
+            return ResponseEntity.ok().body("您的密碼必須超過5個字元且包含英文字母大小寫和數字");
+        }
+        return ResponseEntity.ok().body("您輸入的新密碼和確認密碼不相符");
+    }
+
+
+//    //測試用(如果沒得到驗證TOKEN是無法訪問此路徑)
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "hello world";
+//    }
+//
+//    //測試用(身份驗證阻擋測試)
+//    @GetMapping("/hello/RoleAuthorizationTest1")
+//    @PreAuthorize("hasRole('MEMBER') OR hasRole('COACH')")
+//    public String bothOfRole() {
+//        return "教練、會員都看得到喔～～～";
+//    }
+//
+//    //測試用(身份驗證阻擋測試)
+//    @GetMapping("/hello/RoleAuthorizationTest2")
+//    @PreAuthorize("hasRole('MEMBER')")
+//    public String onlyMember() {
+//        return "只有會員進得來";
+//    }
+//
+//    //測試用(身份驗證阻擋測試)
+//    @GetMapping("/hello/RoleAuthorizationTest3")
+//    @PreAuthorize("hasRole('COACH')")
+//    public String onlyCoach() {
+//        return "只有教練進得來";
+//    }
     //註冊(舊版)
 //    @PostMapping("/registration")
 //    public ResponseEntity<String> createMember(@RequestBody Member member) {

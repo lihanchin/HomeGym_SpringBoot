@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -29,26 +28,27 @@ public class CoachAreaController {
     @Value("${course.countsPerPage}")
     private Integer size;
     @Value("${jwt.header}")
-    private String HEADER;
+    private String authorization;
     private String authorizationHeader;
     private Integer coachId;
 
-    @Autowired
     private CourseService courseService;
-    @Autowired
     private CoachService coachService;
-    @Autowired
     private CoachRepository coachRepository;
-    @Autowired
     private MemberService memberService;
 
-    @Value("${jwt.header}")
-    private String authorization;
+    @Autowired
+    public CoachAreaController(CourseService courseService, CoachService coachService, CoachRepository coachRepository, MemberService memberService) {
+        this.courseService = courseService;
+        this.coachService = coachService;
+        this.coachRepository = coachRepository;
+        this.memberService = memberService;
+    }
 
     //載入教練資料
     @GetMapping("/")
     public ResponseEntity<Coach> showCoachInfo(HttpServletRequest httpServletRequest) {
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        authorizationHeader = httpServletRequest.getHeader(authorization);
         Member member = memberService.findMemberByToken(authorizationHeader);
         Coach coach = member.getCoach();
         return ResponseEntity.ok().body(coach);
@@ -101,7 +101,7 @@ public class CoachAreaController {
     //編輯教練資料
     @PutMapping("/editInfo")
     public ResponseEntity<Map<String, Object>> editCoachInfo(@RequestBody Coach coach, HttpServletRequest httpServletRequest) {
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
+        authorizationHeader = httpServletRequest.getHeader(authorization);
         coachId = memberService.findMemberByToken(authorizationHeader).getCoach().getCoachId();
         Map<String, Object> editResponse = new HashMap<>();
 
@@ -112,6 +112,5 @@ public class CoachAreaController {
 
         return ResponseEntity.ok().body(editResponse);
     }
-
 
 }
