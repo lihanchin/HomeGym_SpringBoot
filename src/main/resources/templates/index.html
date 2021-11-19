@@ -33,8 +33,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <div class="search d-flex ms-auto position-relative col-4">
-                    <input class="form-control" type="text" placeholder="關鍵字搜尋" aria-label="default input example"> 
-                    <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" ></i>
+                    <input class="form-control" type="text" v-model="search" placeholder="關鍵字搜尋" aria-label="default input example">
+                    <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" @click="searchKeyword"></i>
                 </div>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
                     <div id="marker"></div>

@@ -28,22 +28,12 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public String edit(Coach coach, Integer coachId) {
         Coach theCoach = coachRepository.findById(coachId).orElseThrow();
-        System.out.println("coach.getSkill()============================"+coach.getSkill());
         theCoach.setSkill(coach.getSkill());
         theCoach.setExperience(coach.getExperience());
         theCoach.setCoachInfo(coach.getCoachInfo());
 
         if(coach.getCoachImage() != null&& !coach.getCoachImage().equals(theCoach.getCoachImage())){
-            System.out.println("通過判斷=================================================================================");
-            File imageFolder = new File("src/main/resources/static/coachImages");
-            System.out.println(imageFolder);
-            if(!imageFolder.exists()){
-                imageFolder.mkdirs();
-            }
-            System.out.println(coach.getCoachImage()+"coach.getCoachImage()==========================================================================");
-            String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,coachId,".jpg");
-            System.out.println("coachImagePath========================================================================"+coachImagePath);
-            theCoach.setCoachImage(coachImagePath);
+            theCoach.setCoachImage(coach.getCoachImage());
         }
 
         coachRepository.save(theCoach);

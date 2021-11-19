@@ -13,6 +13,9 @@ new Vue({
             localStorage.removeItem("Authorization");
             window.location.reload()
         },
+        searchKeyword() {
+            window.location.replace("/shop?keyword=" + this.search);
+        }
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
@@ -23,14 +26,12 @@ new Vue({
                     Authorization: token
                 }
             }).then((res) =>{ //登入時
-                console.log(res)
                 this.status="登入"
                 this.memberName=res.data.name
                 this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
                 this.coachChecked=res.data.coachChecked
                 this.coachPass=res.data.coachPass
             }).catch((error) =>{
-                // console.log(error.response.data)
                 this.status="登出"
                 window.alert("已逾期,請重新登入")
                 localStorage.clear();
@@ -65,10 +66,7 @@ new Vue({
                 username : this.login.email,
                 password:this.login.password,
             }).then((res) =>{
-                // console.log("登入中")
-                // console.log(res.data.JWT)
                 localStorage.setItem("Authorization","Bearer "+res.data.JWT);
-                // console.log("登入結束")
                 var loginBtn = document.getElementById('loginBtn');
                 loginBtn.setAttribute('data-bs-dismiss','modal')
                 window.location.reload()
@@ -76,8 +74,7 @@ new Vue({
             }).catch((err)=>{
                 let error = document.querySelector(".errortext");
                 console.error(err)
-                // window.alert("輸入錯誤")
-                    error.classList.add('show');
+                error.classList.add('show');
             })
 
         },
@@ -91,12 +88,9 @@ new Vue({
                 birthday:this.signup.birthday
 
             }).then((res) =>{
-                // console.log("回傳memberId")
-                // console.log(res);
                 this.memberId = res.data
 
             }).catch((erro)=>{
-                // console.log(erro);
                 window.alert("請記得連網並一定要輸入可以收信的信箱")
             })
             this.signup.email ="";
@@ -109,16 +103,12 @@ new Vue({
 
         reSendEmail(){
             let id = this.memberId.memberId
-            // console.log("id--======="+id)
             axios.get(`/registrations/memberVerification/sendAgain/${id}`,{
             }).then((res) =>{
                 window.alert("已重寄驗證信");
             })
         }
-        
     }
-
-
 });
 
 

@@ -124,7 +124,11 @@ public class ShowViewController {
         return "forgetPasswordInput";
     }
 
+    @GetMapping("/shop?keyword={keyword}")
+    public String search() {
 
+        return "shopping" ; //商城
+    }
 
 
 }

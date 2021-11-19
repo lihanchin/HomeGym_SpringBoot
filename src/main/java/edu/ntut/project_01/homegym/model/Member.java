@@ -44,7 +44,7 @@ public class Member {
     private Set<Orders> orders = new HashSet<>();
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
