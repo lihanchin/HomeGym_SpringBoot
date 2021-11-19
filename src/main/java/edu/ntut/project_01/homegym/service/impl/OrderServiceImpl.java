@@ -56,28 +56,15 @@ public class OrderServiceImpl implements OrderService {
         throw new QueryException("會員尚無已完成訂單");
     }
 
+
+
     @Override
-    public List<Course> statusOrderDetail(Page<Orders> orders) {
+    public Map<String, Object> statusOrderDetail(Page<Orders> orders) {
         Map<String, Object> orderDetail = new HashMap<>();
-        List<Course> courseList = new ArrayList<>();
-        String coachName;
-
         for (Orders o : orders.getContent()) {
-//            System.out.println("訂單人姓名＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝" + o.getMember().getName());
-
-            Set<Course> courses = o.getCourses();
-            for (Course v : courses) {
-                coachName = v.getCoach().getMember().getName();
-                System.out.println(coachName);
-                v.setCoachName(coachName);
-            }
-            courseList.addAll(courses);
-
-//            orderDetail.put(o.getOrderId().toString(), courses);
+            orderDetail.put(o.getOrderId(), o.getCourses());
         }
-
-
-        return courseList;
+        return orderDetail;
     }
 
     @Override

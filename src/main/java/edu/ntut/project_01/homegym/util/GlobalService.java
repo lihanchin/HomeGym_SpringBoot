@@ -14,8 +14,7 @@ public class GlobalService {
     }
 
     //寫進資料夾的方法
-    public static String imageSaveToFile(String data, File folder,Integer id,String evt) {
-        System.out.println("準備寫進資料夾==============================================");
+    public static String videoSaveToFile(String data, File folder,Integer id,String evt) {
         String s = "static";
         int index = s.length();
         //取名用
@@ -29,9 +28,7 @@ public class GlobalService {
 
 //        String name = folder.toString().substring(start+index+1)+id.toString()+uuid;
         String name = folder.toString().substring(start+index+1)+id.toString();
-        System.out.println("filename======================================================"+name);
         File file = new File(folder,name+evt);
-        System.out.println("file.toString()===================================="+file.toString());
         try {
             OutputStream out = new FileOutputStream(file);
             out.write(bytes);
@@ -41,7 +38,7 @@ public class GlobalService {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-        System.out.println("存到資料庫的名字=============="+folderPath+"\\"+name+evt);
         return folderPath+"\\"+name+evt;
+
     }
 }

@@ -9,6 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/all.min.css">
 </head>
+
+<style>
+    .shoppingCar label{
+        cursor: pointer;
+    }
+    .shoppingCar label:hover{
+        background-color: #5476a9;
+        color: white;
+    }
+</style>
 <body>
 
 <!-- 導覽列 11/16更新-->
@@ -304,27 +314,27 @@
                             <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
 <!--                            <li class="list-group-item list-group-item-primary">上半身</li>-->
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">
                                 全身
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">
                                 核心
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">
                                 二頭
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">
                                 三頭
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">
                                 胸
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="" v-model="partOfBody"  @change="filter">
+                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="所有" v-model="partOfBody"  @change="filter">
                                 所有
                             </label>
 <!--                            <li class="list-group-item list-group-item-primary">下半身</li>-->
@@ -358,9 +368,9 @@
                     <!-- 內容 -->
                     <div class="col-md-10 col-sm-12">
                         <div class="container ps-3 pe-3">
-                            <div class="row row-cols-md-2 row-cols-lg-3 row-cols-sm-1">
+                            <div class="row">
                                 <!-- 課程卡片 -->
-                                <div class="col gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
+                                <div class="courseCard col-sm-12 col-md-6 col-lg-4 gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
                                     <div class="card w-100 h-100 cart">
 
                                         <div class="position-relative">

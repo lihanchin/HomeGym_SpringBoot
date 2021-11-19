@@ -143,16 +143,7 @@ public class CourseController {
             videoFolder.mkdirs();
         }
 
-        String videoCoachPath = GlobalService.imageSaveToFile(coursePath, videoFolder,coachId,".mp4");
-
-//        //存影片照片到
-//        File courseImageFolder = new File("src/main/resources/static/courseImage");
-//        System.out.println(courseImageFolder);
-//        if (!courseImageFolder.exists()) {
-//            courseImageFolder.mkdirs();
-//        }
-//
-//        String courseImagePath = GlobalService.imageSaveToFile(courseImage, courseImageFolder,coachId,"jpg");
+        String videoCoachPath = GlobalService.videoSaveToFile(coursePath, videoFolder,coachId,".mp4");
 
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);

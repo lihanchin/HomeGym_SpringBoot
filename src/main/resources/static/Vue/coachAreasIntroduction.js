@@ -167,10 +167,11 @@ new Vue({
             console.log(res);
             this.coach = res.data
         }).catch((error) =>{ //登出時
+            console.log(error)
 
             // window.alert("無教練身份")
             // localStorage.clear();
-            window.location.replace("/");
+            // window.location.replace("/");
             // //註冊那行
             // var name = document.getElementById('changeName');
             // name.setAttribute('data-bs-toggle','modal')

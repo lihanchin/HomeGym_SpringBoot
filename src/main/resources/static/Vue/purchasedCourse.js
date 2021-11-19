@@ -87,7 +87,8 @@ new Vue({
             if(!this.fqaInput.fqaContent) return false;
             console.log("通過檢查")
             let comment =this.fqaInput.fqaContent; //留言input
-            console.log("準備請求")
+            console.log("準備請求"+id)
+
             axios.post(`/course/addFQA/${id}`,
                 {
                     fqaContent:comment,
@@ -115,12 +116,13 @@ new Vue({
         },
 
 
-        getFqaUser(fqaId){
-            var index = fqaId - 1;
-            console.log("fqaId="+fqaId)
-            console.log("index="+index)
-            var userName = this.fqa[index].memberName;
-            this.fqaUserIndex = fqaId;
+        getFqaUser(key){
+            // console.log(fqaId)
+            // var index = fqaId - 1;
+            // console.log("fqaId="+fqaId)
+            // console.log("index="+index)
+            var userName = this.fqa[key].memberName;
+            this.fqaUserIndex = this.fqa[key].fqaId;
             this.fqaUser = userName;
         },
 
@@ -200,7 +202,7 @@ new Vue({
                 Authorization: token
             }
         }).then((res) =>{
-            // console.log(res);
+            console.log(res);
             this.member.memberName = res.data.name
             this.member.memberImage = 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
             this.fqa = res.data.fqaList

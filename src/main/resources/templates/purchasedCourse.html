@@ -479,7 +479,7 @@
                         <div  v-if="fqa !=''">
                             <div class="col-10 m-auto pt-5 ">
                                 <!-- 顯示FQA -->
-                                <div class="mb-4" v-for="item in fqa" :key="item.id">
+                                <div class="mb-4" v-for="(item,key) in fqa" :key="item.id">
                                     <div class="user d-flex mb-2">
                                         <div class="me-2" style="width: 40px;">
                                             <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
@@ -487,7 +487,7 @@
                                         <h5 class="mt-auto">{{item.memberName}}</h5>
                                     </div>
                                     <p>{{item.fqaContent}}</p>
-                                    <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(item.fqaId)">回覆</span>{{item.fqaCreateTime}}</p>
+                                    <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(key)">回覆</span>{{item.fqaCreateTime}}</p>
                                     <!-- 顯示FQAReply-->
                                     <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="key in item.fqaReplies" :key="key.id"> <!-- class添加ps-6 -->
                                         <div class="user d-flex mb-2 align-items-center">

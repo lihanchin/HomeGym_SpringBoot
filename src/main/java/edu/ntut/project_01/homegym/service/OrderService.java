@@ -20,7 +20,7 @@ public interface OrderService {
     Integer totalPageByStatus(Integer memberId, String status, Integer size);
 
     //show訂單詳細資訊(名稱、價格)
-    List<Course> statusOrderDetail(Page<Orders> orders);
+    Map<String, Object> statusOrderDetail(Page<Orders> orders);
 
     List<Course> okStatusCourses(List<Orders> orders);
 

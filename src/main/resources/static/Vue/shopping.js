@@ -1,5 +1,7 @@
-let keyword = (location.search.split('='))[1]
-let page = (location.search.split('='))[2]
+
+let keyword = (location.search.split('keyword='))[1]
+
+let partOfBody = (location.search.split('partOfBody='))[1]
 new Vue({
     el:"#app",
     data:{
@@ -13,67 +15,73 @@ new Vue({
             this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'/product?id='+item.courseId;
         },
         filter(){
-            let partOfBody = this.partOfBody
-            console.log("partOfBody---------"+partOfBody)
-            if (partOfBody!=''){
-                axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
-                    console.log("#3333333")
-                    // console.log(res.data)
-                    this.shoppingCourse = res.data.currentPage;
-                    this.totalPage = res.data.totalPage;
-                })
-            }else {
-                axios.get("/store/").then((res) =>{
-                    // console.log(res.data)
-                    // console.log(res.data.firstPage)
-                    console.log("000000")
-                    this.shoppingCourse = res.data.firstPage;
-                    this.totalPage = res.data.totalPage;
-                })
-            }
+            window.location.replace("/shop?partOfBody="+this.partOfBody)
 
-
+            // if (partOfBody!=''){
+            //     axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
+            //         this.shoppingCourse = res.data.currentPage;
+            //         this.totalPage = res.data.totalPage;
+            //     })
+            // }else {
+            //     axios.get("/store/").then((res) =>{
+            //         this.shoppingCourse = res.data.firstPage;
+            //         this.totalPage = res.data.totalPage;
+            //     })
+            // }
         },
         clickPage(index){
             let partOfBody = this.partOfBody
             let pageNo = index+1
-            if(partOfBody!=''){
-                axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
-                    // console.log(res.data)
-                    console.log("555555")
-                    this.shoppingCourse = res.data.currentPage;
-                    this.totalPage = res.data.totalPage;
-                })
+
+            // if(keyword!=null&keyword!=''){
+            //     if(pageNo!=null&pageNo!=''){
+            //         axios.get("/store/keyword?keyword="+keyword+"&page="+pageNo).then((res) =>{
+            //             this.shoppingCourse = res.data.courseList;
+            //             this.totalPage = res.data.totalPage;
+            //         })
+            //     }
+            // }else {
+            //     if(partOfBody!=''){
+            //         axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+            //             this.shoppingCourse = res.data.currentPage;
+            //             this.totalPage = res.data.totalPage;
+            //         })
+            //     }else {
+            //         axios.get("/store/allCourse?page="+pageNo).then((res) =>{
+            //             this.shoppingCourse = res.data.currentPage;
+            //             this.totalPage = res.data.totalPage;
+            //         })
+            //     }
+            // }
+        },
+    },
+    mounted() {
+        console.log(partOfBody)
+        console.log(keyword)
+        if(keyword!=null&keyword!=''){
+            console.log("---------------------")
+            axios.get("/store/keyword?keyword="+keyword).then((res) =>{
+                console.log(res.data)
+                this.shoppingCourse = res.data.courseList;
+                this.totalPage = res.data.totalPage;
+            })
+        } else if(partOfBody!=null&partOfBody!='') {
+            if(partOfBody='所有') {
+                // window.location.replace("/shop")
             }else {
-                axios.get("/store/allCourse?page="+pageNo).then((res) =>{
-                    // console.log(res.data)
-                    console.log("222222")
+                axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
                     this.shoppingCourse = res.data.currentPage;
                     this.totalPage = res.data.totalPage;
                 })
             }
-
-
-        },
-    },
-    mounted() {
-
-        axios.get("/store/").then((res) =>{
-
-            // console.log(res.data)
-            // console.log(res.data.firstPage)
-            this.shoppingCourse = res.data.firstPage;
-            this.totalPage = res.data.totalPage;
-        }),
-            axios.get("/store?keyword="+keyword+"&page="+page).then((res) =>{
-
-                // console.log(res.data)
-                // console.log(res.data.firstPage)
-                this.shoppingCourse = res.data.firstPage;
-                this.totalPage = res.data.totalPage;
-            })
-
-    },
+        } else {
+            console.log("????????????")
+                axios.get("/store/").then((res) =>{
+                    this.shoppingCourse = res.data.firstPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }
+        }
 
 })
 
@@ -120,11 +128,14 @@ function doFirst(){
         total.innerText ='總計 NT$'+ countTotal;
     }
 
-    let list = document.querySelectorAll('.addButton');     //按了加入購物車
+    let list = document.querySelectorAll(".addButton");     //按了加入購物車
+    console.log(list)
+
     for(let i = 0; i < list.length; i++){
          list[i].addEventListener('click',function() {
             console.log("按下加入購物車")
              let classInfo = document.querySelector(`#${this.id} input`).value;
+            console.log("有")
              console.log(classInfo)
              if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                  textDivId.remove(textId)

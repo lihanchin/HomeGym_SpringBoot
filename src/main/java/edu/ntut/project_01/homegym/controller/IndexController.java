@@ -5,6 +5,7 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 
 import edu.ntut.project_01.homegym.model.Visitor;
+import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.AuthService;
 import edu.ntut.project_01.homegym.service.CourseService;
 import edu.ntut.project_01.homegym.service.MemberService;
@@ -16,9 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,9 +38,15 @@ public class IndexController {
     private JwtUtil jwtUtil;
     private MailUtil mailUtil;
 
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Value("${jwt.header}")
     private String authorization;
-
+    @Value("${course.countsPerPage}")
+    private Integer SIZE;
 
     @Autowired
     public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, JwtUtil jwtUtil, MailUtil mailUtil) {
@@ -50,13 +60,16 @@ public class IndexController {
 
 
 
-
     //檢查JWT
     @GetMapping("/checkStatus")
     public Map<String, Object> checkStatus(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         String header = request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
+        if(!member.getCoach().getChecked().equals(null)&&!member.getCoach().getChecked().isEmpty()){
+            map.put("coachChecked", member.getCoach().getChecked());
+            map.put("coachPass", member.getCoach().getPass());
+        }
         map.put("name", member.getName());
         map.put("mimeType", member.getMimeType());
         map.put("memberImage", member.getMemberImage());
@@ -86,14 +99,20 @@ public class IndexController {
 
     @PostMapping("/addMessage")
     public void addMessage(@RequestBody Visitor visitor) {
+        String strDateFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+        String messageTime = sdf.format(new Date());
+        visitor.setVisitorTime(messageTime);
         visitorService.addMessage(visitor);
     }
 
     //忘記密碼-驗證帳號、寄信
     @PostMapping("/forget/checkMail")
-    public ResponseEntity<String> checkMailAndSend(@RequestBody String memberEmail) {
-        if (memberService.findMemberByEmail(memberEmail).isPresent()) {
-            mailUtil.sendResetPassword(memberEmail);
+    public ResponseEntity<String> checkMailAndSend(@RequestBody Map<String,String> memberEmail) {
+        String mail = memberEmail.get("memberEmail");
+        System.out.println(mail);
+        if (memberService.findMemberByEmail(mail).isPresent()) {
+            mailUtil.sendResetPassword(mail);
             return ResponseEntity.ok().body("已寄信");
         }
         return ResponseEntity.ok().body("您尚未成為我們的會員");
@@ -109,7 +128,7 @@ public class IndexController {
         if (newPassword.equals(newPasswordCheck)){
             if(newPassword.matches(regex)){
                 Member member = memberService.findMemberByEmail(memberEmail).orElseThrow();
-                member.setPassword(newPassword);
+                member.setPassword(passwordEncoder.encode(newPassword));
                 memberService.update(member);
                 return ResponseEntity.ok().body("修改成功");
             }
