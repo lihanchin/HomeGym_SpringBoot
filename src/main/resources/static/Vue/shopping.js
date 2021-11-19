@@ -1,5 +1,4 @@
 let keyword = (location.search.split('='))[1]
-let page = (location.search.split('='))[2]
 new Vue({
     el:"#app",
     data:{
@@ -32,43 +31,49 @@ new Vue({
         clickPage(index){
             let partOfBody = this.partOfBody
             let pageNo = index+1
-            if(partOfBody!=''){
-                axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
-                    this.shoppingCourse = res.data.currentPage;
-                    this.totalPage = res.data.totalPage;
-                })
+            if(keyword!=null&keyword!=''){
+                if(pageNo!=null&pageNo!=''){
+                    axios.get("/store?keyword="+keyword+"&page="+pageNo).then((res) =>{
+                        // console.log(res.data)
+                        // console.log(res.data.firstPage)
+                        this.shoppingCourse = res.data.courseList;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }
             }else {
-                axios.get("/store/allCourse?page="+pageNo).then((res) =>{
-                    this.shoppingCourse = res.data.currentPage;
-                    this.totalPage = res.data.totalPage;
-                })
+                if(partOfBody!=''){
+                    axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+                        this.shoppingCourse = res.data.currentPage;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }else {
+                    axios.get("/store/allCourse?page="+pageNo).then((res) =>{
+                        this.shoppingCourse = res.data.currentPage;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }
             }
+
 
 
         },
     },
     mounted() {
-
-        axios.get("/store/").then((res) =>{
-            this.shoppingCourse = res.data.firstPage;
-            this.totalPage = res.data.totalPage;
-        })
-
         if(keyword!=null&keyword!=''){
             console.log("---------------------")
-            axios.get("/store?keyword="+keyword).then((res) =>{
+            axios.get("/store/keyword?keyword="+keyword).then((res) =>{
                 console.log(res.data)
                 // console.log(res.data.firstPage)
-                this.shoppingCourse = res.data.firstPage;
+                this.shoppingCourse = res.data.courseList;
                 this.totalPage = res.data.totalPage;
             })
-            axios.get("/store?keyword="+keyword+"&page="+page).then((res) =>{
 
-                // console.log(res.data)
-                // console.log(res.data.firstPage)
+        }else {
+            axios.get("/store/").then((res) =>{
                 this.shoppingCourse = res.data.firstPage;
                 this.totalPage = res.data.totalPage;
             })
+
         }
 
     },

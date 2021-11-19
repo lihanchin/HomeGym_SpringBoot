@@ -19,15 +19,15 @@ public class GlobalService {
         int index = s.length();
         //取名用
         int start = folder.toString().lastIndexOf("static");
-//        String folderPath= folder.toString().substring(start+index);
+        String folderPath= folder.toString().substring(start+index);
         String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 4);
 
         //base64轉byte陣列
         String dataToBase64 = data.substring(data.indexOf(",") + 1);
         byte[] bytes = Base64.getDecoder().decode(dataToBase64);
 
-        String name = folder.toString().substring(start+index+1)+id.toString()+uuid;
-//        String name = folder.toString().substring(start+index+1)+id.toString();
+//        String name = folder.toString().substring(start+index+1)+id.toString()+uuid;
+        String name = folder.toString().substring(start+index+1)+id.toString();
         File file = new File(folder,name+evt);
         try {
             OutputStream out = new FileOutputStream(file);
@@ -38,6 +38,7 @@ public class GlobalService {
         } catch (Exception e) {
             System.out.println("失敗");
         }
-        return file.toString();
+        return folderPath+"\\"+name+evt;
+
     }
 }
