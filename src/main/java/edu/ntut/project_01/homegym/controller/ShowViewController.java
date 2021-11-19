@@ -33,7 +33,7 @@ public class ShowViewController {
         return "purchasedCourse" ; //課程畫面
     }
 
-    @GetMapping("/shop")
+    @GetMapping(value = {"/shop","/shop?keyword={keyword}","/shop?partOfBody={partOfBody}"})
     public String show() {
 
         return "shopping" ; //商城
@@ -123,12 +123,5 @@ public class ShowViewController {
     public String showForgetPasswordInput() {
         return "forgetPasswordInput";
     }
-
-    @GetMapping("/shop?keyword={keyword}")
-    public String search() {
-
-        return "shopping" ; //商城
-    }
-
 
 }

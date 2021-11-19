@@ -60,14 +60,6 @@ new Vue({
                 window.location.replace("/");
             })
             window.location.replace("/waiting");
-            this.coach.skill ="";
-            this.coach.experience ="";
-            this.coach.account ="";
-            this.coach.coachInfo ="";
-            this.coach.certification="";
-            this.coach.coachImage="";
         }
-
-        
     },
 })
