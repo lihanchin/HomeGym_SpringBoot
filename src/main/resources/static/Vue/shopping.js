@@ -109,11 +109,14 @@ function doFirst(){
         total.innerText ='總計 NT$'+ countTotal;
     }
 
-    let list = document.querySelectorAll('.addButton');     //按了加入購物車
+    let list = document.querySelectorAll('courseCard .addButton');     //按了加入購物車
+    console.log(list)
+
     for(let i = 0; i < list.length; i++){
          list[i].addEventListener('click',function() {
             console.log("按下加入購物車")
              let classInfo = document.querySelector(`#${this.id} input`).value;
+            console.log("有")
              console.log(classInfo)
              if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                  textDivId.remove(textId)

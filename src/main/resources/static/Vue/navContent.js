@@ -5,6 +5,8 @@ new Vue({
         memberImage:'null',
         statusTarget:'',
         status:'',
+        coachChecked:'',
+        coachPass:''
     },
     methods:{
         logout(){
@@ -25,8 +27,9 @@ new Vue({
                 this.status="登入"
                 this.memberName=res.data.name
                 this.memberImage='data:'+res.data.mimeType+';base64,'+res.data.memberImage
-
-            }).catch(error =>{
+                this.coachChecked=res.data.coachChecked
+                this.coachPass=res.data.coachPass
+            }).catch((error) =>{
                 // console.log(error.response.data)
                 this.status="登出"
                 window.alert("已逾期,請重新登入")
@@ -36,9 +39,7 @@ new Vue({
             })
         }
         this.status="登出"
-
     }
-
 })
 
 new Vue({
