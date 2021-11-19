@@ -25,10 +25,10 @@ function doFirst(){
         console.log(items);
         for(let i = 0; i < items.length; i++){
             let classInfo = localStorage.getItem(items[i]) //課程資訊
-            console.log(classInfo)
+            // console.log(classInfo)
             createList(classInfo);
             let classPrice = parseInt(classInfo.split('|')[2]) //pirce
-            console.log(classPrice)
+            // console.log(classPrice)
             countTotal += classPrice
         }
         total = document.createElement('p')
