@@ -6,7 +6,8 @@ new Vue({
         statusTarget:'',
         status:'',
         coachChecked:'',
-        coachPass:''
+        coachPass:'',
+        search:''
     },
     methods:{
         logout(){

@@ -66,7 +66,7 @@ public class IndexController {
         Map<String, Object> map = new HashMap<>();
         String header = request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
-        if(!member.getCoach().getChecked().equals(null)&&!member.getCoach().getChecked().isEmpty()){
+        if(member.getCoach()!=null){
             map.put("coachChecked", member.getCoach().getChecked());
             map.put("coachPass", member.getCoach().getPass());
         }
