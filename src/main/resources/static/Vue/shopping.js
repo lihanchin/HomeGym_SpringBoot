@@ -14,21 +14,6 @@ new Vue({
         pushCourseValue(item){
             this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'/product?id='+item.courseId;
         },
-        filter(){
-            window.location.replace("/shop?partOfBody="+this.partOfBody)
-
-            // if (partOfBody!=''){
-            //     axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
-            //         this.shoppingCourse = res.data.currentPage;
-            //         this.totalPage = res.data.totalPage;
-            //     })
-            // }else {
-            //     axios.get("/store/").then((res) =>{
-            //         this.shoppingCourse = res.data.firstPage;
-            //         this.totalPage = res.data.totalPage;
-            //     })
-            // }
-        },
         clickPage(index){
             let partOfBody = this.partOfBody
             let pageNo = index+1
@@ -65,13 +50,16 @@ new Vue({
                 this.shoppingCourse = res.data.courseList;
                 this.totalPage = res.data.totalPage;
             })
-        }else if(partOfBody!=null&partOfBody!='') {
-            console.log("======================")
-            axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
-                this.shoppingCourse = res.data.currentPage;
-                this.totalPage = res.data.totalPage;
-            })
-        }else {
+        } else if(partOfBody!=null&partOfBody!='') {
+            if(partOfBody='所有') {
+                // window.location.replace("/shop")
+            }else {
+                axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
+                    this.shoppingCourse = res.data.currentPage;
+                    this.totalPage = res.data.totalPage;
+                })
+            }
+        } else {
             console.log("????????????")
                 axios.get("/store/").then((res) =>{
                     this.shoppingCourse = res.data.firstPage;
@@ -125,7 +113,7 @@ function doFirst(){
         total.innerText ='總計 NT$'+ countTotal;
     }
 
-    let list = document.querySelectorAll('courseCard .addButton');     //按了加入購物車
+    let list = document.querySelectorAll(".addButton");     //按了加入購物車
     console.log(list)
 
     for(let i = 0; i < list.length; i++){
