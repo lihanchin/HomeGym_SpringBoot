@@ -101,6 +101,7 @@ public class ShoppingCartController {
         String[] responses = ecPayResponse.split("&");
         Map<String, String> detail = new HashMap<>();
 
+
         for (int i = 1; i < responses.length; i++) {
             String[] detailKeyAndValue = responses[i].split("=");
             if (detailKeyAndValue.length == 1) {
