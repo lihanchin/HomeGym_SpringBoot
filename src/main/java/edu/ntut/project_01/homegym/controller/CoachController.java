@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 
@@ -44,23 +45,23 @@ public class CoachController {
         Member member = memberService.findMemberByToken(header);
         Integer memberId = member.getMemberId();
 
-        //存到coachImages
-        File imageFolder = new File("src/main/resources/static/coachImages");
-        System.out.println(imageFolder);
-        if(!imageFolder.exists()){
-            imageFolder.mkdirs();
-        }
+//        //存到coachImages
+//        File imageFolder = new File("src/main/resources/static/coachImages");
+//        System.out.println(imageFolder);
+//        if(!imageFolder.exists()){
+//            imageFolder.mkdirs();
+//        }
 
-        String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,memberId,".jpg");
+//        String coachImagePath = GlobalService.imageSaveToFile(coach.getCoachImage(),imageFolder,memberId,".jpg");
 
-        //存到certification
-        File certificationFolder = new File("src/main/resources/static/cerification");
-        System.out.println(certificationFolder);
-        if(!certificationFolder.exists()){
-            certificationFolder.mkdirs();
-        }
+//        //存到certification
+//        File certificationFolder = new File("src/main/resources/static/cerification");
+//        System.out.println(certificationFolder);
+//        if(!certificationFolder.exists()){
+//            certificationFolder.mkdirs();
+//        }
 
-        String certificationPath = GlobalService.imageSaveToFile(coach.getCertification(),certificationFolder,memberId,".jpg");
+//        String certificationPath = GlobalService.imageSaveToFile(coach.getCertification(),certificationFolder,memberId,".jpg");
 
         coach.setChecked("0");
         coach.setSuspension(0);
@@ -70,8 +71,8 @@ public class CoachController {
         String applyTime = sdf.format(new Date());
 
         coach.setApplyTime(applyTime);
-        coach.setCertification(certificationPath);
-        coach.setCoachImage(coachImagePath);
+        coach.setCertification(coach.getCertification());
+        coach.setCoachImage(coach.getCoachImage());
         member.setCoach(coach);
         member.setRole("ROLE_COACH");
         memberService.update(member);

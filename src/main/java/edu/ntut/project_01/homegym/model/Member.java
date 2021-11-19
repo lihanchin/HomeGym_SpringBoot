@@ -40,7 +40,7 @@ public class Member {
     private String mimeType;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Orders> orders = new HashSet<>();
 
     @JsonIgnore
@@ -49,15 +49,15 @@ public class Member {
     private Coach coach;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<CourseComment> courseComments = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<FQA> fqas = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<FQAReply> fqaReplies = new HashSet<>();
 
     public Member() {

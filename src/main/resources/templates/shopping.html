@@ -304,27 +304,27 @@
                             <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
 <!--                            <li class="list-group-item list-group-item-primary">上半身</li>-->
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="全身" v-model="partOfBody" @change="filter()">
                                 全身
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="核心" v-model="partOfBody" @change="filter()">
                                 核心
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter()">
                                 二頭
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter()">
                                 三頭
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter()">
                                 胸
                             </label>
                             <label class="list-group-item">
-                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="" v-model="partOfBody"  @change="filter">
+                                <input class="form-check-input me-1" type="radio" name="partOfBody" value="" v-model="partOfBody"  @change="filter()">
                                 所有
                             </label>
 <!--                            <li class="list-group-item list-group-item-primary">下半身</li>-->
@@ -360,11 +360,13 @@
                         <div class="container ps-3 pe-3">
                             <div class="row row-cols-md-2 row-cols-lg-3 row-cols-sm-1">
                                 <!-- 課程卡片 -->
-                                <div class="col gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
+                                <div class="courseCard col gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
                                     <div class="card w-100 h-100 cart">
 
                                         <div class="position-relative">
-                                            <img :src="item.courseImage" class="card-img-top" alt="...">
+                                            <div class=" imageBox">
+                                                <img :src="item.courseImage" class="card-img-top" alt="...">
+                                            </div>
                                             <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
                                                 <a class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
                                                     <input type="hidden" :value="CourseValue" >

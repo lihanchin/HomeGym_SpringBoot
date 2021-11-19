@@ -21,5 +21,7 @@ public interface CourseCommentRepository  extends JpaRepository<CourseComment,In
     @Query(value = " SELECT COUNT(*) FROM CourseComment WHERE course_id = :courseId")
     Integer countComment(@Param(value= "courseId") Integer courseId);
 
+    Optional<List<CourseComment>> findCourseCommentByCourse_CourseId(Integer courseId);
+
     Page<CourseComment> findCourseCommentByCourse_CourseId(Integer courseId, Pageable pageable);
 }

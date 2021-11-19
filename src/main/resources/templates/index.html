@@ -33,8 +33,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <div class="search d-flex ms-auto position-relative col-4">
-                    <input class="form-control" type="text" placeholder="關鍵字搜尋" aria-label="default input example"> 
-                    <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" ></i>
+                    <input class="form-control" type="text" v-model="search" placeholder="關鍵字搜尋" aria-label="default input example">
+                    <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" @click="searchKeyword"></i>
                 </div>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
                     <div id="marker"></div>
@@ -67,16 +67,21 @@
                         <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
                     </div>
                     <li class="nav-item">
-                        <div class="top ms-3 text-center " >
-                            <a class="text-white" id="changeName">{{memberName}} |</a><!--姓名/註冊-->
-                            <a class="text-white" href="" data-bs-toggle="modal" :data-bs-target="statusTarget" id="changeStatus">{{status}}</a>
+                        <div class="top ms-3 text-center " v-show="status =='登入'">
+                            <a class="text-white">{{memberName}} |</a>
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#" @click="logout">登出</a>
+                        </div>
+                        <div class="top ms-3 text-center "v-show="status =='登出'">
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊 |</a>
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
                         </div>
                         <div class="buttom text-center ms-3 dropdown">
                             <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
                             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
                                 <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
-                                <li><a class="dropdown-item text-center" href="/apply">成為教練</a></li>
-                                <li><a class="dropdown-item text-center" href="/coach">教練專區</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachChecked==0"  href="/apply">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachChecked==1"  href="/waiting">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachPass==1" href="/coach">教練專區</a></li>
                             </ul>
                         </div>
                     </li>
@@ -113,7 +118,7 @@
                             </div>
                         </div>
                         <div class="text-end pe-3">
-                            <a href="#" >忘記密碼</a>
+                            <a href="/forgetPasswordCheck" >忘記密碼</a>
                         </div>
                         <div class="modal-footer">
                             <div class="m-auto">
@@ -334,21 +339,17 @@
         <div class="container-fluid">
             <div class="swiper-container position-relative swiper_course_banner">
                 <div class="swiper-wrapper">
+
                     <div class="swiper-slide">
-                        <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
+                        <img class="w-100" src="/imag/index/banner_2.jpg" alt="">
                     </div>
                     <div class="swiper-slide">
-                        <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
+                        <img class="w-100" src="/imag/index/banner_3.jpg" alt="">
                     </div>
                     <div class="swiper-slide">
-                        <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
+                        <img class="w-100" src="/imag/index/banner_4.jpg" alt="">
                     </div>
-                    <div class="swiper-slide">
-                        <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
-                    </div>
-                    <div class="swiper-slide">
-                        <img class="w-100" src="https://fakeimg.pl/1280x720/" alt="">
-                    </div>
+
                 </div>
                 <div class="swiper-pagination bottom-0"></div>
             </div>
@@ -363,31 +364,37 @@
                     <!-- 輪播項目 -->
                     <div class="swiper-slide">
                         <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
-                            <img src="https://fakeimg.pl/1280x720/" class="img-fluid position-relative" alt="...">
+                            <img src="/imag/index/coach_3.jpg" width="1280px" class="img-fluid position-relative" alt="...">
                             <div class="card-body p-4 position-absolute border-2 border w-100">
-                                <h3 class="mb-3">1教練名稱</h3>
-                                <h5 class="mb-3">經驗：瑜伽團教練長</h5>
-                                <p class="card-text w-50">自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹</p>
+                                <h3 class="mb-3 text-white">May Liu</h3>
+                                <h5 class="mb-3 text-white">經驗：May U Fit創辦人</h5>
+                                <p class="card-text w-50 text-white">
+                                    從泡芙人蛻變成健身美女，在IG分享自創增肌減脂食譜、紀錄個人立志健身經驗而擁有近18萬IG粉絲，是新生代的健身網紅！曾經受錯誤瘦身方法所苦，致力於傳達正確的健身資訊給廣大網友，並倡導「體重機上的數字不是一切」，應該拋開「乾、扁、瘦」的健身迷思，選對食物吃、努力做適合自己的重訓，增肌減脂才是王道！
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
-                            <img src="https://fakeimg.pl/1280x720/" class="img-fluid position-relative" alt="...">
+                            <img src="/imag/index/coach_2.jpg" width="1280px" class="img-fluid position-relative" alt="...">
                             <div class="card-body p-4 position-absolute border-2 border w-100">
-                                <h3 class="mb-3">2教練名稱</h3>
-                                <h5 class="mb-3">經驗：瑜伽團教練長</h5>
-                                <p class="card-text w-50">自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹</p>
+                                <h3 class="mb-3 text-white">Shuai Li</h3>
+                                <h5 class="mb-3 text-white">經驗：前 LA Fitness / 619MUSCLE 健身教練</h5>
+                                <p class="card-text w-50 text-white">
+                                    Fitness和619MUSCLE的健身教練，也開啟自己的YouTube健身頻道，有點潮潮的他穿衣顯瘦脫衣有肉，尤其是胸肌的部分
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
-                            <img src="https://fakeimg.pl/1280x720/" class="img-fluid position-relative" alt="...">
+                            <img src="/imag/index/coach_1.jpg" width="1280px" class="img-fluid position-relative" alt="...">
                             <div class="card-body p-4 position-absolute border-2 border w-100">
-                                <h3 class="mb-3">3教練名稱</h3>
-                                <h5 class="mb-3">經驗：瑜伽團教練長</h5>
-                                <p class="card-text w-50">自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹自我介紹</p>
+                                <h3 class="mb-3 text-white">周六野Zoey</h3>
+                                <h5 class="mb-3 text-white">經驗：知名運動博主 運動影片自媒體</h5>
+                                <p class="card-text w-50 text-white">
+                                    由於熱愛健身美體，投入其中，發現改變了我很多，讓曾經為外貌身材而焦慮自卑的自己變得越來越自在自信，想分享给大家！帶大家和我一起在百忙中抽出一點時間關心自己的身體和關注自己的内心！
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -568,60 +575,72 @@
                         <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                問題1
+                                    商城有什麼會員優惠活動？
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <p>解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答</p>
+                                    <p>
+                                        永久性：境內滿新台幣1500元、境外滿新台幣3000元享點數雙倍。<br>
+                                        限時性：不定期課程折扣活動。
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                問題2
+                                    付款方式有哪些？
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                <p>解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答</p>
+                                    <p>信用卡 或 行動支付 或 ATM轉帳</p>
                                 </div>
                             </div>
                         </div>
                         <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
                         <h2 class="accordion-header" id="headingThree">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            問題3
+                                如果下單後想更改或取消訂單怎麼辦?
                             </button>
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                            <p>解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答</p>
+                                <p>
+                                    付款完成後的訂單會由系統自動處理，因此客服中心無法協助您更改課程項目，下單前請務必先確認所選課程是否正確。
+                                    如要修改或取消訂單，請向客服中心申請訂單作廢，(見「訂單作廢政策」) 並重新下單訂購您所需要的課程。
+                                </p>
                             </div>
                         </div>
                         </div>
                         <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
                         <h2 class="accordion-header" id="headingFour">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            問題4
+                                課程學習期限?
                             </button>
                         </h2>
                         <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                            <p>解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答</p>
+                                <p>
+                                    HomeGym 的所有課程影片，一旦購買後即享有「在 HomeGym 營運期間內，無限次數觀看課程之權利」。<br>
+                                    在極少數的情況下，老師會在合約到期之後將課程下架。但已經購買課程的學生將不受影響，並仍可於「我的課程」頁面中，看到之前所購買的課程喔！
+                                </p>
                             </div>
                         </div>
                         </div>
                         <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
                         <h2 class="accordion-header" id="headingFive">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                            問題5
+                                繳費期限過了怎麼辦？
                             </button>
                         </h2>
                         <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                            <p>解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答解答</p>
+                                <p>
+                                    一旦超過繳費期限，原本的「超商繳費代碼」以及「ATM
+                                    轉帳帳號」都會自動失效。不過請不用擔心，只要依照相同的購買流程，再次進行購買程序並產生新的訂單，於新的繳費期限內繳費、匯款就可以了！
+                                </p>
                             </div>
                         </div>
                         </div>
@@ -653,7 +672,7 @@
                     <textarea class="form-control" id="messenger_textarea1" rows="5" v-model.trim="message.visitorMessage"></textarea>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-outline-light mt-3 commentBtn" type="submit" @click="sendMessage" onclick="subimtShow()">送出</button>
+                    <button class="btn btn-outline-light mt-3 commentBtn" type="submit" @click="sendMessage" >送出</button>
                     <div class="alert hide">
                         <span class="msg">訊息已送出!</span>
                     </div>
@@ -675,7 +694,7 @@
                         <li class="mb-2"><a class="text_ls" href="#">使用者條款</a></li>
                         <li class="mb-2"><a class="text_ls" href="#">服務契約</a></li>
                         <li class="mb-2"><a class="text_ls" href="#">隱私權政策</a></li>
-                        <li class="mb-2"><a class="text_ls" href="#">團隊</a></li>
+                        <li class="mb-2"><a class="text_ls" href="/homegymteam">團隊</a></li>
                     </ul>
                 </div>
                 <div class="connection col-md-3 ">
@@ -733,8 +752,6 @@
 <!-- Swiper插件<幻燈片使用> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.6/swiper-bundle.min.js" integrity="sha512-r1+wZ6Dt2YNg8FujUHBbiXmDRNcVLTcN2q+lm0TSbmoBNUFJ4FdQ3zLeShz0bllBlzQ0QWtZuzJgdrW9xGc2Dw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="./js/swiper_customized.js"></script>
-<!-- JS -->
-<script src="./js/index.js"></script>
 <!-- quiz -->
 <script src="./js/quiz_questions.js"></script>
 <!-- 導覽列顯示購物車商品 -->

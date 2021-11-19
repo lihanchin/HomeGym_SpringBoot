@@ -21,7 +21,7 @@ new Vue({
         fqaUser:'',
         fqaUserIndex:'',
         //接收後端留言評價
-        comment:[ ],
+        commentList:[],
         totalPage:"",
         //接收後端留言評價
         coachName:[ ],
@@ -69,7 +69,7 @@ new Vue({
                 console.log(res);
                 console.log("請求結束")
                 axios.get("/course/"+id+"/showComment").then((res) =>{
-                    this.comment = res.data.courseComment
+                    this.commentList = res.data.courseComment
                     this.totalPage = res.data.totalPage
                 });
             })
@@ -87,7 +87,8 @@ new Vue({
             if(!this.fqaInput.fqaContent) return false;
             console.log("通過檢查")
             let comment =this.fqaInput.fqaContent; //留言input
-            console.log("準備請求")
+            console.log("準備請求"+id)
+
             axios.post(`/course/addFQA/${id}`,
                 {
                     fqaContent:comment,
@@ -115,12 +116,13 @@ new Vue({
         },
 
 
-        getFqaUser(fqaId){
-            var index = fqaId - 1;
-            console.log("fqaId="+fqaId)
-            console.log("index="+index)
-            var userName = this.fqa[index].memberName;
-            this.fqaUserIndex = fqaId;
+        getFqaUser(key){
+            // console.log(fqaId)
+            // var index = fqaId - 1;
+            // console.log("fqaId="+fqaId)
+            // console.log("index="+index)
+            var userName = this.fqa[key].memberName;
+            this.fqaUserIndex = this.fqa[key].fqaId;
             this.fqaUser = userName;
         },
 
@@ -166,22 +168,33 @@ new Vue({
             this.fqaUser ='';
             this.fqaReplyInput.fqaReplyContent ='';
             this.fqaUserIndex='';
-        }
+        },
+
+        clickPage(index){
+            console.log(index)
+
+            let pageNo = index+1
+            console.log(pageNo)
+                axios.get("/course/"+id+"/showComment?pageNo="+pageNo).then((res) =>{
+                    // console.log(res.data)
+                    console.log("555555")
+                    console.log(res.data)
+                    this.commentList = res.data.courseComment;
+                    this.totalPage = res.data.totalPage;
+                })
+        },
     },
     mounted() {
         axios.get("/store/"+id).then((res) =>{
-            console.log("1111")
-            console.log(res.data);
+            // console.log("1111")
+            // console.log(res.data);
             if(res.data.course.starAndComment!=null){
                 this.starAndComment = res.data.course.starAndComment
 
             }
-
-
             this.course = res.data.course
             this.coach = res.data.coach
             this.coachName = res.data.coachName
-            this.comment = res.data.commentlist
         });
 
         axios.get("http://localhost:8080/course/"+id, {
@@ -189,7 +202,7 @@ new Vue({
                 Authorization: token
             }
         }).then((res) =>{
-            // console.log(res);
+            console.log(res);
             this.member.memberName = res.data.name
             this.member.memberImage = 'data:'+res.data.mimeType+';base64,'+res.data.memberImage
             this.fqa = res.data.fqaList
@@ -201,7 +214,10 @@ new Vue({
         // })
 
         axios.get("/course/"+id+"/showComment").then((res) =>{
-            this.comment = res.data.courseComment
+            console.log("留言＝＝＝＝＝＝＝＝")
+            console.log(res.data)
+            console.log(res.data.courseComment)
+            this.commentList = res.data.courseComment
             this.totalPage = res.data.totalPage
         });
     }

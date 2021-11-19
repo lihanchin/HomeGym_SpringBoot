@@ -49,7 +49,23 @@ new Vue({
                 console.log(res)
             })
 
-        }
+        },
+        clickPage(index){
+            let page = index+1
+                axios.get("/coachArea/mycourse?page="+page,{
+                    headers: {
+                        Authorization: token
+                    }
+                }).then((res) =>{
+                    // console.log(res.data)
+                    console.log("222222")
+                    this.currentPage = res.data.currentPage;
+                    this.totalPage = res.data.totalPage;
+                })
+
+
+
+        },
     },
     mounted() {
         let  token = localStorage.getItem("Authorization")

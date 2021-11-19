@@ -145,7 +145,6 @@ public class StoreController {
             }
             Coach coach = course.get().getCoach();
             String coachName = coach.getMember().getName();
-            List<CourseComment> commentlist = new ArrayList<>(course.get().getCourseComments());
 
             map.put("course",course.get());
             map.put("coach",coach);
@@ -156,6 +155,20 @@ public class StoreController {
 
         return map;
 
+    }
+
+    //關鍵字查詢
+    @GetMapping("/keyword")
+    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page) {
+        Map<String, Object> response = new HashMap<>();
+        if (page != null && page != 0) {
+            response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, size).getContent());
+            response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, size).getTotalPages());
+        } else {
+            response.put("courseList", courseService.findCoursesByKeyword(keyword, 0, size).getContent());
+            response.put("totalPage", courseService.findCoursesByKeyword(keyword, 0, size).getTotalPages());
+        }
+        return ResponseEntity.ok().body(response);
     }
 
 

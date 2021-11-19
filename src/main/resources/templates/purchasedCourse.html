@@ -302,9 +302,14 @@
                             <h3>{{course.courseName}}</h3>
                         </div>
                         <video class="w-100" :src="course.coursePath" controls></video>
-                        <div class="stars d-flex flex-row-reverse justify-content-start align-items-center" >
-                            ({{starAndComment.commentAmount}})
-                            <i class="fa fa-star" aria-hidden="true" v-for="n in starAndComment.star" :key="n"></i>
+                        <div class="stars d-flex pt-3 flex-row-reverse justify-content-start align-items-center" >
+                            <div class="fs-6 ms-1 me-1">
+                                ( {{starAndComment.commentAmount}} )
+                            </div>
+                            <div v-if="starAndComment.commentAmount==0">
+                                無評價
+                            </div>
+                            <i class="fa fa-star fs-5 ps-1" aria-hidden="true" v-for="n in starAndComment.star" ></i>
                         </div>
                     </div>
                 </div>
@@ -363,10 +368,10 @@
 
                     <!-- 課程評論 -->
                     <div class="tab-pane fade mb-6" id="course_comment" role="tabpanel" aria-labelledby="course_comment_tab">
-                       <div  v-if="comment !=''">
+                       <div  v-if="commentList !=''">
                            <div class="col-10 m-auto pt-5">
                                <!-- 顯示留言項目 -->
-                               <div class="mb-4 border-bottom" v-for="item in comment" :key="item.id">
+                               <div class="mb-4 border-bottom" v-for="item in commentList" :key="item.id">
                                    <div class="user d-flex mb-2">
                                        <div class="me-2" style="width: 40px;">
                                             <img class="rounded-circle  img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
@@ -425,7 +430,7 @@
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
-                                <li class="page-item active" v-for="(pageNo,index) in totalPage">
+                                <li class="page-item" v-for="(pageNo,index) in totalPage" >
                                     <button class="page-link" @click="clickPage(index)" >{{pageNo}}</button>
                                 </li>
                                 <li class="page-item">
@@ -474,7 +479,7 @@
                         <div  v-if="fqa !=''">
                             <div class="col-10 m-auto pt-5 ">
                                 <!-- 顯示FQA -->
-                                <div class="mb-4" v-for="item in fqa" :key="item.id">
+                                <div class="mb-4" v-for="(item,key) in fqa" :key="item.id">
                                     <div class="user d-flex mb-2">
                                         <div class="me-2" style="width: 40px;">
                                             <img class="rounded-circle img-fluid" :src="'data:'+item.mineType+';base64,'+item.memberImage" alt="">
@@ -482,7 +487,7 @@
                                         <h5 class="mt-auto">{{item.memberName}}</h5>
                                     </div>
                                     <p>{{item.fqaContent}}</p>
-                                    <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(item.fqaId)">回覆</span>{{item.fqaCreateTime}}</p>
+                                    <p class="text-end me-2 mb-4"><span class="btn btn-outline-primary me-4 btn-sm" :value="item.fqaId" @click="getFqaUser(key)">回覆</span>{{item.fqaCreateTime}}</p>
                                     <!-- 顯示FQAReply-->
                                     <div class="ps-6  border-bottom bg-light pe-6 pt-4" v-for="key in item.fqaReplies" :key="key.id"> <!-- class添加ps-6 -->
                                         <div class="user d-flex mb-2 align-items-center">

@@ -33,6 +33,8 @@ public class CourseController {
 
     @Value("${jwt.header}")
     private String authorization;
+    @Value("5")
+    Integer size;
 
 
     //輸入留言
@@ -40,7 +42,7 @@ public class CourseController {
     public void addComment(@RequestBody CourseComment courseComment,@PathVariable Integer courseId,HttpServletRequest request) {
         String header= request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
-        Course course = courseService.findById(courseId).get();
+        Course course = courseService.findById(courseId).orElseThrow();
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
         String commentTime = sdf.format(new Date());
@@ -56,7 +58,7 @@ public class CourseController {
     public void addFQA(@RequestBody FQA fqaInput , @PathVariable Integer courseId, HttpServletRequest request) {
         String header= request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
-        Course course = courseService.findById(courseId).get();
+        Course course = courseService.findById(courseId).orElseThrow();
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
         String fqaTime = sdf.format(new Date());
@@ -72,7 +74,7 @@ public class CourseController {
     public void addFQAReply(@RequestBody FQAReply fqaReplyInput, @PathVariable Integer fqaId,HttpServletRequest request) {
         String header= request.getHeader(authorization);
         Member member = memberService.findMemberByToken(header);
-        FQA fqa = fqaService.findById(fqaId).get();
+        FQA fqa = fqaService.findById(fqaId).orElseThrow();
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
         String fqaReplyTime = sdf.format(new Date());
@@ -141,16 +143,7 @@ public class CourseController {
             videoFolder.mkdirs();
         }
 
-        String videoCoachPath = GlobalService.imageSaveToFile(coursePath, videoFolder,coachId,".mp4");
-
-        //存影片照片到
-        File courseImageFolder = new File("src/main/resources/static/courseImage");
-        System.out.println(courseImageFolder);
-        if (!courseImageFolder.exists()) {
-            courseImageFolder.mkdirs();
-        }
-
-        String courseImagePath = GlobalService.imageSaveToFile(courseImage, courseImageFolder,coachId,"jpg");
+        String videoCoachPath = GlobalService.videoSaveToFile(coursePath, videoFolder,coachId,".mp4");
 
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
@@ -168,7 +161,7 @@ public class CourseController {
         course.setCoursePath(videoCoachPath);
         course.setChecked(0);
         course.setPass(0);
-        course.setCourseImage(courseImagePath);
+        course.setCourseImage(courseImage);
         courseService.save(course);
     }
 
@@ -178,10 +171,32 @@ public class CourseController {
         Optional<Course> course  = courseService.findById(id);
         Page<CourseComment> courseComments;
         Map<String,Object> map = new HashMap<>();
-
+        System.out.println("pageNo====================================================="+pageNo);
         //如果點頁數
-        if(pageNo!=null){
-            courseComments = courseCommentService.findCourseComment(id,pageNo,5);
+        if(pageNo!=null&& pageNo > 0){
+            System.out.println("進入分頁方法＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
+            courseComments = courseCommentService.findCourseComment(id,pageNo-1,size);
+
+            if(course.isPresent()){
+                if(courseComments != null){
+                    for (CourseComment comment : courseComments.getContent()){
+                        String name = comment.getMember().getName();
+                        byte[] memberImage = comment.getMember().getMemberImage();
+                        String mimeType = comment.getMember().getMimeType();
+                        System.out.println("name=============================="+name);
+                        comment.setMemberImage(memberImage);
+                        comment.setMemberName(name);
+                        comment.setMineType(mimeType);
+                    }
+                }
+            }
+
+            map.put("courseComment",courseComments.getContent());
+            map.put("totalPage",courseComments.getTotalPages());
+            return map;
+        }else {
+            //第一頁
+            courseComments = courseCommentService.findCourseComment(id,0,size);
             if(course.isPresent()){
                 if(courseComments != null){
                     for (CourseComment comment : courseComments.getContent()){
@@ -199,23 +214,7 @@ public class CourseController {
             return map;
         }
 
-        //第一頁
-        courseComments = courseCommentService.findCourseComment(id,0,5);
-        if(course.isPresent()){
-            if(courseComments != null){
-                for (CourseComment comment : courseComments.getContent()){
-                    String name = comment.getMember().getName();
-                    byte[] memberImage = comment.getMember().getMemberImage();
-                    String mimeType = comment.getMember().getMimeType();
-                    comment.setMemberImage(memberImage);
-                    comment.setMemberName(name);
-                    comment.setMineType(mimeType);
-                }
-            }
-        }
-        map.put("courseComment",courseComments.getContent());
-        map.put("totalPage",courseComments.getTotalPages());
-        return map;
+
     }
 
 }

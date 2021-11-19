@@ -18,10 +18,15 @@ public class Coach {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer coachId;
     private String experience;
+    @Column(columnDefinition = "LONGTEXT")
     private String certification;
     private String skill;
-    @Column(name = "coach_image")
+
+
+    @Column(name = "coach_image",columnDefinition = "LONGTEXT")
     private String coachImage;
+
+
     @Column(name = "coach_info")
     private String coachInfo;
     //需要隱藏欄位

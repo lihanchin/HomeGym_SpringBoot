@@ -13175,6 +13175,11 @@ fieldset:disabled .btn {
   opacity: 1;
 }
 
+.shoppingCar .imageBox {
+  height: 250px;
+  overflow: hidden;
+}
+
 #courseVideo {
   position: relative;
 }
