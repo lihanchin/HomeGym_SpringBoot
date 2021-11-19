@@ -9,6 +9,7 @@ new Vue({
         CourseValue:"",
         shoppingCourse:[],
         partOfBody:"",
+        buyCourse:[]
     },
     methods: {
         pushCourseValue(item){
@@ -21,8 +22,11 @@ new Vue({
                 this.addCountArea()
                 console.log("準備加入localstorage")
                 this.addClass('classId'+item.courseId,classInfo);
+
             }else{                                         //加入時購物車已經有東西
                 this.addClass('classId'+item.courseId,classInfo);
+                this.buyCourse.push('classId'+item.courseId)
+
             }
         },
         clickPage(index){
@@ -70,11 +74,13 @@ new Vue({
             }else{                                                  //如果localStorage有東西
                 let itemString = localStorage.getItem('addItemList');
                 items = itemString.substr(0, itemString.length - 2).split('， '); //id名稱的陣列
-                console.log(items);
+                // console.log(items);
+                this.buyCourse = items;
                 for(let i = 0; i < items.length; i++){
                     let classInfo = localStorage.getItem(items[i]) //課程資訊
+
                     console.log(classInfo)
-                    this.createList(classInfo);
+                    // this.createList(classInfo);
                     let classPrice = parseInt(classInfo.split('|')[2]) //pirce
                     // console.log(classPrice)
                     countTotal += classPrice
@@ -92,24 +98,7 @@ new Vue({
                 total.innerText ='總計 NT$'+ countTotal;
             }
 
-            let list = document.querySelector("li");//按了加入購物車
-            console.log(list)
 
-            for(let i = 0; i < list.length; i++){
-                list[i].addEventListener('click',function() {
-                    // let classInfo = document.querySelector(`#${this.id} input`).value;
-                    // console.log("有")
-                    // console.log(classInfo)
-                    // if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
-                    //     textDivId.remove(textId)
-                    //     addCountArea()
-                    //     console.log("準備加入localstorage")
-                    //     addClass(this.id,classInfo);
-                    // }else{                                         //加入時購物車已經有東西
-                    //     addClass(this.id,classInfo);
-                    // }
-                });
-            }
         },
         addClass(classId,classValue){                      //加入購物車時
             if(localStorage[classId]){ //如果有表示選過
