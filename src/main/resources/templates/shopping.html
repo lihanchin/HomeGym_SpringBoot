@@ -19,6 +19,7 @@
 </style>
 <body>
 
+
 <!-- 導覽列 11/16更新-->
 <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
     <div class="container-fluid">
@@ -98,7 +99,7 @@
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title m-auto" >登入帳號</h5>
+                    <h5 class="modal-title m-auto" id="exampleModalLabel">登入帳號</h5>
                 </div>
                 <!--                    <form id="needs_validation_login" novalidate>-->
                 <div class="modal-body">
@@ -137,7 +138,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title m-auto" >註冊帳號</h5>
+                    <h5 class="modal-title m-auto" id="exampleModalLabel">註冊帳號</h5>
                 </div>
                 <form id="needs_validation_signup">
                     <div class="modal-body">
@@ -239,7 +240,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header info_title">
-                    <h5 class="modal-title m-auto" >準備挑戰健身知識</h5>
+                    <h5 class="modal-title m-auto" id="exampleModalToggleLabel2">準備挑戰健身知識</h5>
                 </div>
                 <div class="modal-body info_list ms-4">
                     <div class="mb-2">1.每一題需十五秒內完成</div>
@@ -260,7 +261,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title col-8">健身知識挑戰開始</h5>
+                    <h5 class="modal-title col-8" id="exampleModalToggleLabel2">健身知識挑戰開始</h5>
                     <div class="timer d-flex bg-primary p-2 rounded-3 col-4 justify-content-center">
                         <div class="time_left_txt me-2 text-white">剩餘時間</div>
                         <div class="timer_sec badge bg-light text-dark d-flex align-items-center justify-content-center">03</div>
@@ -291,7 +292,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" >健身知識結果</h5>
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">健身知識結果</h5>
                 </div>
                 <div class="modal-body  d-flex flex-column align-items-center">
                     <div class="complete_text mb-3">恭喜你完成了健身知識測驗</div>
@@ -359,9 +360,9 @@
                                                 <img :src="item.courseImage" class="card-img-top" alt="...">
                                             </div>
                                             <div class="position-absolute top-0 end-0  w-100 h-100  d-flex flex-column  justify-content-end  link_info">
-                                                <a class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId " @click="pushCourseValue(item)">
+                                                <a class="btn btn-outline-secondary rounded-0 d-block addButton" :id="'classId'+item.courseId" @click="pushCourseValue(item)">
                                                     <input type="hidden" :value="CourseValue" >
-                                                    加到購物車
+                                                    <span>加到購物車</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -406,6 +407,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <!-- quiz -->
 <script src="./js/quiz_questions.js"></script>
+<script src="./js/shoppingNav.js"></script>
 <!-- Vue -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>

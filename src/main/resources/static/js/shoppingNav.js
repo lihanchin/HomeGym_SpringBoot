@@ -1,24 +1,17 @@
 
 function doFirst(){
-
-
-
     if(localStorage['addItemList'] == null){                     //條件判斷 //防止重整後資料被清空
-        localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value
+        localStorage['addItemList'] = '';
     }
-
     let bodyWindow = document.querySelector("body")
     if(bodyWindow.clientWidth<993){  //若小於993視窗 不顯示
         let dropdownMenu = document.querySelector("#dropdown-menu")
         let dropdown = document.querySelector(".dropdown")
         var parentObj = dropdownMenu.parentNode; //獲取父層標籤
-
         parentObj.removeChild(dropdownMenu)
     }else {
         countTotal=0;
-
         if(localStorage['addItemList'] == ''){                       //如果localStorage沒東西
-            // console.log('hi')
             textDiv = document.createElement('div')
             text = document.createElement('p')
             text.className="text-center mt-3"
@@ -33,10 +26,8 @@ function doFirst(){
             console.log(items);
             for(let i = 0; i < items.length; i++){
                 let classInfo = localStorage.getItem(items[i]) //課程資訊
-                // console.log(classInfo)
                 createList(classInfo);
                 let classPrice = parseInt(classInfo.split('|')[2]) //pirce
-                // console.log(classPrice)
                 countTotal += classPrice
             }
             total = document.createElement('p')
@@ -52,13 +43,11 @@ function doFirst(){
             total.innerText ='總計 NT$'+ countTotal;
         }
 
-
         function createList(classValue){                            //載入購物車時
             let name = classValue.split('|')[0];
             let classImg = classValue.split('|')[1];
             let classPrice = classValue.split('|')[2];
             let classUrl = classValue.split('|')[3];
-
 
             cardDiv = document.createElement('div')
             cardDiv.className="card border-0 mb-2 border-bottom pb-2"
@@ -94,10 +83,6 @@ function doFirst(){
             colBodyDiv.appendChild(bodyDiv)
             classLink.appendChild(colBodyDiv)
         }
-
-
     }
-
-
 }
 window.addEventListener('load',doFirst);

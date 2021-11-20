@@ -55,7 +55,6 @@ public class StoreController {
     //商城分頁(OK)
     @GetMapping("/allCourse")
     ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
-        System.out.println("page+partOfBody======================================="+page+partOfBody);
         Integer totalPage;
         Page<Course> showCourse;
         Map<String, Object> storeDetail;
