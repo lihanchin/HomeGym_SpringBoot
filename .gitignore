@@ -36,3 +36,4 @@ service-logs
 service-logs/all.log
 service-logs
 logs
+.DS_Store

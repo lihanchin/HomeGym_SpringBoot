@@ -52,14 +52,23 @@ new Vue({
                     }
                 }
             ).then((res) =>{
-                console.log("結束");
-                console.log(res);
+                // console.log("結束");
+                // console.log(res);
+                window.location.replace("/waiting");
+
+
             }).catch(error =>{
                 console.log(error.response.data.message)
                 window.alert("請重新登入");
                 window.location.replace("/");
             })
-            window.location.replace("/waiting");
+            this.coach.skill ="";
+            this.coach.experience ="";
+            this.coach.account ="";
+            this.coach.coachInfo ="";
+            this.coach.certification="";
+            this.coach.coachImage="";
+
         }
     },
 })

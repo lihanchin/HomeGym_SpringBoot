@@ -147,7 +147,7 @@ public class ExampleAllInOne {
         obj.setItemName(orderItems);
         obj.setReturnURL(ourUrl + "/ecpayResponse");
         obj.setNeedExtraPaidInfo("Y");
-        obj.setClientBackURL(ourUrl + "/memberArea/backFromECPay");
+        obj.setClientBackURL(ourUrl + "/OKOrder");
         String form = all.aioCheckOut(obj, null);
         return form;
     }
