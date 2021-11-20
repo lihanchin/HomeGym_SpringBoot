@@ -1,4 +1,3 @@
-
 let keyword = (location.search.split('keyword='))[1]
 
 let partOfBody = (location.search.split('partOfBody='))[1]
@@ -8,51 +7,43 @@ new Vue({
         totalPage:"",
         CourseValue:"",
         shoppingCourse:[],
-        partOfBody:"",
         buyCourse:[]
     },
     methods: {
         pushCourseValue(item){
             let classInfo =  this.CourseValue = item.courseName+'|'+item.courseImage+'|'+item.price+'|'+'/product?id='+item.courseId;
-            // let classInfo = document.querySelector(`#${this.id} input`).value;
-            console.log("有")
-            console.log(classInfo)
             if(localStorage['addItemList'] == ''){              //如果是第一次加入購物車
                 textDivId.remove(textId)
                 this.addCountArea()
-                console.log("準備加入localstorage")
                 this.addClass('classId'+item.courseId,classInfo);
-
             }else{                                         //加入時購物車已經有東西
                 this.addClass('classId'+item.courseId,classInfo);
                 this.buyCourse.push('classId'+item.courseId)
-
             }
         },
         clickPage(index){
-            let partOfBody = this.partOfBody
             let pageNo = index+1
 
-            // if(keyword!=null&keyword!=''){
-            //     if(pageNo!=null&pageNo!=''){
-            //         axios.get("/store/keyword?keyword="+keyword+"&page="+pageNo).then((res) =>{
-            //             this.shoppingCourse = res.data.courseList;
-            //             this.totalPage = res.data.totalPage;
-            //         })
-            //     }
-            // }else {
-            //     if(partOfBody!=''){
-            //         axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
-            //             this.shoppingCourse = res.data.currentPage;
-            //             this.totalPage = res.data.totalPage;
-            //         })
-            //     }else {
-            //         axios.get("/store/allCourse?page="+pageNo).then((res) =>{
-            //             this.shoppingCourse = res.data.currentPage;
-            //             this.totalPage = res.data.totalPage;
-            //         })
-            //     }
-            // }
+            if(keyword!=null&keyword!=''){
+                if(pageNo!=null&pageNo!=''){
+                    axios.get("/store/keyword?keyword="+keyword+"&page="+pageNo).then((res) =>{
+                        this.shoppingCourse = res.data.courseList;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }
+            }else {
+                if(partOfBody!=null&&partOfBody!=''){
+                    axios.get("/store/allCourse?page="+pageNo+"&partOfBody="+partOfBody).then((res) =>{
+                        this.shoppingCourse = res.data.currentPage;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }else {
+                    axios.get("/store/allCourse?page="+pageNo).then((res) =>{
+                        this.shoppingCourse = res.data.currentPage;
+                        this.totalPage = res.data.totalPage;
+                    })
+                }
+            }
         },
         doFirst(){
 
@@ -60,12 +51,8 @@ new Vue({
                 localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value
             }
 
-function doFirst(){
             countTotal=0;
 
-    if(localStorage['addItemList'] == null){                     //條件判斷 //防止重整後資料被清空
-        localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value
-    }
             if(localStorage['addItemList'] == ''){                       //如果localStorage沒東西
                 textDiv = document.createElement('div')
                 text = document.createElement('p')
@@ -82,11 +69,7 @@ function doFirst(){
                 this.buyCourse = items;
                 for(let i = 0; i < items.length; i++){
                     let classInfo = localStorage.getItem(items[i]) //課程資訊
-
-                    console.log(classInfo)
-                    // this.createList(classInfo);
                     let classPrice = parseInt(classInfo.split('|')[2]) //pirce
-                    // console.log(classPrice)
                     countTotal += classPrice
                 }
                 total = document.createElement('p')
@@ -110,7 +93,6 @@ function doFirst(){
             }else{
                 localStorage['addItemList'] += `${classId}， `;
                 localStorage.setItem(classId,classValue);
-                console.log("classValue=============="+classValue)
                 let name = classValue.split('|')[0];
                 let classImg = classValue.split('|')[1];
                 let classPrice = classValue.split('|')[2];
@@ -208,43 +190,11 @@ function doFirst(){
             lastDiv.appendChild(checkoutLink)
             document.getElementById('dropdown-menu').appendChild(lastDiv)
 
-    countTotal=0;
-
-    if(localStorage['addItemList'] == ''){                       //如果localStorage沒東西
-        textDiv = document.createElement('div')
-        text = document.createElement('p')
-        text.className="text-center mt-3"
-        text.id='textId'
-        textDiv.id='textDivId'
-        text.innerText="購物車內無選購商品"
-        textDiv.appendChild(text)
-        menu.appendChild(textDiv)
-    }else{                                                  //如果localStorage有東西
-        let itemString = localStorage.getItem('addItemList');
-        items = itemString.substr(0, itemString.length - 2).split('， '); //id名稱的陣列
-        console.log(items);
-        for(let i = 0; i < items.length; i++){
-            let classInfo = localStorage.getItem(items[i]) //課程資訊
-            console.log(classInfo)
-            createList(classInfo);
-            let classPrice = parseInt(classInfo.split('|')[2]) //pirce
-            // console.log(classPrice)
-            countTotal += classPrice
         }
-        total = document.createElement('p')
-        total.className="mb-2 me-2 d-flex justify-content-end"
-        checkoutLink = document.createElement('a')
-        checkoutLink.setAttribute('href','/shoppingCart')
-        checkoutLink.className="btn btn-primary d-block"
-        checkoutLink.innerText='前往結帳'
-        lastDiv = document.createElement('div')
-        lastDiv.appendChild(total)
-        lastDiv.appendChild(checkoutLink)
-        document.getElementById('dropdown-menu').appendChild(lastDiv)
-        total.innerText ='總計 NT$'+ countTotal;
 
     },
     mounted() {
+        console.log("==================")
         console.log(partOfBody)
         console.log(keyword)
         if(keyword!=null&keyword!=''){
@@ -255,37 +205,26 @@ function doFirst(){
                 this.totalPage = res.data.totalPage;
             })
         } else if(partOfBody!=null&partOfBody!='') {
-            if(partOfBody='所有') {
-                // window.location.replace("/shop")
-            }else {
+            console.log("搜部位")
+            if(partOfBody !='所有') {
                 axios.get("/store/allCourse?partOfBody="+partOfBody).then((res) =>{
                     this.shoppingCourse = res.data.currentPage;
                     this.totalPage = res.data.totalPage;
                 })
+                console.log("搜部位2222222222")
+
+            }else {
+                console.log("搜部位11111111")
+                window.location.replace("/shop")
             }
         } else {
             console.log("????????????")
-                axios.get("/store/").then((res) =>{
-                    this.shoppingCourse = res.data.firstPage;
-                    this.totalPage = res.data.totalPage;
-                })
+            axios.get("/store/").then((res) =>{
+                this.shoppingCourse = res.data.firstPage;
+                this.totalPage = res.data.totalPage;
+            })
         }
-        /////////////
         window.addEventListener('load',this.doFirst);
 
     }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-

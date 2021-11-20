@@ -28,8 +28,8 @@ public class ShoppingCartController {
     private static AllInOne all;
     @Value("${jwt.header}")
     private String HEADER;
-    @Value("${hg.url}")
-    private String ourUrl;
+//    @Value("${hg.url}")
+//    private String ourUrl;
     private String authorizationHeader;
     private CourseRepository courseRepository;
     private MemberService memberService;
@@ -84,7 +84,7 @@ public class ShoppingCartController {
         ExampleAllInOne exampleAllInOne = new ExampleAllInOne();
         ExampleAllInOne.initial();
         Map<String, String> map = new HashMap<>();
-        String paymentPage = exampleAllInOne.genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), ourUrl);
+        String paymentPage = exampleAllInOne.genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), "http://localhost:8080/");
         if (paymentPage != null) {
             map.put("paymentPage", paymentPage);
             System.out.println(paymentPage);
