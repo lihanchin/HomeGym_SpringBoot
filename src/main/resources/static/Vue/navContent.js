@@ -20,7 +20,6 @@ new Vue({
     },
     mounted(){
         let  token = localStorage.getItem("Authorization")
-        console.log("token========"+token)
         if(token!==null){
             axios.get(`/checkStatus`,{
                 headers: {

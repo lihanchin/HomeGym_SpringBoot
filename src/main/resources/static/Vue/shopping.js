@@ -19,8 +19,7 @@ new Vue({
                 this.addClass('classId'+item.courseId,classInfo);
                 this.buyCourse.push('classId'+item.courseId)
             }
-            document.querySelector(`"#classId${item.courseId}"`)
-                .getElementsByTagName('span')[0].innerText="已加入購物車"
+            document.querySelector(`#classId${item.courseId}`).getElementsByTagName('span')[0].innerText="已加入購物車"
         },
         clickPage(index){
             let pageNo = index+1
@@ -47,13 +46,12 @@ new Vue({
             }
         },
         doFirst(){
-
             if(localStorage['addItemList'] == null){                     //條件判斷 //防止重整後資料被清空
                 localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value
             }
 
-            countTotal=0;
 
+            countTotal=0;
         },
         addClass(classId,classValue){                      //加入購物車時
             if(localStorage[classId]){ //如果有表示選過
@@ -143,7 +141,23 @@ new Vue({
                 this.totalPage = res.data.totalPage;
             })
         }
+
         window.addEventListener('load',this.doFirst);
+
+    },
+    updated(){
+        let itemString = localStorage.getItem('addItemList');
+
+        items = itemString.substr(0, itemString.length - 2).split('， ');
+        items.forEach(function(item) {
+            console.log(item)
+
+            let classCourse = document.querySelector(`#${item}`)
+
+            classCourse.getElementsByTagName('span')[0].innerText="已加入購物車"
+            classCourse.classList.remove("addButton")
+            classCourse.classList.add("curson-auto")
+        })
     }
 })
 
