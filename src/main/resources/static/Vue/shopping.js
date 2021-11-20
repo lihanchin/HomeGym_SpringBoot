@@ -135,6 +135,9 @@ new Vue({
                 countTotal+= parseInt(classPrice)
                 document.getElementById('total')
                 total.innerText ='總計 NT$'+ countTotal;
+
+                document.getElementById(classId).getElementsByTagName('a')[0].innerText="已加入購物車"
+
             }
         },
         createList(classValue){                            //載入購物車時

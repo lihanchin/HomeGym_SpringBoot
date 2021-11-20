@@ -12,10 +12,12 @@
 </head>
 <body>
 <!-- 導覽列 11/16更新-->
-<nav class="ain_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
+<nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary" id="nav">
     <div class="container-fluid">
         <div class="navbar-brand d-flex align-items-center">
-            <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+            <div style="height: 40px; width: 40px;">
+                <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+            </div>
             <a class="text-white" href="/">厝動 HomeGym</a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +42,7 @@
                             <!-- 動態新增 -->
                         </div>
                     </div>
+
                 </li>
                 <li class="nav-item">
                     <div class="dropdown text-center">
@@ -53,10 +56,10 @@
                         </ul>
                     </div>
                 </li>
-                <div class=" ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
+                <div class="img_box ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
                     <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
                 </div>
-                <li class="nav-item">
+                <li class="nav-item" style="width: 108px">
                     <div class="top ms-3 text-center " v-show="status =='登入'">
                         <a class="text-white">{{memberName}} |</a>
                         <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#" @click="logout">登出</a>
@@ -87,7 +90,7 @@
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title m-auto" id="exampleModalLabel">登入帳號</h5>
+                    <h5 class="modal-title m-auto" >登入帳號</h5>
                 </div>
                 <!--                    <form id="needs_validation_login" novalidate>-->
                 <div class="modal-body">
@@ -126,7 +129,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title m-auto" id="exampleModalLabel">註冊帳號</h5>
+                    <h5 class="modal-title m-auto" >註冊帳號</h5>
                 </div>
                 <form id="needs_validation_signup">
                     <div class="modal-body">
@@ -228,7 +231,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header info_title">
-                    <h5 class="modal-title m-auto" id="exampleModalToggleLabel2">準備挑戰健身知識</h5>
+                    <h5 class="modal-title m-auto" >準備挑戰健身知識</h5>
                 </div>
                 <div class="modal-body info_list ms-4">
                     <div class="mb-2">1.每一題需十五秒內完成</div>
@@ -249,7 +252,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title col-8" id="exampleModalToggleLabel2">健身知識挑戰開始</h5>
+                    <h5 class="modal-title col-8">健身知識挑戰開始</h5>
                     <div class="timer d-flex bg-primary p-2 rounded-3 col-4 justify-content-center">
                         <div class="time_left_txt me-2 text-white">剩餘時間</div>
                         <div class="timer_sec badge bg-light text-dark d-flex align-items-center justify-content-center">03</div>
@@ -280,7 +283,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel2">健身知識結果</h5>
+                    <h5 class="modal-title" >健身知識結果</h5>
                 </div>
                 <div class="modal-body  d-flex flex-column align-items-center">
                     <div class="complete_text mb-3">恭喜你完成了健身知識測驗</div>
@@ -297,6 +300,7 @@
     </div>
 
 </div>
+
 
 <div id="app">
         <!-- 導覽列<第二層> -->

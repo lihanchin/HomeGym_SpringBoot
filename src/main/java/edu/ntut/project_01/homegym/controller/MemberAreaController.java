@@ -67,15 +67,15 @@ public class MemberAreaController {
         return memberService.changePassword(authorizationHeader, oldPassword, newPassword, newPasswordCheck);
     }
 
-    //綠界回來的按鍵(OK)
-    @GetMapping("/backFromECPay")
-    public ResponseEntity<String> ecPayResponse(HttpServletRequest request) {
-        PageRequest pageRequest = PageRequest.of(0, 1, Sort.by("orderTime").descending());
-        authorizationHeader = request.getHeader(HEADER);
-        Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
-        String message = ordersRepository.findOrdersByMember_MemberId(memberId, pageRequest).getContent().get(0).getOrderStatus();
-        return ResponseEntity.ok().body(message);
-    }
+//    //綠界回來的按鍵(OK)
+//    @GetMapping("/backFromECPay")
+//    public ResponseEntity<String> ecPayResponse(HttpServletRequest request) {
+//        PageRequest pageRequest = PageRequest.of(0, 1, Sort.by("orderTime").descending());
+//        authorizationHeader = request.getHeader(HEADER);
+//        Integer memberId = memberService.findMemberByToken(authorizationHeader).getMemberId();
+//        String message = ordersRepository.findOrdersByMember_MemberId(memberId, pageRequest).getContent().get(0).getOrderStatus();
+//        return ResponseEntity.ok().body(message);
+//    }
 
     //我的訂單OK(OK)
     @GetMapping("/OKOrder")
