@@ -7,6 +7,17 @@ function doFirst(){
         localStorage['addItemList'] = ''; //localStorage.setItem('addItemList','');//key = value
     }
 
+    let bodyWindow = document.querySelector("body")
+    // if(bodyWindow.clientWidth>993){
+    //     let dropdownMenu = document.querySelector("#dropdown-menu")
+    //     var parentObj = dropdownMenu.parentNode; //獲取父層標籤
+    //     console.log(dropdownMenu)
+    //     console.log(parentObj)
+    //
+    //     console.log("大於993")
+    //     // dropdownMenu.parentNode.removeChild(dropdownMenu)
+    // }
+
     countTotal=0;
 
     if(localStorage['addItemList'] == ''){                       //如果localStorage沒東西
