@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厝動 HomeGym</title>
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="請輸入"><!-- 填寫網頁的簡介 -->
+    <link rel="icon" href="./imag/hg_logo/logo_black_white.png" />
+
+    <!-- Bootstrap5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- font-awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Swiper插件<幻燈片使用> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.6/swiper-bundle.css" integrity="sha512-k/ajQk10gq0MXEJ3gDVRQe4ZkmXDsGGDa4D5PWCQDH1drJmipCfhZHjj+WsXqyEs0dlo1gJmaPbviTb8yLC5hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- 套用CSS -->
+    <link rel="stylesheet" href="./css/all.min.css">
+  
+</head>
+
+<body>
+
+    <!-- 導覽列 11/16更新-->
+    <nav class="main_nav navbar navbar-expand-lg navbar-light pe-3 bg-primary fixed-top navbar_top border-bottom border-primary" id="nav">
+        <div class="container-fluid">
+            <div class="navbar-brand d-flex align-items-center">
+                <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+                <a class="text-white" href="/">厝動 HomeGym</a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <div class="search d-flex ms-auto position-relative col-4">
+                    <input class="form-control" type="text" v-model="search" placeholder="關鍵字搜尋" aria-label="default input example">
+                    <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" @click="searchKeyword"></i>
+                </div>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                    <div id="marker"></div>
+                    <li class="nav-item">
+                        <a class="nav-link ms-3 text-white" aria-current="page" href="/shop"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                        商城</a>
+                    </li>
+                    <li class="shoppping_car nav-item dropdown">
+                        <a class="nav-link ms-3 text-white text-center" href="/shoppingCart"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                        購物車</a>
+                        <div class="dropdown-menu dropdown-menu-right" style="min-width:400px;min-height:100px;" id="dropdown-menu">
+                            <div class="px-3 py-2 " id="menu">
+                                <!-- 動態新增 -->
+                            </div>   
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dropdown text-center">
+                            <a class="nav-link ms-3 dropdown dropdown-toggle text-white" id="mycourse_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-window-maximize text-white" aria-hidden="true"></i>
+                            我的課程</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="mycourse_areas_dropdown">
+                                <li><a class="dropdown-item text-center" href="/myCourse">已買課程</a></li>
+<!--                                <li><a class="dropdown-item text-center" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>-->
+<!--                                <li><a class="dropdown-item text-center" href="./myFitnessPlan.html">健身計畫</a></li>-->
+                                <li><a class="dropdown-item text-center start_btn" href="#" data-bs-toggle="modal" data-bs-target="#quiz_info">健身知識</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <div class=" ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
+                        <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
+                    </div>
+                    <li class="nav-item">
+                        <div class="top ms-3 text-center " v-show="status =='登入'">
+                            <a class="text-white">{{memberName}} |</a>
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#" @click="logout">登出</a>
+                        </div>
+                        <div class="top ms-3 text-center "v-show="status =='登出'">
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊 |</a>
+                            <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
+                        </div>
+                        <div class="buttom text-center ms-3 dropdown">
+                            <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
+                                <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachChecked==0"  href="/apply">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachChecked==1"  href="/waiting">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachPass==1" href="/coach">教練專區</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <div id="nav_content">
+        <!-- 登入<彈跳視窗> 驗證OK -->
+        <div class="login_modal modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title m-auto" id="exampleModalLabel">登入帳號</h5>
+                    </div>
+<!--                    <form id="needs_validation_login" novalidate>-->
+                        <div class="modal-body">
+                            <div class="login_btn d-flex flex-column w-50 align-items-center m-auto mb-3">
+                                <div class="btn btn-outline-primary mb-2"><i class="fa fa-facebook-official fs-5 me-2" aria-hidden="true"></i>
+                                    Facebook登入</div>
+                                <div class="btn btn-outline-primary mb-2"><i class="fa fa-google fs-5 me-2" aria-hidden="true"></i>
+                                    goolge登入</div>
+                            </div>
+                            <h5 class="text-center mb-2 mt-4">或以 HomeGym 帳號密碼登入</h5>
+                            <div class="form-group">
+                                <label for="member_id" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="member_id" placeholder="" v-model.trim="login.email" required>
+                                <label for="password" class="form-label">密碼</label>
+                                <!-- 密碼正則表達式 -->
+                                <input class="form-control" type="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$" v-model.trim="login.password" required></input>
+                                <p class="text-danger hide errortext">信箱或密碼錯誤</p>
+                            </div>
+                        </div>
+                        <div class="text-end pe-3">
+                            <a href="/forgetPasswordCheck" >忘記密碼</a>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="m-auto">
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
+                                <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
+                            </div>
+                        </div>
+<!--                    </form>-->
+                </div>
+            </div>
+        </div>
+    
+        <!-- 註冊<彈跳視窗> -->
+        <div class="modal fade" id="signup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title m-auto" id="exampleModalLabel">註冊帳號</h5>
+                    </div>
+                    <form id="needs_validation_signup">
+                        <div class="modal-body">
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="member_email" class="form-label">信箱</label>
+                                </div>
+                                <div class="col">
+                                    <input type="email" class="form-control" id="member_email" placeholder="請輸入Email" v-model.trim="signup.email">
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="pwd" class="form-label">密碼</label>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" type="password" id="pwd" placeholder="" v-model.trim="signup.password"></input>
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="repassword" class="form-label">再輸入一次密碼</label>
+                                </div>
+                                <div class="col">
+                                    <!-- 綁定PleasPwd方法 -->
+                                    <input class="form-control" type="password" id="repassword" onfocus="pleasePwd()"></input>
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="member_name" class="form-label" >姓名</label>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" id="member_name" v-model.trim="signup.name"></input>
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="member_phone" class="form-label">手機</label>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" id="member_phone" v-model.trim="signup.phone"></input>
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <label for="member_birthday" class="form-label">生日</label>
+                                </div>
+                                <div class="col">
+                                    <!-- 生日限制 10歲以上 90歲以下-->
+                                    <input class="form-control" type="date" id="member_birthday" min="1930-01-01" max="2011-01-01" v-model.trim="signup.birthday"></input>
+                                    <span><!-- 錯誤提示位置 --></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="m-auto">
+                                <button type="button" onclick="clearFormContent()" class="btn btn-outline-secondary me-3" data-bs-dismiss="modal">取消</button>
+                                <button class="btn btn-outline-primary disabled" @click="memberSignUp" type="button" id="btn_signup" data-bs-target="#signup_success" data-bs-toggle="modal" data-bs-dismiss="modal">註冊</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- 註冊成功<彈跳視窗> -->
+        <div class="modal fade" id="signup_success" data-bs-backdrop="static" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title m-auto" id="exampleModalToggleLabel2">註冊帳號</h5>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fa fa-check-square-o fs-1 text-success" aria-hidden="true"></i>
+                    <h3>註冊成功</h3>
+                    <p class="me-3">已將驗證信送至Email</p>
+                    <div class="d-flex align-items-end">
+                        <!-- 綁定resendMail()方法 -->
+                        <button class="btn btn-outline-primary me-3" id="btResend" onclick="resendMail()" @click="reSendEmail">重新發一次驗證信</button>
+                        <!-- 動態新增秒數 -->
+                        <div class="text-muted" id="countSeconds"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" data-bs-dismiss="modal">開始進入健身生活</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    
+        <!-- quiz_info <彈跳視窗> -->
+        <div class="modal fade info_box" id="quiz_info" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header info_title">
+                    <h5 class="modal-title m-auto" id="exampleModalToggleLabel2">準備挑戰健身知識</h5>
+                </div>
+                <div class="modal-body info_list ms-4">
+                    <div class="mb-2">1.每一題需十五秒內完成</div>
+                    <div class="mb-2">2.請輕鬆作答增加健身小常識</div>
+                    <div class="mb-2">3.總共有五道題目</div>
+                    <div class="mb-2">4.全部答對後將會獲得折價卷</div>
+                </div>
+                <div class="modal-footer buttons d-flex justify-content-center">
+                    <button class="btn btn-outline-primary quit show me-3" data-bs-dismiss="modal">還沒準備</button>
+                    <button class="btn btn-primary restart show" data-bs-target="#quiz_box" data-bs-toggle="modal" data-bs-dismiss="modal">可以開始</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    
+        <!-- quiz_box <彈跳視窗> -->
+        <div class="modal fade" id="quiz_box" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title col-8" id="exampleModalToggleLabel2">健身知識挑戰開始</h5>
+                <div class="timer d-flex bg-primary p-2 rounded-3 col-4 justify-content-center">
+                    <div class="time_left_txt me-2 text-white">剩餘時間</div>
+                    <div class="timer_sec badge bg-light text-dark d-flex align-items-center justify-content-center">03</div>
+                </div>
+                </div>
+                <div class="modal-body">
+                    <div class="que_text">
+                    <!-- Here I've inserted question from JavaScript -->
+                    </div>
+                    <div class="option_list p-3 d-block">
+                    
+                    <!-- Here I've inserted options from JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer result_footer  d-flex justify-content-between">
+                    <div class="total_que">
+                    <!-- Here I've inserted Question Count Number from JavaScript -->
+                    </div>
+                    <button class="next_btn btn btn-outline-primary show d-none">下一題</button>
+                    <button class="btn btn-primary result_btn " data-bs-target="#result_box" data-bs-toggle="modal" data-bs-dismiss="modal">查看結果</button>
+                </div>
+            </div>
+            </div>
+        </div>
+      
+        <!-- result_box -->
+        <div class="modal fade result_b" id="result_box" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">健身知識結果</h5>
+                </div>
+                <div class="modal-body  d-flex flex-column align-items-center">
+                <div class="complete_text mb-3">恭喜你完成了健身知識測驗</div>
+                <div class="score_text">
+                    <!-- 插入評分 -->
+                </div>
+                </div>
+                <div class="modal-footer buttons">
+                <button class="btn btn-primary  show" data-bs-dismiss="modal" data-bs-target="#quiz_info" data-bs-toggle="modal" onclick="reset_result_btn()">再次挑戰</button>
+                <button class="btn btn-primary  show" data-bs-dismiss="modal" onclick="reset_result_btn()">休息一下</button>
+                </div>
+            </div>
+            </div>
+        </div>
+       
+    </div>
+    
+
+
+    <!-- 簡介 OK-->
+    <header class="hg_title mb-6">
+        <div class="container-fluid position-relative">
+            <div class="row align-items-center justify-content-center " style="height: 90vh; ">
+                <div class="box ani col-md-8 col-sm-12 ">
+                    <div class="logo">
+                        <svg viewBox="0 0 265.27 262.75">
+                            <path d="M331.4 177.1h-30.4V170h-13.1v7.1h-4.45v-15.8H273v15.71h-4.5V146.8h-14.4v26.6h-76.9l.4-9.8V69.7C115.8 80.6 68 133.9 68 199.3a132.64 132.4 0 1 0 263.4-22.21ZM141 183.6h-13.1v-13.5H141Zm14.6 8.5h-10.9v-30.7h10.2Zm18.8 14.7h-14.1v-60.2h14.13Zm80 51.3h-77.23l.1-77.6h76.9Z"
+                                  transform="translate(-68.01 -69.27)"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="title col-md-4 col-sm-12 text-start ">
+                    <h1>厝動HomeGym</h1>
+                    <h3>在厝運動，輕鬆又健康</h3>
+                </div>
+            </div>
+            <div class="square"></div>
+            <div class="square-2"></div>
+        </div>
+    </header>
+
+
+    <!-- 廣告版 OK-->
+    <section class="course_banner pb-5 pt-6 overflow-hidden bg-white">
+        <div class="container-fluid">
+            <div class="swiper-container position-relative swiper_course_banner">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <img class="w-100" src="/imag/index/banner_2.jpg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="w-100" src="/imag/index/banner_3.jpg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="w-100" src="/imag/index/banner_4.jpg" alt="">
+                    </div>
+
+                </div>
+                <div class="swiper-pagination bottom-0"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 教練精選/課程版 OK-->
+    <section class="course_coaching overflow-hidden">
+        <div class="container-fluid">
+            <div class="swiper-container swiper_course_coaching">
+                <div class="swiper-wrapper">
+                    <!-- 輪播項目 -->
+                    <div class="swiper-slide">
+                        <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
+                            <img src="/imag/index/coach_3.jpg" width="1280px" class="img-fluid position-relative" alt="...">
+                            <div class="card-body p-4 position-absolute border-2 border w-100">
+                                <h3 class="mb-3 text-white">May Liu</h3>
+                                <h5 class="mb-3 text-white">經驗：May U Fit創辦人</h5>
+                                <p class="card-text w-50 text-white">
+                                    從泡芙人蛻變成健身美女，在IG分享自創增肌減脂食譜、紀錄個人立志健身經驗而擁有近18萬IG粉絲，是新生代的健身網紅！曾經受錯誤瘦身方法所苦，致力於傳達正確的健身資訊給廣大網友，並倡導「體重機上的數字不是一切」，應該拋開「乾、扁、瘦」的健身迷思，選對食物吃、努力做適合自己的重訓，增肌減脂才是王道！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
+                            <img src="/imag/index/coach_2.jpg" width="1280px" class="img-fluid position-relative" alt="...">
+                            <div class="card-body p-4 position-absolute border-2 border w-100">
+                                <h3 class="mb-3 text-white">Shuai Li</h3>
+                                <h5 class="mb-3 text-white">經驗：前 LA Fitness / 619MUSCLE 健身教練</h5>
+                                <p class="card-text w-50 text-white">
+                                    Fitness和619MUSCLE的健身教練，也開啟自己的YouTube健身頻道，有點潮潮的他穿衣顯瘦脫衣有肉，尤其是胸肌的部分
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card d-flex flex-row w-75 m-auto border-0 align-items-end">
+                            <img src="/imag/index/coach_1.jpg" width="1280px" class="img-fluid position-relative" alt="...">
+                            <div class="card-body p-4 position-absolute border-2 border w-100">
+                                <h3 class="mb-3 text-white">周六野Zoey</h3>
+                                <h5 class="mb-3 text-white">經驗：知名運動博主 運動影片自媒體</h5>
+                                <p class="card-text w-50 text-white">
+                                    由於熱愛健身美體，投入其中，發現改變了我很多，讓曾經為外貌身材而焦慮自卑的自己變得越來越自在自信，想分享给大家！帶大家和我一起在百忙中抽出一點時間關心自己的身體和關注自己的内心！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 課程介紹 OK-->
+    <section class="course_recommendation_space pb-5 pt-6">
+        <div class="container-fluid">
+            <div class="swiper">
+                <div class="swiper-container swiper_course_group">
+                    <div class="swiper-wrapper">
+                        <!-- 輪播組 -->
+                        <div class="card_group d-flex swiper-slide justify-content-center">
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">1課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="./notPurchasedCourse.html" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">1課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">1課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="card_group d-flex swiper-slide justify-content-center">
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">2課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">2課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">2課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="card_group d-flex swiper-slide justify-content-center">
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">3課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">3課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            <div class="card w-25 h-100 me-3">
+                                <img src="https://fakeimg.pl/400x300/" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-end">
+                                        <h4 class="card-title">3課程名稱</h4>
+                                        <h6 class="pe-3">教練名稱</h6>
+                                    </div>
+                                    <div class="d-flex">
+                                        <p class="me-3 badge bg-secondary bg-dark">上半身</p>
+                                        <p class="me-3 badge bg-secondary bg-dark">腿部</p>
+                                    </div>
+                                    <p class="card-text">課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介課程簡介</p>
+                                    <a href="#" class="btn btn-primary">詳細課程內容</a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-next me-5 text-primary" id="course_recommendation_space_next"></div>
+                <div class="swiper-button-prev ms-5 text-primary" id="course_recommendation_space_prev"></div>
+            </div>
+        </div>
+    </section>
+        
+    <!-- 常見問題 OK -->
+    <section class="fqa_space pb-5 pt-6">
+        <div class="container">
+            <div class="row">
+                <h3>常見問題</h3>
+                <div class="col-lg-8 col-md-12">
+
+                    <div class="accordion" id="accordionExample">
+                        <!-- 問題項目 -->
+                        <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    商城有什麼會員優惠活動？
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        永久性：境內滿新台幣1500元、境外滿新台幣3000元享點數雙倍。<br>
+                                        限時性：不定期課程折扣活動。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    付款方式有哪些？
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>信用卡 或 行動支付 或 ATM轉帳</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                如果下單後想更改或取消訂單怎麼辦?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>
+                                    付款完成後的訂單會由系統自動處理，因此客服中心無法協助您更改課程項目，下單前請務必先確認所選課程是否正確。
+                                    如要修改或取消訂單，請向客服中心申請訂單作廢，(見「訂單作廢政策」) 並重新下單訂購您所需要的課程。
+                                </p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                課程學習期限?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>
+                                    HomeGym 的所有課程影片，一旦購買後即享有「在 HomeGym 營運期間內，無限次數觀看課程之權利」。<br>
+                                    在極少數的情況下，老師會在合約到期之後將課程下架。但已經購買課程的學生將不受影響，並仍可於「我的課程」頁面中，看到之前所購買的課程喔！
+                                </p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="accordion-item border-1 border border-primary rounded-2 mb-2">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                繳費期限過了怎麼辦？
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>
+                                    一旦超過繳費期限，原本的「超商繳費代碼」以及「ATM
+                                    轉帳帳號」都會自動失效。不過請不用擔心，只要依照相同的購買流程，再次進行購買程序並產生新的訂單，於新的繳費期限內繳費、匯款就可以了！
+                                </p>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class=" col-lg-4 d-flex align-items-center">
+                    <img class="w-100" src="https://fakeimg.pl/400x500/" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 傳送訊息 OK-->
+    <section class="messenger_form pb-5 bg-primary pt-6" id="message" style="position: relative;">
+        <div class="container col-lg-6 col-sm-12">
+            <h3 class="text-white text-center">傳送訊息</h3>
+                <div class="mb-3">
+                    <label for="messenger_name" class="form-label text-white">姓名</label>
+                    <input class="form-control" id="messenger_name" type="text" placeholder="請輸入姓名" aria-label="default input example" v-model.trim="message.visitorName">
+                </div>
+                <div class="mb-3">
+                    <label for="messenger_email" class="form-label text-white">E-mail</label>
+                    <input type="email" class="form-control" id="messenger_email"  placeholder="請輸入E-mail" v-model.trim="message.visitorEmail">
+                </div>
+                <div class="mb-3">
+                    <label for="messenger_textarea1" class="form-label text-white">傳送內容</label>
+                    <textarea class="form-control" id="messenger_textarea1" rows="5" v-model.trim="message.visitorMessage"></textarea>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-outline-light mt-3 commentBtn" type="submit" @click="sendMessage" >送出</button>
+                    <div class="alert hide">
+                        <span class="msg">訊息已送出!</span>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- footer OK-->
+    <footer class="responsive_footer bg-light">
+        <div class="content container-xl p-4">
+            <div class="row justify-content-between">
+                <div class="col-md-3 ">
+                    <h5>關於我們</h5>
+                    <p class="about text-primary text_ls">關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我關於我</p>
+                </div>
+                <div class="col-md-2 ">
+                    <h5>關於</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a class="text_ls" href="#">使用者條款</a></li>
+                        <li class="mb-2"><a class="text_ls" href="#">服務契約</a></li>
+                        <li class="mb-2"><a class="text_ls" href="#">隱私權政策</a></li>
+                        <li class="mb-2"><a class="text_ls" href="/homegymteam">團隊</a></li>
+                    </ul>
+                </div>
+                <div class="connection col-md-3 ">
+                    <h5>聯絡方式</h5>
+                    <ul class="list-unstyled">
+                        <li class="d-flex">
+                            <span class="me-2"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                            </span>
+                            <p class="text-primary text_ls">台北市大安區忠孝東路三段1號</p>
+                        </li>
+                        <li class="d-flex">
+                            <span class="me-2"><i class="fa fa-phone" aria-hidden="true"></i>
+                            </span>
+                            <p><a href="tel:+886911222333">0911-222-333</a></p>
+                        </li>
+                        <li class="d-flex">
+                            <span class="me-2"><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            </span>
+                            <p><a href="mailto:homeGym@gmail.com">homeGym@gmail.com</a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="link_contact col-md-3 d-flex flex-column align-items-center h-100 pb-3">
+                    <ul class="list-unstyled">
+                        <li class="border border-2 mb-3 p-2 border-primary rounded-2 mb-2">
+                            <a class="d-flex" href="#"><i class="fa fa-youtube-play fs-2 me-2" aria-hidden="true"></i><p class="fs-5 mb-auto">Youtube</p></a>
+                        </li>
+                        <li class="border border-2 mb-3 p-2 border-primary rounded-2">
+                            <a class="d-flex" href="#"><i class="fa fa-facebook-official fs-2 me-2" aria-hidden="true"></i><p class="fs-5 mb-auto">Facebook</p></a>
+                        </li>
+                        <li class="border border-2 mb-3 p-2 border-primary rounded-2">
+                            <a class="d-flex" href="#"><i class="fa fa-instagram fs-2 me-2" aria-hidden="true"></i><p class="fs-5 mb-auto">Instagram</p></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bm-0 text-center bg-dark text-white p-3">
+            本網站｜建議使用瀏覽器版本：Google Chrome版本60以上 / Firefox版本48以上 / Safari 版本11以上
+        </div>
+        
+    </footer>
+
+    
+
+
+
+    
+
+</body>
+<!-- Bootstrap5 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.1/vanilla-tilt.min.js' integrity='sha512-xTXLkWCanTzPE4g+vyMXdJ1MYKwuhdJqxNfPDE8sHnwwHBXTZY0VNWBiCRiDtGEtLzmLkK5GCSXshPCP2kt8Ug==' crossorigin='anonymous'></script>
+<!-- Swiper插件<幻燈片使用> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.6/swiper-bundle.min.js" integrity="sha512-r1+wZ6Dt2YNg8FujUHBbiXmDRNcVLTcN2q+lm0TSbmoBNUFJ4FdQ3zLeShz0bllBlzQ0QWtZuzJgdrW9xGc2Dw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./js/swiper_customized.js"></script>
+<!-- quiz -->
+<script src="./js/quiz_questions.js"></script>
+<!-- 導覽列顯示購物車商品 -->
+<script src="./js/shoppingNav.js"></script>
+<!-- Vue -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.js' integrity='sha512-HkIQeXPu1b2dfKMXSER0khPNRQNY4rOVyUPDoSAIvX4Oalp9xsNZFz+GRLJSpyGYkjYlcTfEzN0YFvkZPD4n5g==' crossorigin='anonymous'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
+<script src="./Vue/navContent.js"></script>
+<script src="./Vue/sendMessage.js"></script>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厝動HomeGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+
+        <!-- 導覽列 10/3更新-->
+        <nav class="main_nav navbar navbar-expand-md navbar-light pe-3 bg-primary border-bottom border-primary">
+            <div class="container-fluid">
+                <div class="navbar-brand d-flex align-items-center">
+                    <img class="m-auto" style="height: 40px;" src="./imag/hg_logo/logo.svg" alt="">
+                    <a class="text-white" href="./index.html">厝動 HomeGym</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <form class="d-flex ms-auto position-relative col-4">
+                        <input class="form-control" type="text" placeholder="關鍵字搜尋" aria-label="default input example"> 
+                        <i class="fa fa-search position-absolute end-0 fs-4 p-1 pe-2" aria-hidden="true"></i>
+                    </form>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                        <div id="marker"></div>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3 text-white" aria-current="page" href="./shopping.html"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                            商城</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link ms-3 text-white" href="shoppingCart.html"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                            購物車</a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width:400px;min-height:100px;" id="dropdown-menu">
+                                <div class="px-3 py-2 " id="menu">
+                                    <!-- 動態新增 -->
+                                </div>   
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link ms-3 dropdown dropdown-toggle text-white" id="mycourse_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-window-maximize text-white" aria-hidden="true"></i>
+                                我的課程</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="mycourse_areas_dropdown">
+                                    <li><a class="dropdown-item" href="myCoursesAreaPurchasedCourse.html">已買課程</a></li>
+                                    <li><a class="dropdown-item" href="./mycoursesAreasKeepCourse.html">收藏課程</a></li>
+                                    <li><a class="dropdown-item" href="./myFitnessPlan.html">健身計畫</a></li>
+                                    <li><a class="dropdown-item start_btn" href="#" data-bs-toggle="modal" data-bs-target="#quiz_info">健身知識</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <img class="ms-4 rounded-circle" src="https://fakeimg.pl/50x50/" alt="...">
+                        <li class="nav-item me-4">
+                            <div class="top ms-3">
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#signup">註冊</a>
+                                <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
+                            </div>
+                            <div class="buttom text-center ms-3 dropdown">
+                                <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
+                                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
+                                    <li><a class="dropdown-item" href="memberAreaIntroduction.html">會員中心</a></li>
+                                    <li><a class="dropdown-item" href="memberAreaApplyForCoach.html">成為教練</a></li>
+                                    <li><a class="dropdown-item" href="coachAreaIntroduction.html">教練專區</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 規劃健身計畫 -->
+        <section class="fitness_plan">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- 左側 -->
+                    <div class="col-7">
+                        <!-- 左側導覽列 -->
+                        <nav class="navbar navbar-light p-3 border-bottom">
+                            <div class="container-fluid justify-content-between">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                                    <label for="floatingTextarea">項目名稱</label>
+                                </div>
+                                <a href="./myFitnessPlan.html" class="btn btn-outline-primary me-2" type="button">儲存</a>
+                            </div>
+                        </nav>
+                        <ul class="list-group list-group-flush">
+                            <div class="wrapper_left">
+                                <!-- 影片項目 -->
+                                <li class="list-group-item border-0 pb-4 pt-4" v-for="(item, key) in todos">
+                                    <div class="row d-flex">
+                                        <div class="col-3 d-flex justify-content-end align-items-center">
+                                            <i class="fa fa-bars fs-2 text-dark my-handle" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-center" style="white-space: nowrap;" id="style-3">
+                                            <video class="w-100" :src="item.src" controls></video>
+                                        </div>
+                                        <div class="col-3 d-flex justify-content-center align-items-center">
+                                            <button class="btn btn-outline-light"><i class="fa fa-trash-o fs-2" aria-hidden="true" @click="removeTodo(key)"></i> </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </div>
+                        </ul>
+                        <div class="d-flex justify-content-center">
+                            <a href="#search_bar" class="text-primary mb-6 mt-6"><i class="fa fa-plus-circle fs-1" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <!-- 右側 -->
+                    <div class="col-5 border-start border-1">
+                        <!-- 右導覽列 -->
+                        <nav class="navbar navbar-light p-3 border-bottom" id="search_bar">
+                            <div class="container-fluid justify-content-between">
+                                <select class="form-select form-select-ml mb-3" aria-label=".form-select-sm example">
+                                    <option value="1" selected>依照名稱</option>
+                                    <option value="2">依照部位分類</option>
+                                    <option value="3">依照影片長度</option>
+                                </select>
+                                <div aria-label="Page navigation example" class="m-auto">
+                                    <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                        <div class="row row-cols-3 m-3">
+                            <!-- 課程資料庫內容項目 -->
+                            <div class="col mb-3" v-for="(videoItem,videoItemKey) in videoDatabase">
+                                <div class="card text-center">
+                                    <div class="card-header">
+                                        <h5 class="m-auto"><a href="#">{{videoItem.name}}</a></h5> 
+                                    </div>
+                                    <div class="card-body p-0 d-flex align-items-center">
+                                        <video class="w-100" :src="videoItem.src"></video>
+                                    </div>
+                                    <div class="card-footer text-muted p-0">
+                                        <div class="mt-1 mb-1">時間長度 {{videoItem.time}}</div> 
+                                        <div class="d-flex mb-0 ps-3">
+                                            <p class="badge bg-secondary bg-primary">{{videoItem.tag}}</p>
+                                        </div>
+                                        <div class="d-flex justify-content-center btn btn-primary rounded-0" @click="addTodo(videoItemKey)">
+                                            <i class="fa fa-plus-circle fs-4 text-white" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="./js/fitnessPlan.js"></script>
+<!-- sortable插件<拖拉調整排序用> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./js/sortable_customized.js"></script>
+
+</html>
