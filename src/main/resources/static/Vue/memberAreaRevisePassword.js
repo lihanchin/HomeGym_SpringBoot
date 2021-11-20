@@ -6,35 +6,34 @@ new Vue({
             oldPassword:'',
             newPassword:'',
             newPasswordCheck:'',
-        }
+        },
+        message:''
     },
     methods: {
         revisePassword(){
+            error = document.querySelector(".errortext");
+            let correct;
             axios.post(`/memberArea/changePassword`,{
                 oldPassword:this.memberPassword.oldPassword,
                 newPassword:this.memberPassword.newPassword,
                 newPasswordCheck:this.memberPassword.newPasswordCheck,
-
             },  {
                 headers: {
                     Authorization: token
                 }
             }).then((res) =>{
-                console.log("結束");
                 console.log(res);
-
-            }).catch(error =>{
-                console.log(error.response.data.message)
-                window.alert(error.response.data.message);
-                // window.location.replace("http://localhost:8080/");
+                correct = res.data.message
+                this.memberPassword.oldPassword="";
+                this.memberPassword.newPassword="";
+                this.memberPassword.newPasswordCheck="";
+                error.classList.remove('show');
+                window.alert(correct)
+                window.location.replace("/member")
+            }).catch((err) =>{
+                this.message = err.response.data.message;
+                error.classList.add('show');
             })
-            window.alert("修改成功")
-            window.location.replace("/member");
-            this.memberPassword.oldPassword="";
-            this.memberPassword.newPassword="";
-            this.memberPassword.newPasswordCheck="";
-
         }
-
     }
 })
