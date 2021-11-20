@@ -12544,6 +12544,10 @@ fieldset:disabled .btn {
           transform: scale(0.9);
 }
 
+.main_nav .shoppping_car.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 .modal-dialog .login_btn .btn:hover i {
   color: white;
   -webkit-transition: .5s;
