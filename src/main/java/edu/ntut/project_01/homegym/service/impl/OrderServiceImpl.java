@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
         Map<String, Object> orderDetail = new HashMap<>();
         for (Orders o : orders.getContent()) {
             orderDetail.put(o.getOrderId(), o.getCourses());
+            Set<Course> courses = o.getCourses();
         }
         return orderDetail;
     }

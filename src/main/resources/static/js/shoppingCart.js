@@ -4,7 +4,7 @@ function doFirst(){
     // console.log("itemString=====================")
 	let itemString = localStorage.getItem('addItemList');
     items = itemString.substr(0, itemString.length - 2).split('， ');
-    // console.log(items);
+    console.log(items);
     
     total = 0
     if(localStorage['addItemList'] == ''){
@@ -12,7 +12,7 @@ function doFirst(){
         createBlankArea();
     }else{
         //取storage
-        console.log("取localstorage=====================")
+        // console.log("取localstorage=====================")
         for(let i = 0; i < items.length; i++){
             let classInfo = localStorage.getItem(items[i])
             // console.log("classInfo================="+classInfo)
@@ -102,20 +102,21 @@ function deletClass(){
     // alert(this.parentNode.id)
     //扣金額
     let classId = this.parentNode.id
-    let value = storage.getItem(classId)
+    console.log(classId)
+    let value = localStorage.getItem(classId)
     let price = parseInt(value.split('|')[2])
     total -= price;
     document.getElementById('total').innerText ='NT$'+ total;
 
     // //刪storage
-    storage.removeItem(classId)
-    storage['addItemList'] = storage['addItemList'].replace(`${classId}， `,'');//找到子字串取代空字串
+    localStorage.removeItem(classId)
+    localStorage['addItemList'] = localStorage['addItemList'].replace(`${classId}， `,'');//找到子字串取代空字串
 
 
     //刪節點
     this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode.parentNode.parentNode)
     
-    if(storage['addItemList'] == ''){
+    if(localStorage['addItemList'] == ''){
         createBlankArea()
     }
 
@@ -136,9 +137,11 @@ function createBlankArea(){
     document.getElementById('cartList').appendChild(div)
 }
 
-// function deleteLocalStorage(){
-//     localStorage.removeItem("addItemList")
-// }
+function deleteLocalStorage(){
+
+    // localStorage.removeItem("addItemList")
+
+}
 
 
 window.addEventListener('load',doFirst);

@@ -11,6 +11,15 @@
 </head>
 
 <style>
+
+    .shoppingCar a:hover{
+        background-color: #5476a9;
+        color: white;
+    }
+</style>
+<body>
+
+<style>
     .shoppingCar label{
         cursor: pointer;
     }
@@ -317,56 +326,31 @@
                         <ul class="list-group rounded-0">
                             <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
 <!--                            <li class="list-group-item list-group-item-primary">上半身</li>-->
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">
+                            <a class="list-group-item" href="/shop?partOfBody=全身">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">-->
                                 全身
-                            </label>
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">
+                            </a>
+                            <a class="list-group-item"  href="/shop?partOfBody=核心">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">-->
                                 核心
-                            </label>
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">
+                            </a>
+                            <a class="list-group-item"  href="/shop?partOfBody=二頭">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">-->
                                 二頭
-                            </label>
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">
+                            </a>
+                            <a class="list-group-item"  href="/shop?partOfBody=三頭">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">-->
                                 三頭
-                            </label>
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">
+                            </a>
+                            <a class="list-group-item"  href="/shop?partOfBody=胸">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">-->
                                 胸
-                            </label>
-                            <label class="list-group-item">
-                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="所有" v-model="partOfBody"  @change="filter">
+                            </a>
+                            <a class="list-group-item"  href="/shop">
+<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="所有" v-model="partOfBody"  @change="filter">-->
                                 所有
-                            </label>
-<!--                            <li class="list-group-item list-group-item-primary">下半身</li>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                臀部-->
-<!--                            </label>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                臀部-->
-<!--                            </label>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                臀部-->
-<!--                            </label>-->
-<!--                            <li class="list-group-item list-group-item-primary">有氧</li>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                瑜伽-->
-<!--                            </label>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                瑜伽-->
-<!--                            </label>-->
-<!--                            <label class="list-group-item">-->
-<!--                                <input class="form-check-input me-1" type="radio" name="videoSearch" value="">-->
-<!--                                瑜伽-->
-<!--                            </label>-->
+                            </a>
+
                           </ul>
                     </div>
                     <!-- 內容 -->

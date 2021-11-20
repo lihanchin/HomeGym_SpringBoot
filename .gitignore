@@ -1,5 +1,6 @@
 HELP.md
-target/
+/target/
+!**/src/main/resources/static/video/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -35,3 +36,6 @@ service-logs
 service-logs/all.log
 service-logs
 logs
+src/main/resources/static/.DS_Store
+*.DS_Store
+src/main/resources/application.properties
