@@ -43,7 +43,7 @@ new Vue({
 
         /////////// 針對 小於993視窗 不顯示 照片
         let bodyWindow = document.querySelector("body")
-        if(bodyWindow.clientWidth<993){  
+        if(bodyWindow.clientWidth<993){
             let imgBox = document.querySelector(".img_box")
             var parentObj = imgBox.parentNode; //獲取父層標籤
             parentObj.removeChild(imgBox)
