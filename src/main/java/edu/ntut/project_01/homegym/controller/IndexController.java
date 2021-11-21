@@ -33,8 +33,7 @@ public class IndexController {
     private String authorization;
     @Value("${course.countsPerPage}")
     private Integer SIZE;
-    @Value("${regex.password}")
-    private String regex;
+
     private Map<String, Object> response;
 
     private final AuthService authService;
@@ -119,6 +118,7 @@ public class IndexController {
     @PostMapping("/forget/reset")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> password) {
         String newPassword = password.get("newPassword");
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
         if (newPassword.equals(password.get("newPasswordCheck"))) {
             if (newPassword.matches(regex)) {
                 Member member = memberService.findMemberByEmail(password.get("memberEmail")).orElseThrow();
