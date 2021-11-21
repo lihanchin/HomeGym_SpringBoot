@@ -41,14 +41,20 @@ public class IndexController {
     private final VisitorService visitorService;
     private final CourseService courseService;
     private final MailUtil mailUtil;
+    private final PasswordEncoder passwordEncoder;
+
+
+
+
 
     @Autowired
-    public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, MailUtil mailUtil) {
+    public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, MailUtil mailUtil,PasswordEncoder passwordEncoder) {
         this.authService = authService;
         this.memberService = memberService;
         this.visitorService = visitorService;
         this.courseService = courseService;
         this.mailUtil = mailUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //檢查JWT
@@ -106,23 +112,24 @@ public class IndexController {
 
     //忘記密碼-驗證帳號、寄信
     @PostMapping("/forget/checkMail")
-    public ResponseEntity<String> checkMailAndSend(@RequestBody String memberEmail) throws MessagingException {
-        if (memberService.findMemberByEmail(memberEmail).isPresent()) {
-            mailUtil.sendResetPassword(memberEmail);
+    public ResponseEntity<String> checkMailAndSend(@RequestBody Map<String,String> memberEmail) throws MessagingException {
+        if (memberService.findMemberByEmail(memberEmail.get("memberEmail")).isPresent()) {
+            mailUtil.sendResetPassword(memberEmail.get("memberEmail"));
             return ResponseEntity.ok().body("已寄信");
         }
         return ResponseEntity.ok().body("您尚未成為我們的會員");
     }
 
+
     //新密碼設定
     @PostMapping("/forget/reset")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> password) {
         String newPassword = password.get("newPassword");
-        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$";
         if (newPassword.equals(password.get("newPasswordCheck"))) {
             if (newPassword.matches(regex)) {
                 Member member = memberService.findMemberByEmail(password.get("memberEmail")).orElseThrow();
-                member.setPassword(newPassword);
+                member.setPassword(passwordEncoder.encode(newPassword));
                 memberService.update(member);
                 return ResponseEntity.ok().body("修改成功");
             }
