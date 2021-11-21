@@ -66,7 +66,7 @@ public class CoachAreaController {
         Map<String, Object> storeDetail;
 
         if (page != null) {
-            showCourse = courseService.findCourseByCoachArea(coachId, page, size);
+            showCourse = courseService.findCourseByCoachArea(coachId, page-1, size);
         } else {
             showCourse = courseService.findCourseByCoachArea(coachId, 0, size);
         }
