@@ -124,7 +124,4 @@ public class StoreController {
         return ResponseEntity.ok().body(response);
     }
 
-
-        return ResponseEntity.ok().body(response);
-    }
 }

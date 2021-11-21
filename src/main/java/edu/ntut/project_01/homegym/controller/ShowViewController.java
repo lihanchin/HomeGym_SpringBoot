@@ -23,12 +23,6 @@ public class ShowViewController {
         return "index"; //未購買課程畫面
     }
 
-    @GetMapping("/")
-    public String showIndex() {
-
-        return "index" ; //未購買課程畫面
-    }
-
 
     @GetMapping("/product{id}")
     public String showDetil() {
