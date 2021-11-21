@@ -8,14 +8,23 @@ import edu.ntut.project_01.homegym.repository.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.IContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
 
+import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +35,10 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeGymApplicationTests {
+
+
+//    @Autowired
+//    private JavaMailSender mailSender;
 //    @Autowired
 //    private CourseRepository courseRepository;
 //    @Autowired
@@ -162,5 +175,24 @@ class HomeGymApplicationTests {
 //            System.out.println(o.getMember().getMemberId());
 //            System.out.println("/////////////////////////");
 //        }
+//    }
+//        @Test
+//    public void sendTemplateMail() throws Exception {
+//        MimeMessage mimeMessage = mailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+//        helper.setFrom("homegym_ntut_pj01@outlook.com");
+//        helper.setTo("lihanchin@gmail.com");
+//        helper.setSubject("主旨：測試測試 模版信件");
+//
+//        String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div><div><div>" +
+//                "請點擊下方，重新設置帳戶密碼。</div><button><a href=\"" + "fkgfjp" + "\"/>重設密碼</button><br/>" +
+//                "<div>提醒您：重設密碼後，請妥善保管並避免再次忘記。<br/>有任何問題，歡迎來電洽詢HomeGym團隊客服專線0911-222-333。<br/></div>" +
+//                "<br/><div>厝動HomeGym服務團隊 敬上</div></div></div></body></html>";
+//
+//        helper.setText(html, true);
+//        FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/imag/hg_logo/logoMail.png"));
+//        helper.addInline("logoPic", file);
+//
+//        mailSender.send(mimeMessage);
 //    }
 }

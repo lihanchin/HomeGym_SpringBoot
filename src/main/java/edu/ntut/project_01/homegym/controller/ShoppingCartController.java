@@ -1,15 +1,14 @@
 package edu.ntut.project_01.homegym.controller;
 
 import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
-import example.ExampleAllInOne;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,23 +18,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+@Slf4j
 @RestController
 public class ShoppingCartController {
 
-    private static AllInOne all;
     @Value("${jwt.header}")
     private String HEADER;
     @Value("${hg.url}")
     private String ourUrl;
-    private String authorizationHeader;
-    private CourseRepository courseRepository;
-    private MemberService memberService;
-    private OrdersRepository ordersRepository;
+    private static final Calendar currentTime = Calendar.getInstance(Locale.CHINESE);
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final CourseRepository courseRepository;
+    private final MemberService memberService;
+    private final OrdersRepository ordersRepository;
 
     @Autowired
     public ShoppingCartController(CourseRepository courseRepository, MemberService memberService, OrdersRepository ordersRepository) {
@@ -44,21 +42,16 @@ public class ShoppingCartController {
         this.ordersRepository = ordersRepository;
     }
 
-    //目前只差接不到綠界傳回來的參數
     @PostMapping("/checkout")
-    ResponseEntity<Map> useECPAY(@RequestBody String[] checkOut, HttpServletRequest httpServletRequest) {
+    ResponseEntity<Map<String, String>> useECPAY(HttpServletRequest httpServletRequest, @RequestBody String[] checkOut) {
 
 //        綠界產生訂單需要的參數
         Integer orderPriceAmount = 0;
         StringBuilder orderItems = new StringBuilder();
         UUID uid = UUID.randomUUID();
         String orderId = "HG" + uid.toString().replace("-", "").substring(0, 6);
-
-        authorizationHeader = httpServletRequest.getHeader(HEADER);
-        Member member = memberService.findMemberByToken(authorizationHeader);
-
+        Member member = memberService.findMemberByToken(httpServletRequest.getHeader(HEADER));
         Set<Course> orderCourses = new HashSet<>();
-
 
         for (int i = 0; i < checkOut.length; i++) {
 //      courseId >> 課程資料 （ 抓課程名跟價錢 ）
@@ -68,30 +61,32 @@ public class ShoppingCartController {
             String courseName = course.get().getCourseName();
             Integer coursePrice = course.get().getPrice();
             orderPriceAmount += coursePrice;
+
             if (i == 0) {
-                orderItems.append(courseName + " 價錢：" + coursePrice);
+                orderItems.append(courseName)
+                        .append(" 價錢：")
+                        .append(coursePrice);
             } else {
-                orderItems.append(" # " + courseName + " 價錢：" + coursePrice);
+                orderItems.append(" # ")
+                        .append(courseName)
+                        .append(" 價錢：")
+                        .append(coursePrice);
             }
-
         }
-
 
 //      建訂單資料
         Orders newOrder = new Orders(orderId, orderPriceAmount, member, orderCourses);
         ordersRepository.save(newOrder);
 
-        ExampleAllInOne exampleAllInOne = new ExampleAllInOne();
-        ExampleAllInOne.initial();
-        Map<String, String> map = new HashMap<>();
-        String paymentPage = exampleAllInOne.genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), ourUrl);
+        Map<String, String> response = new HashMap<>();
+        String paymentPage = genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), ourUrl);
         if (paymentPage != null) {
-            map.put("paymentPage", paymentPage);
-            System.out.println(paymentPage);
-            return ResponseEntity.ok().body(map);
+            response.put("paymentPage", paymentPage);
+            log.info("綠界回傳網頁 ： " + paymentPage);
+            return ResponseEntity.ok().body(response);
         }
-        map.put("message", "交易失敗");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        response.put("message", "交易失敗");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 
@@ -110,10 +105,10 @@ public class ShoppingCartController {
             }
 
         }
-        logger.info("ecpayResponse: (Map)" + detail);
+        log.info("ecpayResponse: (Map)" + detail);
 
         String orderId = detail.get("MerchantTradeNo");
-        Integer paymentStatus = Integer.valueOf(detail.get("RtnCode"));
+        int paymentStatus = Integer.parseInt(detail.get("RtnCode"));
 
         Optional<Orders> order = ordersRepository.findById(orderId);
         if (paymentStatus == 1) {
@@ -123,6 +118,21 @@ public class ShoppingCartController {
         }
         ordersRepository.save(order.get());
         return "1|OK";
+    }
+
+    public String genAioCheckOutALL(String orderId, String price, String orderItems, String ourUrl) {
+        AllInOne all = new AllInOne("");
+        AioCheckOutALL obj = new AioCheckOutALL();
+        obj.setMerchantTradeNo(orderId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        obj.setMerchantTradeDate(sdf.format(currentTime.getTime()));
+        obj.setTotalAmount(price);
+        obj.setTradeDesc("HomeGym");
+        obj.setItemName(orderItems);
+        obj.setReturnURL(ourUrl + "/ecpayResponse");
+        obj.setNeedExtraPaidInfo("Y");
+        obj.setClientBackURL(ourUrl + "/memberArea/backFromECPay");
+        return all.aioCheckOut(obj, null);
     }
 }
 

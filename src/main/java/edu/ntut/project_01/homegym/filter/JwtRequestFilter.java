@@ -3,8 +3,7 @@ package edu.ntut.project_01.homegym.filter;
 import edu.ntut.project_01.homegym.exception.category.LoginException;
 import edu.ntut.project_01.homegym.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,10 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -48,10 +46,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             //如果token過期前端要刪掉localStorage內的JWT
             try {
                 username = jwtUtil.extractUsername(jwt);
-                logger.info("checking authentication " + username);
+                log.info("checking authentication " + username);
             } catch (ExpiredJwtException e) {
 //                return "redirct:/";
-                logger.error("JWT過期");
+                log.error("JWT過期");
                 SecurityContextHolder.getContext().setAuthentication(null);
                 throw new LoginException("請重新登入");
             }
@@ -62,7 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.info("authenticated user " + username + ", setting security context");
+                log.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

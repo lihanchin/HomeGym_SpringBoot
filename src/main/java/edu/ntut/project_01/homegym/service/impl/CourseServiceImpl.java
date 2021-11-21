@@ -3,12 +3,11 @@ package edu.ntut.project_01.homegym.service.impl;
 import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.repository.CourseCommentRepository;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
+import edu.ntut.project_01.homegym.service.CourseCommentService;
 import edu.ntut.project_01.homegym.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +15,7 @@ import org.hibernate.QueryException;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import java.util.Optional;
 
@@ -26,11 +24,16 @@ import java.util.Optional;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private CourseCommentRepository courseCommentRepository;
+    private final CourseRepository courseRepository;
+    private final CourseCommentRepository courseCommentRepository;
+    private final CourseCommentService courseCommentService;
 
+    @Autowired
+    public CourseServiceImpl(CourseRepository courseRepository, CourseCommentRepository courseCommentRepository, CourseCommentService courseCommentService) {
+        this.courseRepository = courseRepository;
+        this.courseCommentRepository = courseCommentRepository;
+        this.courseCommentService = courseCommentService;
+    }
 
     public Optional<Course> findById(Integer id) {
         return courseRepository.findById(id);
@@ -93,6 +96,23 @@ public class CourseServiceImpl implements CourseService {
     public Page<Course> findCoursesByCoachAndName(Integer coachId, String keyword, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page,size);
         return courseRepository.findCoursesByCoach_CoachIdAndCourseNameContaining(coachId,keyword,pageRequest);
+    }
+
+    @Override
+    public Map<String, Object> responsePageDetail(Page<Course> page) {
+        Map<String,Object> response;
+        for (Course course : page.getContent()) {
+            String name = course.getCoach().getMember().getName();
+            if (!course.getCourseComments().isEmpty()) {
+                Map<String, Object> amount = courseCommentService.countStarAndComment(course.getCourseId());
+                course.setStarAndComment(amount);
+            }
+            course.setCoachName(name);
+        }
+        response = new HashMap<>();
+        response.put("currentPage", page.getContent());
+        response.put("totalPage", page.getTotalPages());
+        return response;
     }
 
 }

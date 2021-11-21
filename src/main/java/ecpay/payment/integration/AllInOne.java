@@ -49,6 +49,7 @@ import ecpay.payment.integration.verification.VerifyTradeNoAio;
  * @author mark.chiu
  *
  */
+@SuppressWarnings("all")
 public class AllInOne extends AllInOneBase{
 	
 	private final static Logger log = Logger.getLogger(AllInOne.class.getName());

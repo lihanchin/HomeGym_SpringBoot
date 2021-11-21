@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import edu.ntut.project_01.homegym.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-
+@Slf4j
 @Transactional
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private OrdersRepository ordersRepository;
+    private final OrdersRepository ordersRepository;
 
     @Autowired
     public OrderServiceImpl(OrdersRepository ordersRepository) {
@@ -38,13 +39,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Orders> findOrdersByMemberIdAndStatus(Integer memberId, String status, Pageable pageable) {
-        System.out.println("memberId" + memberId + "==================");
-        System.out.println("status" + status + "=====================");
-        System.out.println("pageable" + pageable.toString() + "=====================");
+        log.info("memberId ===> " + memberId);
+        log.info("status ===> " + status);
+        log.info("pageable ===> " + pageable.toString());
         Page<Orders> okOrders = ordersRepository.findOrdersByMember_MemberIdAndOrderStatusContaining(memberId, status, pageable);
         System.out.println(okOrders.getContent());
         return okOrders;
-
     }
 
     @Override
@@ -56,14 +56,11 @@ public class OrderServiceImpl implements OrderService {
         throw new QueryException("會員尚無已完成訂單");
     }
 
-
-
     @Override
     public Map<String, Object> statusOrderDetail(Page<Orders> orders) {
         Map<String, Object> orderDetail = new HashMap<>();
         for (Orders o : orders.getContent()) {
             orderDetail.put(o.getOrderId(), o.getCourses());
-            Set<Course> courses = o.getCourses();
         }
         return orderDetail;
     }
