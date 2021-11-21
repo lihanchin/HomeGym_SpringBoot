@@ -110,8 +110,7 @@ new Vue({
 
         reSendEmail(){
             let id = this.memberId.memberId
-            axios.get(`/registrations/memberVerification/sendAgain/${id}`,{
-            }).then((res) =>{
+            axios.get(`/registrations/memberVerification/sendAgain/${id}`).then((res) =>{
                 window.alert("已重寄驗證信");
             })
         }
@@ -119,20 +118,6 @@ new Vue({
 });
 
 
-
-
-//登入驗證
-// window.addEventListener('load', function () {
-// let login = document.getElementById('needs_validation_login');
-//     login.addEventListener('submit', function (event) {
-//         if (login.checkValidity() === false) {
-//             event.preventDefault();
-//             event.stopPropagation();
-//         }
-//         login.classList.add('was-validated');
-//     }, false);
-// }, false);
-//
     
 /////////////////////////////////////////////////////////
 //註冊驗證
@@ -256,7 +241,7 @@ btResend = document.getElementById('btResend');
 function resendMail(){
 
     //旁邊計時器，秒數要比按鈕 -1 才會同步
-    let seconds = 5;//若要改時間，在此變數改
+    let seconds = 50;//若要改時間，在此變數改
     let intervalID = setInterval(()=>{
         countSeconds.innerHTML = `${seconds}s`;
         seconds--;
