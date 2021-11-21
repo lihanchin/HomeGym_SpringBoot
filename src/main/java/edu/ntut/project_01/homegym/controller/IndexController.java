@@ -53,6 +53,10 @@ public class IndexController {
     public Map<String, Object> checkStatus(HttpServletRequest request) {
         response = new HashMap<>();
         Member member = memberService.findMemberByToken(request.getHeader(authorization));
+        if(member.getCoach()!=null){
+            response.put("coachChecked", member.getCoach().getChecked());
+            response.put("coachPass", member.getCoach().getPass());
+        }
         response.put("name", member.getName());
         response.put("mimeType", member.getMimeType());
         response.put("memberImage", member.getMemberImage());

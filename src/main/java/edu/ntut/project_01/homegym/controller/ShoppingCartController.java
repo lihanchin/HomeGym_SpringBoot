@@ -131,7 +131,7 @@ public class ShoppingCartController {
         obj.setItemName(orderItems);
         obj.setReturnURL(ourUrl + "/ecpayResponse");
         obj.setNeedExtraPaidInfo("Y");
-        obj.setClientBackURL(ourUrl + "/memberArea/backFromECPay");
+        obj.setClientBackURL(ourUrl + "/OKOrder");
         return all.aioCheckOut(obj, null);
     }
 }

@@ -65,7 +65,8 @@
                         <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
                         <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
                             <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
-                            <li><a class="dropdown-item text-center" v-if="coachChecked ==null|| coachChecked==0"  href="/apply">成為教練</a></li>
+                            <li><a class="dropdown-item text-center" v-show="coachChecked ==null|| coachChecked==''"  href="/apply">成為教練</a></li>
+                            <li><a class="dropdown-item text-center" v-show="coachChecked==0"  href="/waiting">成為教練</a></li>
                             <li><a class="dropdown-item text-center" v-if="coachPass==1" href="/coach">教練專區</a></li>
                         </ul>
                     </div>
