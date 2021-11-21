@@ -2,12 +2,9 @@ package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.Course;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -41,4 +38,5 @@ public interface CourseService {
 
     Page<Course> findCoursesByCoachAndName(Integer coachId, String keyword, Integer page, Integer size);
 
+    Map<String,Object> responsePageDetail(Page<Course> page);
 }

@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VisitorServiceImpl implements VisitorService {
 
+    private final VisitorRepository visitorRepository;
+
     @Autowired
-    VisitorRepository visitorRepository;
+    public VisitorServiceImpl(VisitorRepository visitorRepository) {
+        this.visitorRepository = visitorRepository;
+    }
 
     @Override
     public void addMessage(Visitor visitor) {

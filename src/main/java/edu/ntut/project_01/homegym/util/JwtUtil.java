@@ -7,8 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +17,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
-
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -30,7 +29,6 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     private Key key;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private MemberRepository memberRepository;
 
     @Autowired
@@ -48,7 +46,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         Calendar calendar = Calendar.getInstance(Locale.CHINESE);
         calendar.add(Calendar.SECOND, JWT_TOKEN_VALIDITY);
-        logger.info("產生JWT");
+        log.info("*** 產生JWT ***");
         return Jwts.builder()
                 .setClaims(memberInfo)
                 .setIssuer(ISS)
@@ -91,7 +89,7 @@ public class JwtUtil {
     }
 
     public Claims extractAllClaim(String token) {
-        logger.info("解析JWT");
+        log.info("*** 解析JWT ***");
         key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         return Jwts.parserBuilder().setSigningKey(key).requireIssuer(ISS).build().parseClaimsJws(token).getBody();
     }

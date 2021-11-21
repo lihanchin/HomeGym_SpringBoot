@@ -1,7 +1,5 @@
 package edu.ntut.project_01.homegym.model;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 
 @Entity

@@ -30,9 +30,10 @@ public class Coach {
     @Column(name = "coach_info")
     private String coachInfo;
     //需要隱藏欄位
-    @Column(columnDefinition = "TINYINT(1)")
+    @Column(columnDefinition = "TINYINT(1) default 0")
     private Integer suspension;
     private String account;
+    @Column(columnDefinition = "varchar(1) default '0'")
     private String checked;
     @Column(name = "check_time")
     private Date checkTime;

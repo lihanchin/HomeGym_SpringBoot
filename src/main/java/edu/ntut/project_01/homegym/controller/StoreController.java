@@ -2,79 +2,68 @@ package edu.ntut.project_01.homegym.controller;
 
 import edu.ntut.project_01.homegym.model.Coach;
 import edu.ntut.project_01.homegym.model.Course;
-import edu.ntut.project_01.homegym.model.CourseComment;
 import edu.ntut.project_01.homegym.service.CourseCommentService;
 import edu.ntut.project_01.homegym.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.QueryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/store")
 public class StoreController {
 
-
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private CourseCommentService courseCommentService;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${course.countsPerPage}")
-    Integer size;
+    private Integer size;
+    private Map<String, Object> response;
+
+    private final CourseService courseService;
+    private final CourseCommentService courseCommentService;
+
+    @Autowired
+    public StoreController(CourseService courseService, CourseCommentService courseCommentService) {
+        this.courseService = courseService;
+        this.courseCommentService = courseCommentService;
+    }
 
     //進入商城(OK)
     @GetMapping("/")
     ResponseEntity<Map<String, Object>> showAllCourse() throws NullPointerException {
-
         final Integer page = 0;
         Page<Course> showCourse = courseService.findAllCourse(page, size);
-        for(Course course:showCourse.getContent()){
+        //noinspection DuplicatedCode
+        for (Course course : showCourse.getContent()) {
             String name = course.getCoach().getMember().getName();
-            if(!course.getCourseComments().isEmpty()){
-                Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
+            if (!course.getCourseComments().isEmpty()) {
+                Map<String, Object> amount = courseCommentService.countStarAndComment(course.getCourseId());
                 course.setStarAndComment(amount);
             }
             course.setCoachName(name);
         }
-        Map<String, Object> storeDetail = new HashMap<>();
-        storeDetail.put("firstPage", showCourse.getContent());
-        storeDetail.put("totalPage", showCourse.getTotalPages());
-        return ResponseEntity.ok().body(storeDetail);
+        Map<String, Object> response = new HashMap<>();
+        response.put("firstPage", showCourse.getContent());
+        response.put("totalPage", showCourse.getTotalPages());
 
+        return ResponseEntity.ok().body(response);
     }
 
     //商城分頁(OK)
     @GetMapping("/allCourse")
-    ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false) Integer page, @RequestParam(required = false) String partOfBody) {
-        System.out.println("page+partOfBody======================================="+page+partOfBody);
+    ResponseEntity<Map<String, Object>> showOtherCourse(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false) String partOfBody) {
+        log.info("page ====>" + page);
+        log.info("partOfBody ====>" + partOfBody);
         Integer totalPage;
         Page<Course> showCourse;
-        Map<String, Object> storeDetail;
 
-
-        if( page == null && partOfBody == null){
+        if (page == null && partOfBody == null) {
             showCourse = courseService.findAllCourse(0, size);
-            for(Course course:showCourse.getContent()){
-                String name = course.getCoach().getMember().getName();
-                if(!course.getCourseComments().isEmpty()){
-                    Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
-                    course.setStarAndComment(amount);
-                }
-                course.setCoachName(name);
-            }
-            storeDetail = new HashMap<>();
-            storeDetail.put("currentPage", showCourse.getContent());
-            storeDetail.put("totalPage", showCourse.getTotalPages());
-            return ResponseEntity.ok().body(storeDetail);
+            return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
         }
 
         if (page != null && page > 0) {
@@ -82,94 +71,55 @@ public class StoreController {
                 totalPage = courseService.getAllCoursesTotalPage(size);
                 if (page <= totalPage) {
                     showCourse = courseService.findAllCourse(page - 1, size);
-                    for(Course course:showCourse.getContent()){
-                        String name = course.getCoach().getMember().getName();
-                        if(!course.getCourseComments().isEmpty()){
-                            Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
-                            course.setStarAndComment(amount);
-                        }
-                        course.setCoachName(name);
-                    }
-                    storeDetail = new HashMap<>();
-                    storeDetail.put("currentPage", showCourse.getContent());
-                    storeDetail.put("totalPage", showCourse.getTotalPages());
-                    return ResponseEntity.ok().body(storeDetail);
+                    return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
                 }
             } else {
                 totalPage = courseService.getCoursesTotalPageByFilter(partOfBody, size);
                 if (page <= totalPage) {
-                    showCourse = courseService.findCourseByFilter(partOfBody, page-1, size);
-                    for(Course course:showCourse.getContent()){
-                        String name = course.getCoach().getMember().getName();
-                        if(!course.getCourseComments().isEmpty()){
-                            Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
-                            course.setStarAndComment(amount);
-                        }
-                        course.setCoachName(name);
-                    }
-                    storeDetail = new HashMap<>();
-                    storeDetail.put("currentPage", showCourse.getContent());
-                    storeDetail.put("totalPage", showCourse.getTotalPages());
-                    return ResponseEntity.ok().body(storeDetail);
+                    showCourse = courseService.findCourseByFilter(partOfBody, page - 1, size);
+                    return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
                 }
             }
             throw new QueryException("查無此頁面");
         } else {
             showCourse = courseService.findCourseByFilter(partOfBody, 0, size);
-            for(Course course:showCourse.getContent()){
-                String name = course.getCoach().getMember().getName();
-                if(!course.getCourseComments().isEmpty()){
-                    Map<String,Object> amount = courseCommentService.counntStarAndComment(course.getCourseId());
-                    course.setStarAndComment(amount);
-                }
-                course.setCoachName(name);
-            }
-            storeDetail = new HashMap<>();
-            storeDetail.put("currentPage", showCourse.getContent());
-            storeDetail.put("totalPage", showCourse.getTotalPages());
-            return ResponseEntity.ok().body(storeDetail);
+            return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
         }
     }
 
     //未購買課程詳細頁(包含教練資訊)
     @GetMapping("/{id}")
-    Map<String,Object> showCourseDeatail(@PathVariable Integer id) {
-
-
-        Map<String,Object> map = new HashMap<>();
-        Optional<Course> course  = courseService.findById(id);
-        if(course.isPresent()){
-            if(!course.get().getCourseComments().isEmpty()&&course.get().getCourseComments()!=null){
-                Map<String,Object> amount = courseCommentService.counntStarAndComment(course.get().getCourseId());
+    Map<String, Object> showCourseDeatail(@PathVariable Integer id) {
+        response = new HashMap<>();
+        Optional<Course> course = courseService.findById(id);
+        if (course.isPresent()) {
+            if (!course.get().getCourseComments().isEmpty() && course.get().getCourseComments() != null) {
+                Map<String, Object> amount = courseCommentService.countStarAndComment(course.get().getCourseId());
                 course.get().setStarAndComment(amount);
             }
             Coach coach = course.get().getCoach();
             String coachName = coach.getMember().getName();
 
-            map.put("course",course.get());
-            map.put("coach",coach);
-            map.put("coachName",coachName);
-        }else {
+            response.put("course", course.get());
+            response.put("coach", coach);
+            response.put("coachName", coachName);
+        } else {
             System.out.println("無資料");
         }
 
-        return map;
-
+        return response;
     }
 
     //關鍵字查詢
     @GetMapping("/keyword")
-    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page) {
-        Map<String, Object> response = new HashMap<>();
-        if (page != null && page != 0) {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, size).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, size).getTotalPages());
-        } else {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, 0, size).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, 0, size).getTotalPages());
+    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false, defaultValue = "1") Integer page) {
+        response = new HashMap<>();
+        if (page == null || page <= 0) {
+            page = 1;
         }
+        response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, size).getContent());
+        response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, size).getTotalPages());
+
         return ResponseEntity.ok().body(response);
     }
-
-
 }

@@ -6,48 +6,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
 public class ShowViewController {
 
+
+    private final AuthService authService;
+
     @Autowired
-    private AuthService authService;
+    public ShowViewController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @GetMapping("/")
     public String showIndex() {
 
-        return "index" ; //未購買課程畫面
+        return "index"; //未購買課程畫面
     }
 
 
     @GetMapping("/product{id}")
     public String showDetil() {
 
-        return "notPurchasedCourse" ; //未購買課程畫面
+        return "notPurchasedCourse"; //未購買課程畫面
     }
 
     @GetMapping("/course{id}")
     public String showCourse() {
 
-        return "purchasedCourse" ; //課程畫面
+        return "purchasedCourse"; //課程畫面
     }
 
-    @GetMapping(value = {"/shop","/shop?keyword={keyword}","/shop/{partOfBody}"})
+    @GetMapping(value = {"/shop", "/shop?keyword={keyword}", "/shop/{partOfBody}"})
     public String show() {
 
-        return "shopping" ; //商城
+        return "shopping"; //商城
     }
+
     @GetMapping("/shoppingCart")
     public String checkOut() {
 
-        return "shoppingCart" ; //購物車
+        return "shoppingCart"; //購物車
     }
 
     @GetMapping("/waiting")
     public String showWaitForApplyingForCoach() {
 
-        return "waitForApplyingForCoach" ; //成為教練_顯示申請中
+        return "waitForApplyingForCoach"; //成為教練_顯示申請中
     }
 
     @GetMapping("/apply")
@@ -59,7 +63,7 @@ public class ShowViewController {
     @GetMapping("/check")
     public String checkout() {
 
-        return "checkout" ; //金流結帳畫面
+        return "checkout"; //金流結帳畫面
     }
 
     @GetMapping("/NGOrder")
@@ -67,7 +71,7 @@ public class ShowViewController {
         return "memberAreaMyOrderNg"; //訂單交易失敗
     }
 
-	@GetMapping("/OKOrder")
+    @GetMapping("/OKOrder")
     public String okOrder() {
         return "memberAreaMyOrderOk"; //訂單交易成功
     }
@@ -75,7 +79,7 @@ public class ShowViewController {
     @GetMapping("/member")
     public String showMemberInfo() {
 
-        return "memberAreaIntroduction" ; // 要導入的html
+        return "memberAreaIntroduction"; // 要導入的html
     }
 
     @GetMapping("/revisePassword")
@@ -87,8 +91,8 @@ public class ShowViewController {
     @GetMapping("/memberVerification")
     public String updateMemberStatus(@RequestParam String code) {
         authService.updateStatus(code);
-		return "registated";
-	}
+        return "registated";
+    }
 
     @GetMapping("/coach")
     public String coachAreasIntroduction() {
@@ -102,7 +106,6 @@ public class ShowViewController {
 
         return "coachAreaUploadedCourse"; //教練專區
     }
-
 
     @GetMapping("/myCourse")
     public String showMyCourse() {

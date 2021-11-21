@@ -30,7 +30,6 @@ public class CourseComment {
     @Transient
     private String mineType;
 
-
     @Column(name = "comment_create_time")
     private String commentCreateTime;
 
