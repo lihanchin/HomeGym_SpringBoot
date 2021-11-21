@@ -68,5 +68,17 @@ new Vue({
                 mainNav.classList.add('bg-primary');
             }
         });
+
+        let body = document.querySelector("body")
+        if(body.clientWidth < 768){
+            let ani = document.querySelector(".ani")
+            ani.parentNode.removeChild(ani)
+
+            let title_h1 = document.querySelector(".hg_title h1")
+            let title_h3 = document.querySelector(".hg_title h3")
+
+            title_h1.classList.add("text-center")
+            title_h3.classList.add("text-center")
+        }
     }
 })

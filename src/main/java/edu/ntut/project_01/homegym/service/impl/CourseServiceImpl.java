@@ -115,4 +115,21 @@ public class CourseServiceImpl implements CourseService {
         return response;
     }
 
+    @Override
+    public Map<String, Object> responsePageDetail(Page<Course> page) {
+        Map<String,Object> response;
+        for (Course course : page.getContent()) {
+            String name = course.getCoach().getMember().getName();
+            if (!course.getCourseComments().isEmpty()) {
+                Map<String, Object> amount = courseCommentService.countStarAndComment(course.getCourseId());
+                course.setStarAndComment(amount);
+            }
+            course.setCoachName(name);
+        }
+        response = new HashMap<>();
+        response.put("currentPage", page.getContent());
+        response.put("totalPage", page.getTotalPages());
+        return response;
+    }
+
 }
