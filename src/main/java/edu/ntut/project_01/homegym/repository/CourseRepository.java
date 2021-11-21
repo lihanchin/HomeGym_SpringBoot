@@ -1,7 +1,6 @@
 package edu.ntut.project_01.homegym.repository;
 
 import edu.ntut.project_01.homegym.model.Course;
-import edu.ntut.project_01.homegym.model.CourseComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

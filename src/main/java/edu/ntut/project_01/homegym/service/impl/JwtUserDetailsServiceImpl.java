@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
     public JwtUserDetailsServiceImpl(MemberRepository memberRepository) {

@@ -1,16 +1,15 @@
 package edu.ntut.project_01.homegym.service;
 
 import edu.ntut.project_01.homegym.model.CourseComment;
-import edu.ntut.project_01.homegym.model.Member;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
 import java.util.Map;
 
 public interface CourseCommentService {
-    void save( CourseComment curseComment);
+
+    void save(CourseComment curseComment);
+
     Page<CourseComment> findCourseComment(Integer courseId, Integer pageNo, Integer size);
-    Map<String,Object> counntStarAndComment(Integer courseId);
+
+    Map<String, Object> countStarAndComment(Integer courseId);
 }

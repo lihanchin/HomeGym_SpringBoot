@@ -31,7 +31,7 @@ public class Course {
 
     @Column(name = "part_of_body")
     private String partOfBody;
-    @Column(name = "course_image",columnDefinition = "LONGTEXT")
+    @Column(name = "course_image", columnDefinition = "LONGTEXT")
     private String courseImage;
     @CreatedDate
     @Column(name = "upload_time")
@@ -40,7 +40,7 @@ public class Course {
     private String equipment;
     private String level;
     private Integer pass;
-    private	Integer checked;
+    private Integer checked;
     @Column(name = "check_time")
     private String checkTime;
 
@@ -48,7 +48,7 @@ public class Course {
     private String coachName;
 
     @Transient
-    private Map<String,Object> starAndComment;
+    private Map<String, Object> starAndComment;
 
     @JsonBackReference
     @ManyToOne
@@ -56,12 +56,12 @@ public class Course {
     private Coach coach;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 
     private Set<CourseComment> courseComments = new HashSet<>();
 
     @JsonBackReference
-    @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<FQA> fqas = new HashSet<>();
 
     @JsonBackReference
@@ -75,6 +75,21 @@ public class Course {
     private Set<Orders> orders = new HashSet<>();
 
     public Course() {
+    }
+
+    public Course(String coursePath, String courseName, String courseInfo, String partOfBody, String courseImage, String uploadTime, Integer price, String equipment, String level, Coach coach) {
+        this.coursePath = coursePath;
+        this.courseName = courseName;
+        this.courseInfo = courseInfo;
+        this.partOfBody = partOfBody;
+        this.courseImage = courseImage;
+        this.uploadTime = uploadTime;
+        this.price = price;
+        this.equipment = equipment;
+        this.level = level;
+        this.pass = 0;
+        this.checked = 0;
+        this.coach = coach;
     }
 
     public Course(Integer courseId, String coursePath, String mimeType, String courseName, String courseInfo, String partOfBody, String courseImage, String uploadTime, Integer price, String equipment, String level, Integer pass, Integer checked, String checkTime, String coachName, Map<String, Object> starAndComment, Coach coach, Set<CourseComment> courseComments, Set<FQA> fqas, Set<Orders> orders) {
@@ -259,7 +274,6 @@ public class Course {
     public void setOrders(Set<Orders> orders) {
         this.orders = orders;
     }
-
 
 
 }
