@@ -36,13 +36,6 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(String orderId, Integer totalPrice, Member member, Set<Course> courses) {
-        this.orderId = orderId;
-        this.totalPrice = totalPrice;
-        this.member = member;
-        this.courses = courses;
-    }
-
     public Orders(String orderId, Integer totalPrice, String orderStatus, String orderTime, Member member, Set<Course> courses) {
         this.orderId = orderId;
         this.totalPrice = totalPrice;

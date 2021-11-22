@@ -35,7 +35,7 @@ public class MailUtil {
     public void sendMail(String code, String memberEmail) throws MessagingException {
 
 //        verifiedPath = ourUrl + "/memberVerification?code=" + code;
-        verifiedPath = "http://localhost:8080//memberVerification?code=" + code;
+        verifiedPath = "http://localhost:8080/memberVerification?code=" + code;
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym會員驗證信";
         String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div>" +
@@ -51,8 +51,8 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail) throws MessagingException {
 
-//        verifiedPath = ourUrl+"/forget";
-        verifiedPath = "http://localhost:8080/forgetPasswordInput";
+        verifiedPath = ourUrl+"/forget";
+//        verifiedPath = "http://localhost:8080/forgetPasswordInput";
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym密碼重置";
         String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div><div><div>" +
