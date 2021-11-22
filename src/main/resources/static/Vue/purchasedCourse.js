@@ -23,6 +23,7 @@ new Vue({
         //接收後端留言評價
         commentList:[],
         totalPage:"",
+        pageNo:1,
         //接收後端留言評價
         coachName:[ ],
         //接收後課程資料
@@ -147,7 +148,7 @@ new Vue({
 
         clickPage(index){
             let pageNo = index+1
-            console.log(pageNo)
+            this.pageNo = pageNo
                 axios.get("/course/"+id+"/showComment?pageNo="+pageNo).then((res) =>{
                     this.commentList = res.data.courseComment;
                     this.totalPage = res.data.totalPage;
