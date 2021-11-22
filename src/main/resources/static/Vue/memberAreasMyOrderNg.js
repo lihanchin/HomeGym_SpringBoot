@@ -4,11 +4,13 @@ new Vue({
     data: {
         currentPage:[],
         orderDetail:[],
-        totalPage:""
+        totalPage:"",
+        pageNo:1
     },
     methods: {
         clickPage(index) {
             let pageNo = index + 1
+            this.pageNo = pageNo
             axios.get("/memberArea/NGOrder?page=" + pageNo, {
                 headers: {
                     Authorization: token
