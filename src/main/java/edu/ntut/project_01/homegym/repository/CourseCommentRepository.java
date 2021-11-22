@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public interface CourseCommentRepository extends JpaRepository<CourseComment, Integer> {
 
-    @Query(value = "SELECT ROUND(AVG(star), 0) FROM CourseComment  WHERE course_id = :courseId", nativeQuery = true)
+    @Query(value = "SELECT ROUND(AVG(star), 0) FROM course_comment  WHERE course_id = :courseId", nativeQuery = true)
     Double countStar(@Param(value = "courseId") Integer courseId);
 
-    @Query(value = " SELECT COUNT(*) FROM CourseComment WHERE course_id = :courseId", nativeQuery = true)
+    @Query(value = " SELECT COUNT(*) FROM course_comment WHERE course_id = :courseId", nativeQuery = true)
     Integer countComment(@Param(value = "courseId") Integer courseId);
 
     Optional<List<CourseComment>> findCourseCommentByCourse_CourseId(Integer courseId);

@@ -298,9 +298,9 @@
         <div class="nav d-flex align-items-center border-bottom border-top">
             <a class="nav-link" href="/">首頁</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
-            <a class="nav-link" href="/coachArea">教練專區</a>
+            <a class="nav-link" href="/coach">教練專區</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
-            <a class="nav-link" href="/coachArea">教練簡介</a>
+            <a class="nav-link" href="/coach">教練簡介</a>
         </div>
     </nav>
 
@@ -312,7 +312,7 @@
                 <!-- 側導覽列 -->
                 <div class="side_bar col-2 p-0">
                     <div class="list-group rounded-0 mt-2">
-                        <a href="/coachArea" class="list-group-item list-group-item-action d-flex flex-column align-items-center p-3 active" aria-current="true">
+                        <a href="/coach" class="list-group-item list-group-item-action d-flex flex-column align-items-center p-3 active" aria-current="true">
                             <i class="fa fa-user fs-3" aria-hidden="true"></i>
                             <p class="m-auto">教練簡介</p>
                         </a>
@@ -544,9 +544,31 @@
 <script src="./js/quiz_questions.js"></script>
 <!-- 導覽列顯示購物車商品 -->
 <script src="./js/shoppingNav.js"></script>
+<!--FireBase-->
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA4-BX-xkWAQZTAJt-KcOIw9lq3OkynA5k",
+        authDomain: "homegym-5ed5f.firebaseapp.com",
+        databaseURL: "https://homegym-5ed5f-default-rtdb.firebaseio.com",
+        projectId: "homegym-5ed5f",
+        storageBucket: "homegym-5ed5f.appspot.com",
+        messagingSenderId: "115618265561",
+        appId: "1:115618265561:web:0674aa37b517b9924581c8",
+        measurementId: "G-BLS7PZPTL4"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+</script>
 <!-- Vue -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
 <script src="./Vue/navContent.js"></script>
 <script src="./Vue/coachAreasIntroduction.js"></script>
+
 </html>

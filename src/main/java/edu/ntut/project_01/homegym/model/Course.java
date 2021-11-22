@@ -33,7 +33,6 @@ public class Course {
     private String partOfBody;
     @Column(name = "course_image", columnDefinition = "LONGTEXT")
     private String courseImage;
-    @CreatedDate
     @Column(name = "upload_time")
     private String uploadTime;
     private Integer price;

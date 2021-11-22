@@ -39,6 +39,9 @@ new Vue({
             this.video.image = evt.target.result
         },
         videoUpload(){
+            const db =firebase.database();
+
+            db.ref().set(this.video.videoupload);
 
             axios.post(`/course/upload`,
                 {
