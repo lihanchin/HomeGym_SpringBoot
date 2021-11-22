@@ -4,14 +4,14 @@ import edu.ntut.project_01.homegym.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
+import java.io.InputStream;
 
 @Slf4j
 @Component
@@ -51,7 +51,7 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail) throws MessagingException {
 
-        verifiedPath = ourUrl+"/forget";
+        verifiedPath = ourUrl + "/forget";
 //        verifiedPath = "http://localhost:8080/forgetPasswordInput";
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym密碼重置";
@@ -73,8 +73,14 @@ public class MailUtil {
         helper.setSubject(subject);
 
         helper.setText(html, true);
-        FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/imag/hg_logo/logoMail.png"));
-        helper.addInline("logoPic", file);
+
+        try {
+            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("static/imag/hg_logo/logoMail.png");
+            helper.addInline("logoPic", new InputStreamResource(inputStream), "image/png");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
 
         mailSender.send(mimeMessage);
     }

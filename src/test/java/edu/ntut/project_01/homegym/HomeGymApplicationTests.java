@@ -5,12 +5,14 @@ import edu.ntut.project_01.homegym.model.Course;
 import edu.ntut.project_01.homegym.model.Member;
 import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,10 +30,12 @@ import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HomeGymApplicationTests {
@@ -194,5 +198,13 @@ class HomeGymApplicationTests {
 //        helper.addInline("logoPic", file);
 //
 //        mailSender.send(mimeMessage);
+//    }
+
+//    @Test
+//    void sss(){
+//            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("static/imag/hg_logo/logoMail.png");
+//            if(inputStream == null ){
+//                log.warn("*********錯了拉！************");
+//            }
 //    }
 }
