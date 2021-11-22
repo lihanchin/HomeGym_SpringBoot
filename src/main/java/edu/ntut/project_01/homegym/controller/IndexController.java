@@ -4,7 +4,6 @@ import edu.ntut.project_01.homegym.model.AuthRequest;
 import edu.ntut.project_01.homegym.model.Member;
 
 import edu.ntut.project_01.homegym.model.Visitor;
-import edu.ntut.project_01.homegym.repository.MemberRepository;
 import edu.ntut.project_01.homegym.service.AuthService;
 import edu.ntut.project_01.homegym.service.CourseService;
 import edu.ntut.project_01.homegym.service.MemberService;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +59,10 @@ public class IndexController {
     public Map<String, Object> checkStatus(HttpServletRequest request) {
         response = new HashMap<>();
         Member member = memberService.findMemberByToken(request.getHeader(authorization));
+        if(member.getCoach()!=null){
+            response.put("coachChecked", member.getCoach().getChecked());
+            response.put("coachPass", member.getCoach().getPass());
+        }
         response.put("name", member.getName());
         response.put("mimeType", member.getMimeType());
         response.put("memberImage", member.getMemberImage());
@@ -103,10 +104,6 @@ public class IndexController {
 
     @PostMapping("/addMessage")
     public void addMessage(@RequestBody Visitor visitor) {
-        String strDateFormat = "yyyy-MM-dd HH:mm:ss";
-        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
-        String messageTime = sdf.format(new Date());
-        visitor.setVisitorTime(messageTime);
         visitorService.addMessage(visitor);
     }
 

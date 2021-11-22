@@ -81,13 +81,18 @@
                         <a class="text-white" href="" data-bs-toggle="modal" data-bs-target="#login">登入</a>
                     </div>
                     <div class="buttom text-center ms-3 dropdown">
-                        <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
-                        <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
-                            <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
-                            <li><a class="dropdown-item text-center" v-if="coachChecked==''"  href="/apply">成為教練</a></li>
-                            <li><a class="dropdown-item text-center" v-if="coachChecked==0"  href="/waiting">成為教練</a></li>
-                            <li><a class="dropdown-item text-center" v-if="coachPass==1" href="/coach">教練專區</a></li>
-                        </ul>
+                        <div v-if="memberName==''">
+                            <div class="text-white">訪客你好</div>
+                        </div>
+                        <div v-else>
+                            <a class="dropdown-toggle text-white" href="#" id="member_areas_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員專區</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="member_areas_dropdown">
+                                <li><a class="dropdown-item text-center" href="/member">會員中心</a></li>
+                                <li><a class="dropdown-item text-center" v-show="coachChecked ==null|| coachChecked==''"  href="/apply">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-show="coachChecked==0"  href="/waiting">成為教練</a></li>
+                                <li><a class="dropdown-item text-center" v-if="coachPass==1" href="/coach">教練專區</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </li>
             </ul>

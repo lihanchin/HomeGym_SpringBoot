@@ -112,15 +112,14 @@ public class StoreController {
 
     //關鍵字查詢
     @GetMapping("/keyword")
-    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false) Integer page) {
-        Map<String, Object> response = new HashMap<>();
-        if (page != null && page != 0) {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, size).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, size).getTotalPages());
-        } else {
-            response.put("courseList", courseService.findCoursesByKeyword(keyword, 0, size).getContent());
-            response.put("totalPage", courseService.findCoursesByKeyword(keyword, 0, size).getTotalPages());
+    public ResponseEntity<Map<String, Object>> keyword(@RequestParam String keyword, @RequestParam(required = false, defaultValue = "1") Integer page) {
+        response = new HashMap<>();
+        if (page == null || page <= 0) {
+            page = 1;
         }
+        response.put("courseList", courseService.findCoursesByKeyword(keyword, page - 1, size).getContent());
+        response.put("totalPage", courseService.findCoursesByKeyword(keyword, page - 1, size).getTotalPages());
+
         return ResponseEntity.ok().body(response);
     }
 

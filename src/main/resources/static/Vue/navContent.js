@@ -7,7 +7,7 @@ new Vue({
         status:'',
         coachChecked:'',
         coachPass:'',
-        search:''
+        search:'',
     },
     methods:{
         logout(){
@@ -82,7 +82,6 @@ new Vue({
 
             }).catch((err)=>{
                 let error = document.querySelector(".errortext");
-                console.error(err)
                 error.classList.add('show');
             })
 

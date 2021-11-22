@@ -56,8 +56,6 @@ public class OrderServiceImpl implements OrderService {
         throw new QueryException("會員尚無已完成訂單");
     }
 
-
-
     @Override
     public Map<String, Object> statusOrderDetail(Page<Orders> orders) {
         Map<String, Object> orderDetail = new HashMap<>();

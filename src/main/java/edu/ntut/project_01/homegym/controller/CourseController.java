@@ -140,9 +140,6 @@ public class CourseController {
                 map.put("courseComment", courseComments.getContent());
                 map.put("totalPage", courseComments.getTotalPages());
             }
-            map.put("courseComment",courseComments.getContent());
-            map.put("totalPage",courseComments.getTotalPages());
-            return map;
         }
         return map;
     }

@@ -95,8 +95,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<Course> findCoursesByCoachAndName(Integer coachId, String keyword, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page,size);
-        courseRepository.findCoursesByCoach_CoachIdAndCourseNameContaining(coachId,keyword,pageRequest);
-        return null;
+        return courseRepository.findCoursesByCoach_CoachIdAndCourseNameContaining(coachId,keyword,pageRequest);
     }
 
     @Override

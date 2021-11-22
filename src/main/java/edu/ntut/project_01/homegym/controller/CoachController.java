@@ -32,6 +32,7 @@ public class CoachController {
         Member member = memberService.findMemberByToken(request.getHeader(authorization));
         String applyTime = GlobalService.getNowDatetime();
         coach.setApplyTime(applyTime);
+        coach.setChecked("0");
         member.setCoach(coach);
         member.setRole("ROLE_COACH");
         memberService.update(member);
