@@ -30,7 +30,6 @@ public class IndexController {
     private String authorization;
     @Value("${course.countsPerPage}")
     private Integer SIZE;
-
     private Map<String, Object> response;
 
     private final AuthService authService;
@@ -39,10 +38,6 @@ public class IndexController {
     private final CourseService courseService;
     private final MailUtil mailUtil;
     private final PasswordEncoder passwordEncoder;
-
-
-
-
 
     @Autowired
     public IndexController(AuthService authService, MemberService memberService, VisitorService visitorService, CourseService courseService, MailUtil mailUtil,PasswordEncoder passwordEncoder) {

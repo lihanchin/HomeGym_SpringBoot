@@ -8,6 +8,7 @@ import edu.ntut.project_01.homegym.model.Orders;
 import edu.ntut.project_01.homegym.repository.CourseRepository;
 import edu.ntut.project_01.homegym.repository.OrdersRepository;
 import edu.ntut.project_01.homegym.service.MemberService;
+import edu.ntut.project_01.homegym.util.GlobalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +58,6 @@ public class ShoppingCartController {
 //      courseId >> 課程資料 （ 抓課程名跟價錢 ）
             Optional<Course> course = courseRepository.findById(Integer.valueOf(checkOut[i]));
             orderCourses.add(course.orElseThrow());
-
             String courseName = course.get().getCourseName();
             Integer coursePrice = course.get().getPrice();
             orderPriceAmount += coursePrice;
@@ -75,8 +75,12 @@ public class ShoppingCartController {
         }
 
 //      建訂單資料
-        Orders newOrder = new Orders(orderId, orderPriceAmount, member, orderCourses);
+        Orders newOrder = new Orders(orderId, orderPriceAmount, null, GlobalService.getNowDatetime(), member, orderCourses);
         ordersRepository.save(newOrder);
+
+        for (Course course : orderCourses) {
+            ordersRepository.insertOrderItem(course.getCourseId(), orderId);
+        }
 
         Map<String, String> response = new HashMap<>();
         String paymentPage = genAioCheckOutALL(orderId, orderPriceAmount.toString(), orderItems.toString(), ourUrl);
