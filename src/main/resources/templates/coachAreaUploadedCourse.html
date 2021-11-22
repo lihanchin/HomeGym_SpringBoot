@@ -109,7 +109,7 @@
                 <div class="modal-footer">
                     <div class="m-auto">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
-                        <button type="submit" @click="memberLogin,login" class="btn btn-primary" id="loginBtn">登入</button>
+                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
                     </div>
                 </div>
             </div>
@@ -467,9 +467,15 @@
                                      <button class="btn btn-outline-primary ms-3" type="button" @click="searchCourse(keyword)">搜尋</button>
                                  </div>
                              </div>
-                             <div class="container mt-4" v-if="currentPage==''">
-                                 <h1 class="text-center">查無課程</h1>
-                                 <h3 class="text-center mt-3 ms-1">請重新搜尋</h3>
+                             <div class="container mt-4" v-if="currentPage==''&&keyword!=''">
+                                 <div class="px-5 py-5 ">
+                                     <h3 class="text-center">查無課程</h3>
+                                 </div>
+                             </div>
+                             <div class="container mt-4 d-flex align-items-center  justify-content-center" v-else-if="currentPage==''&&keyword==''">
+                                     <div class="px-5 py-5 ">
+                                         <h3 class="text-center">無上傳課程</h3>
+                                     </div>
                              </div>
                              <div class="container" v-else>
                                  <!-- 已上傳課程項目 <動態新增> -->
@@ -490,16 +496,6 @@
                                                  <p class="me-3 badge bg-secondary bg-dark">課程分類:{{item.partOfBody}}</p>
                                              </div>
                                          </div>
-<!--                                         v-if="item.id !== cacheContent.id"-->
-<!--                                         <p class="card-text mb-auto" >{{item.courseInfo}}</p>-->
-<!--                                         <textarea class="form-control" rows="6" v-if="item.id === cacheContent.id" v-model="cacheTitle" ></textarea>-->
-
-<!--                                         <button  class="btn btn-outline-primary" @click="editContent(item)" v-if="item.id !== cacheContent.id"><i class="fa fa-pencil" aria-hidden="true"></i>-->
-<!--                                             進行內容編輯 -->
-<!--                                         </button>-->
-<!--                                         <button  class="btn btn-outline-primary" @click="editDone(item)" v-if="item.id === cacheContent.id"><i class="fa fa-pencil" aria-hidden="true"></i>-->
-<!--                                             編輯完成 -->
-<!--                                         </button>-->
                                          <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" :data-bs-target="'#course'+item.courseId">
                                              影片內容
                                          </button>

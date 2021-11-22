@@ -169,20 +169,13 @@ new Vue({
         }).then((res) =>{
             console.log(res);
             this.coach = res.data
-        }).catch((error) =>{ //登出時
-            console.log(error)
-
-            // window.alert("無教練身份")
-            // localStorage.clear();
-            // window.location.replace("/");
-            // //註冊那行
-            // var name = document.getElementById('changeName');
-            // name.setAttribute('data-bs-toggle','modal')
-            // name.setAttribute('data-bs-target','#signup')
-            //
-            // //登入那行
-            // this.statusTarget="#login"
-            // this.status="登入"
+        }).catch((err) =>{
+            console.log(err)
+            console.log(err.status)
+            if(err.status=='403'){
+                window.alert("請重新登入");
+                window.location.replace("/");
+            }
         })
     }
 });

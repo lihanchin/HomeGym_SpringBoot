@@ -109,7 +109,7 @@
                 <div class="modal-footer">
                     <div class="m-auto">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">取消</button>
-                        <button type="submit" @click="memberLogin,login" class="btn btn-primary" id="loginBtn">登入</button>
+                        <button type="submit" @click="memberLogin(),login" class="btn btn-primary" id="loginBtn">登入</button>
                     </div>
                 </div>
             </div>
@@ -333,8 +333,13 @@
                                     <li class="nav-item"><a href="/NGOrder" class="nav-link  active ">交易失敗</a></li>
                                 </ul>
                             </div>
+                            <div class="container p-4 d-flex align-items-center  justify-content-center " v-if="currentPage==''">
+                                <div class="px-5 py-5 ">
+                                    <h3 class="text-center">無失敗訂單</h3>
+                                </div>
+                            </div>
                             <!-- 項目卡片 -->
-                            <div class="card mt-3 mb-3" v-for="(item,index) in currentPage">
+                            <div class="card mt-3 mb-3" v-for="(item,index) in currentPage" v-else>
                                 <div class="row  d-flex align-items-center">
                                     <div class="col-4 ps-5">
                                         <h6>訂單編號</h6>
