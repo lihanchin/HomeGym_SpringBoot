@@ -31,20 +31,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
                 <div id="marker"></div>
 
-                <li class="shoppping_car nav-item dropdown">
-                    <a class="nav-link ms-3 text-white text-center" href="/shoppingCart"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
-                        購物車</a>
-                    <div class="dropdown-menu dropdown-menu-right" style="min-width:350px;min-height:100px;" id="dropdown-menu">
-                        <div class="px-3 py-2 " id="menu">
-                            <!-- 動態新增 -->
-                        </div>
-                    </div>
 
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-3 text-white" aria-current="page" href="/shop"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
-                        商城</a>
-                </li>
                 <li class="nav-item" v-if="memberImage!='null'">
 
                     <div class="dropdown text-center">
@@ -56,6 +43,22 @@
                         </ul>
                     </div>
                 </li>
+                <li class="shoppping_car nav-item dropdown">
+                    <a class="nav-link ms-3 text-white text-center" href="/shoppingCart"><i class="fa fa-shopping-cart text-white" aria-hidden="true"></i>
+                        購物車</a>
+                    <div class="dropdown-menu dropdown-menu-right" style="min-width:350px;min-height:100px;" id="dropdown-menu">
+                        <div class="px-3 py-2 " id="menu">
+                            <!-- 動態新增 -->
+                        </div>
+                    </div>
+
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link ms-3 text-white" aria-current="page" href="/shop"><i class="fa fa-caret-square-o-right text-white" aria-hidden="true"></i>
+                        商城</a>
+                </li>
+
                 <div class="img_box ms-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px;height: 40px; overflow: hidden" >
                     <img class="member_img img-fluid" :src="memberImage" alt="..." v-if="memberImage!='null'">
                 </div>
@@ -328,9 +331,12 @@
         <!-- 已購買課程 -->
         <section class="buyed_course">
             <div class="container d-flex flex-wrap">
-                <div class="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-sm-1 row-cols-1">
+                <div class="row container py-5" style="height: 300px;" v-if="courseList==''">
+                    <h3 class="text-center">尚未購買課程</h3>
+                </div>
+                <div class="row " v-else>
                     <!-- 已買課程項目 -->
-                    <div class="col gx-3 mb-3" v-for="(item,index) in courseList">
+                    <div class="col-md-4 col-sm-12 col-xl-3 mb-3"  v-for="(item,index) in courseList">
                         <div class="card w-100 h-100">
                             <img :src="item.courseImage" class="card-img-top" alt="...">
 <!--                            因為是物件包陣列所以先用[]再.key-->
@@ -353,6 +359,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </div>

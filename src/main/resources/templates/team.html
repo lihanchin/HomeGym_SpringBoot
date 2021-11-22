@@ -21,13 +21,17 @@
 </head>
 <body>
 
-  <div id="app" class="mt-5">
+  <div id="app">
     <div class="container-fluid">
       <div class="row vh-100">
         <div class="side_bar_team col-md-3 col-sm-12 bg-dark bg-gradient p-4 mb-3">
           <h1 class="text-center text-white mb-3">厝動 HomeGym</h1>
           <h3 class="text-white">簡介</h3>
-          <p></p>
+          <div class="bg-white p-3">
+            <p>因為疫情的關係導致大家不太敢去人多又密閉式的地方，並且健身也漸漸普及化成為生活的一部份，
+              因此建立一個專屬於健身影音的平台，即使不能外出也能在家健身</p>
+          </div>
+
           
           <h3 class="text-white">專案開發前準備</h3>
           <ul class="list-group mb-2">
@@ -80,17 +84,17 @@
           </ul>
         </div>
         <div class="col-md-9 col-sm-12">
-          <div class="row">
+          <div class="row p-4">
             <h1 class="text-center p-3 mb-4 bg-primary text-white">團隊介紹</h1>
             <!--      團員名稱      -->
             <div class="col-sm-12 col-md-6 col-lg-4" v-for="(item,key) in team" :key="key">
               <div class="card mb-4">
                 <div class="d-flex justify-content-center" style="aspect-ratio: 4/3; overflow: hidden;">
-                  <img :src="'/imag'+item.imge" class="w-100" />
+                  <img :src="'/image'+item.imge" class="w-100" />
                 </div>
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
-                    <h2 class="card-title fw-bold ">{{item.name}}</h2>
+                    <h3 class="card-title fw-bold ">{{item.name}}</h3>
                     <span class="badge bg-dark my-auto">{{item.Position}}</span>
                   </div>
                   <div class="h5 fw-bold ">{{item.Education}}</div>
