@@ -5,14 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.InputStream;
+
 
 @Slf4j
 @Component
@@ -76,8 +75,7 @@ public class MailUtil {
         helper.setText(html, true);
 
         try {
-            InputStream inputStream = new ClassPathResource("static/imag/hg_logo/logoMail.png").getInputStream();
-            helper.addInline("logoPic", new InputStreamResource(inputStream), "image/png");
+            helper.addInline("logoPic", new ClassPathResource("static/imag/hg_logo/logoMail.png"));
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
