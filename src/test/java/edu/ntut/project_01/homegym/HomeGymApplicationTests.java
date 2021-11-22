@@ -199,12 +199,4 @@ class HomeGymApplicationTests {
 //
 //        mailSender.send(mimeMessage);
 //    }
-
-//    @Test
-//    void sss(){
-//            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("static/imag/hg_logo/logoMail.png");
-//            if(inputStream == null ){
-//                log.warn("*********錯了拉！************");
-//            }
-//    }
 }

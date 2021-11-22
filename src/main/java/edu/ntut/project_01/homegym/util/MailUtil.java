@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -75,7 +76,7 @@ public class MailUtil {
         helper.setText(html, true);
 
         try {
-            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("static/imag/hg_logo/logoMail.png");
+            InputStream inputStream = new ClassPathResource("static/imag/hg_logo/logoMail.png").getInputStream();
             helper.addInline("logoPic", new InputStreamResource(inputStream), "image/png");
         } catch (Exception e) {
             e.printStackTrace();
