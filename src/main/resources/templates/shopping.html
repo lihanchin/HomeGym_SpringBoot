@@ -396,9 +396,14 @@
                             <!-- 分頁 -->
                             <nav aria-label="Page navigation example" class="mb-5">
                                 <ul class="pagination justify-content-center">
-                                  <li class="page-item " v-for="(pageNo,index) in totalPage">
-                                      <button class="page-link" @click="clickPage(index)" >{{pageNo}}</button>
-                                  </li>
+                                    <div v-for="(item,index) in totalPage">
+                                        <li class="page-item " >
+                                            <button class="page-link " @click="clickPage(index)" v-show="pageNo!==(index+1)">{{item}}</button>
+                                        </li>
+                                        <li class="page-item active" >
+                                            <button class="page-link " @click="clickPage(index)" v-if="pageNo==(index+1)">{{item}}</button>
+                                        </li>
+                                    </div>
                                 </ul>
                             </nav>
                         </div>
