@@ -4,12 +4,15 @@ import edu.ntut.project_01.homegym.model.Orders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrdersRepository extends JpaRepository<Orders,String> {
+public interface OrdersRepository extends JpaRepository<Orders, String> {
     //尋找所有「自訂狀態」的訂單
     Page<Orders> findOrdersByOrderStatusIn(Collection<String> orderStatus, Pageable pageable);
 
@@ -20,4 +23,9 @@ public interface OrdersRepository extends JpaRepository<Orders,String> {
     Optional<List<Orders>> findOrdersByMember_MemberIdAndOrderStatusContaining(Integer memberId, String orderStatus);
 
     Page<Orders> findOrdersByMember_MemberId(Integer memberId, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into order_item value(?1,?2)", nativeQuery = true)
+    void insertOrderItem(Integer courseId, String orderId);
 }
