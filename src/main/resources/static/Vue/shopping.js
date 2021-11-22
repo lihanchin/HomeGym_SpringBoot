@@ -5,9 +5,10 @@ new Vue({
     data:{
         totalPage:"",
         CourseValue:"",
+        CourseValue:"",
         shoppingCourse:[],
         buyCourse:[],
-        pageNo:''
+        pageNo:1
     },
     methods: {
         pushCourseValue(item){
@@ -140,7 +141,6 @@ new Vue({
             axios.get("/store/").then((res) =>{
                 this.shoppingCourse = res.data.firstPage;
                 this.totalPage = res.data.totalPage;
-                this.pageNo =1
             })
         }
 
