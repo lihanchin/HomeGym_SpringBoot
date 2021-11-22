@@ -319,40 +319,33 @@
                     <div class="col-md-2 col-sm-12 p-0 mb-4">
                         <ul class="list-group rounded-0">
                             <li class="list-group-item bg-dark text-light text-center">FILTER BY</li>
-<!--                            <li class="list-group-item list-group-item-primary">上半身</li>-->
                             <a class="list-group-item" href="/shop?partOfBody=全身">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="全身" v-model="partOfBody" @change="filter">-->
                                 全身
                             </a>
                             <a class="list-group-item"  href="/shop?partOfBody=核心">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="核心" v-model="partOfBody" @change="filter">-->
                                 核心
                             </a>
                             <a class="list-group-item"  href="/shop?partOfBody=二頭">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="二頭" v-model="partOfBody" @change="filter">-->
                                 二頭
                             </a>
                             <a class="list-group-item"  href="/shop?partOfBody=三頭">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="三頭" v-model="partOfBody" @change="filter">-->
                                 三頭
                             </a>
                             <a class="list-group-item"  href="/shop?partOfBody=胸">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="胸" v-model="partOfBody"  @change="filter">-->
                                 胸
                             </a>
                             <a class="list-group-item"  href="/shop">
-<!--                                <input class="form-check-input me-1" type="hidden" name="partOfBody" value="所有" v-model="partOfBody"  @change="filter">-->
                                 所有
                             </a>
 
                           </ul>
                     </div>
                     <!-- 內容 -->
-                    <div class="col-md-10 col-sm-12">
+                    <div class="col-md-10 col-sm-12" v-if="shoppingCourse!=''">
                         <div class="container ps-3 pe-3">
                             <div class="row">
                                 <!-- 課程卡片 -->
-                                <div class="courseCard col-sm-12 col-md-6 col-lg-4 gx-3 mb-3" v-for="(item,index) in shoppingCourse"  >
+                                <div class="courseCard col-sm-12 col-md-6 col-lg-4 gx-3 mb-3"  v-for="(item,index) in shoppingCourse"  >
                                     <div class="card w-100 h-100 cart">
 
                                         <div class="position-relative">
@@ -400,6 +393,15 @@
                             </nav>
                         </div>
                     </div>
+
+                    <!-- 若沒有內容        -->
+                    <div v-if="shoppingCourse==''" class="col-md-10 col-sm-12 container">
+                        <div class=" d-flex  flex-column mt-6 w-75">
+                                <h1 class="text-center">查無課程</h1>
+                                <h3 class="text-center mt-3 ms-1">請重新搜尋</h3>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>

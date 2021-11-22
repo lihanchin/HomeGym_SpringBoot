@@ -51,8 +51,8 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail) throws MessagingException {
 
-        verifiedPath = ourUrl+"/forget";
-//        verifiedPath = "http://localhost:8080/forgetPasswordInput";
+//        verifiedPath = ourUrl+"/forget";
+        verifiedPath = "http://localhost:8080/forgetPasswordInput";
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym密碼重置";
         String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div><div><div>" +
@@ -73,7 +73,7 @@ public class MailUtil {
         helper.setSubject(subject);
 
         helper.setText(html, true);
-        FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/imag/hg_logo/logoMail.png"));
+        FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/image/hg_logo/logoMail.png"));
         helper.addInline("logoPic", file);
 
         mailSender.send(mimeMessage);

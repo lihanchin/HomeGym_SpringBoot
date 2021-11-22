@@ -15,7 +15,8 @@ new Vue({
                 newPassword:this.psw,
                 newPasswordCheck:this.repsw
             }).then((res)=>{
-                if(response =="修改成功"){
+
+                if(res.data =="修改成功"){
                     alert(res.data)
                     localStorage.removeItem("memberEmail")
                     window.location.replace("/");

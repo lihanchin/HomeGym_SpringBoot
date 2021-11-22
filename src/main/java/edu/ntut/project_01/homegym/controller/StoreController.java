@@ -62,6 +62,7 @@ public class StoreController {
         Page<Course> showCourse;
 
         if (page == null && partOfBody == null) {
+            log.info("=========================================page == null && partOfBody == null");
             showCourse = courseService.findAllCourse(0, size);
             return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
         }
@@ -69,12 +70,14 @@ public class StoreController {
         if (page != null && page > 0) {
             if (partOfBody == null) {
                 totalPage = courseService.getAllCoursesTotalPage(size);
+                log.info("========================================="+String.valueOf(totalPage));
                 if (page <= totalPage) {
                     showCourse = courseService.findAllCourse(page - 1, size);
                     return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
                 }
             } else {
                 totalPage = courseService.getCoursesTotalPageByFilter(partOfBody, size);
+                log.info("======vrrrtbrtb==================================="+String.valueOf(totalPage));
                 if (page <= totalPage) {
                     showCourse = courseService.findCourseByFilter(partOfBody, page - 1, size);
                     return ResponseEntity.ok().body(courseService.responsePageDetail(showCourse));
