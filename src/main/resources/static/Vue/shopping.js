@@ -8,7 +8,7 @@ new Vue({
         CourseValue:"",
         shoppingCourse:[],
         buyCourse:[],
-        pageNo:""
+        pageNo:1
     },
     methods: {
         pushCourseValue(item){
