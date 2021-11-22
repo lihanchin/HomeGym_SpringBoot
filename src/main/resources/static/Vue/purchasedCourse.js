@@ -117,10 +117,6 @@ new Vue({
 
 
         getFqaUser(key){
-            // console.log(fqaId)
-            // var index = fqaId - 1;
-            // console.log("fqaId="+fqaId)
-            // console.log("index="+index)
             var userName = this.fqa[key].memberName;
             this.fqaUserIndex = this.fqa[key].fqaId;
             this.fqaUser = userName;
@@ -197,7 +193,7 @@ new Vue({
             this.coachName = res.data.coachName
         });
 
-        axios.get("http://localhost:8080/course/"+id, {
+        axios.get("/course/"+id, {
             headers: {
                 Authorization: token
             }
