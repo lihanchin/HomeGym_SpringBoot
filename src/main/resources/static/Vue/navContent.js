@@ -77,7 +77,8 @@ new Vue({
                 localStorage.setItem("Authorization","Bearer "+res.data.JWT);
                 var loginBtn = document.getElementById('loginBtn');
                 loginBtn.setAttribute('data-bs-dismiss','modal')
-                window.location.reload()
+                // window.location.reload("/")
+                window.location.replace("/");
 
             }).catch((err)=>{
                 let error = document.querySelector(".errortext");
@@ -167,7 +168,7 @@ input.forEach( e => {
             if(this.value ==''){
                 changErrorColor(1, 'text-danger', '請輸入密碼');
             }else if(!reg_pwd.test(this.value)){
-                changErrorColor(1, 'text-danger', '長度8位以上，至少1個大寫字母，1個小寫字母和1個數字');
+                changErrorColor(1, 'text-danger', '長度6位以上，至少1個大寫字母，1個小寫字母和1個數字');
             }else{
                 changColor(1, 'text-success')
             }
