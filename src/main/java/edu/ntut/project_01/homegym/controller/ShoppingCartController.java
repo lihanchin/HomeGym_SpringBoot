@@ -28,7 +28,8 @@ public class ShoppingCartController {
 
     @Value("${jwt.header}")
     private String HEADER;
-    @Value("${hg.url}")
+//    @Value("${hg.url}")
+    @Value("http://localhost:8081")
     private String ourUrl;
     private static final Calendar currentTime = Calendar.getInstance(Locale.CHINESE);
 
@@ -75,7 +76,7 @@ public class ShoppingCartController {
         }
 
 //      建訂單資料
-        Orders newOrder = new Orders(orderId, orderPriceAmount, null, GlobalService.getNowDatetime(), member, orderCourses);
+        Orders newOrder = new Orders(orderId, orderPriceAmount, "付款成功", GlobalService.getNowDatetime(), member, orderCourses);
         ordersRepository.save(newOrder);
 
         for (Course course : orderCourses) {
