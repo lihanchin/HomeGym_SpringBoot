@@ -53,7 +53,7 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail) throws MessagingException {
 
-        verifiedPath = ourUrl+"/forget";
+        verifiedPath = ourUrl+"/forgetPasswordInput";
 //        verifiedPath = "http://localhost:8081/forgetPasswordInput";
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym密碼重置";
@@ -77,7 +77,7 @@ public class MailUtil {
         helper.setText(html, true);
 
         try {
-            helper.addInline("logoPic", new ClassPathResource("static/imag/hg_logo/logoMail.png"));
+            helper.addInline("logoPic", new ClassPathResource("static/image/hg_logo/logoMail.png"));
         } catch (Exception e) {
             e.printStackTrace();
             log.error("圖片路徑又出問題拉！！！！！！！！！！！");
