@@ -107,6 +107,7 @@ public class CourseController {
         String courseInfo = coachInfo.get("courseInfo").toString();
         String courseImage = coachInfo.get("courseImage").toString();
 
+
         //存影片到
         File videoFolder = new File("src/main/resources/static/video");
         log.info("資料夾 : " + videoFolder);
@@ -114,9 +115,9 @@ public class CourseController {
             videoFolder.mkdirs();
         }
 
-        String videoCoachPath = GlobalService.videoSaveToFile(coursePath, videoFolder, coachId, ".mp4");
+//        String videoCoachPath = GlobalService.videoSaveToFile(coursePath, videoFolder, coachId, ".mp4");
         String uploadTime = GlobalService.getNowDatetime();
-        Course course = new Course(videoCoachPath, courseName, courseInfo, partOfBody, courseImage, uploadTime, price, equipment, level, coach);
+        Course course = new Course(coursePath, courseName, courseInfo, partOfBody, courseImage, uploadTime, price, equipment, level, coach);
         courseService.save(course);
     }
 

@@ -6,6 +6,7 @@ new Vue({
         cacheContent:{},
         cacheTitle:"",
         keyword:"",
+        pageNo:1
     },
     methods: {
 
@@ -22,6 +23,7 @@ new Vue({
         },
         clickPage(index){
             let page = index+1
+            this.pageNo = page
             if (this.keyword != "" &this.keyword !=null) {
                 axios.get("/coachArea/keyword?keyword="+this.keyword+"&page="+page,{
                     headers: {

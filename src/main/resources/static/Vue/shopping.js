@@ -5,8 +5,10 @@ new Vue({
     data:{
         totalPage:"",
         CourseValue:"",
+        CourseValue:"",
         shoppingCourse:[],
-        buyCourse:[]
+        buyCourse:[],
+        pageNo:1
     },
     methods: {
         pushCourseValue(item){
@@ -23,7 +25,7 @@ new Vue({
         },
         clickPage(index){
             let pageNo = index+1
-
+            this.pageNo = pageNo
             if(keyword!=null&keyword!=''){
                 if(pageNo!=null&pageNo!=''){
                     axios.get("/store/keyword?keyword="+keyword+"&page="+pageNo).then((res) =>{

@@ -13180,6 +13180,15 @@ fieldset:disabled .btn {
   overflow: hidden;
 }
 
+.shoppingCar a:hover {
+  background-color: #5476a9;
+  color: white;
+}
+
+.curson-auto {
+  cursor: auto;
+}
+
 #courseVideo {
   position: relative;
 }

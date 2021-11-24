@@ -1,3 +1,4 @@
+
 let  token = localStorage.getItem("Authorization")
 
 new Vue({
@@ -23,7 +24,7 @@ new Vue({
             level:'',
             videoInfo:'',
             image:''
-        }
+        },
     },
     methods: {
 
@@ -39,6 +40,10 @@ new Vue({
             this.video.image = evt.target.result
         },
         videoUpload(){
+            let videoURL = document.getElementById("courseVideo").getAttribute("src")
+
+            this.video.videoupload = videoURL
+
 
             axios.post(`/course/upload`,
                 {
@@ -111,38 +116,6 @@ new Vue({
             this.cacheCoachInfo ='';
             this.cacheContent ={};
         },
-        fileChange: function(){ //讀取到檔案
-
-            let nextStep = document.querySelector('#nextStep');
-
-            if(fileupload.files.length === 0){
-                return;
-            }else{
-                nextStep.classList.remove('disabled'); //讀到檔案可以按下一步
-            }
-            console.log(fileupload.files.length);
-
-            //限制影片大小
-            const theFile = fileupload.files.item(0);
-            const videoMaxSize = 150000000;
-            if(theFile.size > videoMaxSize){
-                alert("影片大小不得超過 200MB");
-                fileupload.value= '';
-                // nextStep.disabled=true;
-                return;
-            }
-            // nextStep.disabled=false;
-
-            //讀檔
-            // let readFile = new FileReader();
-            //待改
-            let readFile = new FileReader();
-            readFile.readAsDataURL(theFile);
-            readFile.addEventListener("load", this.videoLoaded);
-        },
-        videoLoaded(evt) {
-            this.video.videoupload = evt.target.result;
-        },
         cancelInputFile(){ //按下取消會清空內容
             fileupload.value='';
             this.video.videoupload ="";
@@ -155,10 +128,9 @@ new Vue({
             nextStep.classList.add('disabled'); //讀到檔案可以按下一步
 
         },
-
-
     },
     mounted() {
+
         axios.get("/coachArea/", {
             headers: {
                 Authorization: token
@@ -166,21 +138,31 @@ new Vue({
         }).then((res) =>{
             console.log(res);
             this.coach = res.data
-        }).catch((error) =>{ //登出時
-            console.log(error)
-
-            // window.alert("無教練身份")
-            // localStorage.clear();
-            // window.location.replace("/");
-            // //註冊那行
-            // var name = document.getElementById('changeName');
-            // name.setAttribute('data-bs-toggle','modal')
-            // name.setAttribute('data-bs-target','#signup')
-            //
-            // //登入那行
-            // this.statusTarget="#login"
-            // this.status="登入"
+        }).catch((err) =>{
+            console.log(err)
+            console.log(err.status)
+            if(err.status=='403'){
+                window.alert("請重新登入");
+                window.location.replace("/");
+            }
         })
+    },
+    updated(){
+
+        let courseVideo = document.getElementById("courseVideo")
+
+        window.addEventListener("click",function (){
+            let loadingCircle = document.querySelector("#loadingCircle")
+            let courseVideo = document.querySelector("#courseVideo")
+
+            if(courseVideo.getAttribute('src') != ''){
+                console.log(courseVideo.getAttribute('src'))
+                loadingCircle.classList.add('d-none')
+                courseVideo.classList.remove('d-none')
+            }
+        })
+
+
     }
 });
 
