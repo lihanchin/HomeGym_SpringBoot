@@ -4,6 +4,7 @@ import edu.ntut.project_01.homegym.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -74,8 +75,14 @@ public class MailUtil {
         helper.setSubject(subject);
 
         helper.setText(html, true);
-        FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/image/hg_logo/logoMail.png"));
-        helper.addInline("logoPic", file);
+
+        try {
+            helper.addInline("logoPic", new ClassPathResource("static/imag/hg_logo/logoMail.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("圖片路徑又出問題拉！！！！！！！！！！！");
+            log.error(e.getMessage());
+        }
 
         mailSender.send(mimeMessage);
     }
