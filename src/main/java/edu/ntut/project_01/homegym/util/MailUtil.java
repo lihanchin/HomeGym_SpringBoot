@@ -4,13 +4,14 @@ import edu.ntut.project_01.homegym.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 
 @Slf4j
@@ -34,8 +35,8 @@ public class MailUtil {
 
     public void sendMail(String code, String memberEmail) throws MessagingException {
 
-//        verifiedPath = ourUrl + "/memberVerification?code=" + code;
-        verifiedPath = "http://localhost:8081/memberVerification?code=" + code;
+        verifiedPath = ourUrl + "/memberVerification?code=" + code;
+//        verifiedPath = "http://localhost:8081/memberVerification?code=" + code;
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym會員驗證信";
         String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div>" +
@@ -51,8 +52,8 @@ public class MailUtil {
 
     public void sendResetPassword(String memberEmail) throws MessagingException {
 
-//        verifiedPath = ourUrl+"/forget";
-        verifiedPath = "http://localhost:8081/forgetPasswordInput";
+        verifiedPath = ourUrl+"/forget";
+//        verifiedPath = "http://localhost:8081/forgetPasswordInput";
         String name = memberRepository.findMemberByEmail(memberEmail).orElseThrow().getName();
         String subject = "主旨： " + name + " HomeGym密碼重置";
         String html = "<html><body><div><div><img src=\"cid:logoPic\"/></div><div><div>" +

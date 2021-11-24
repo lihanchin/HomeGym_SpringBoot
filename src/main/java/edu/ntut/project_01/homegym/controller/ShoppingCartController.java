@@ -28,8 +28,7 @@ public class ShoppingCartController {
 
     @Value("${jwt.header}")
     private String HEADER;
-//    @Value("${hg.url}")
-    @Value("http://localhost:8081")
+    @Value("${hg.url}")
     private String ourUrl;
     private static final Calendar currentTime = Calendar.getInstance(Locale.CHINESE);
 
