@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/all.min.css">
+
+
 </head>
 <body>
 <!-- 導覽列 11/22更新-->
@@ -402,37 +404,6 @@
         </div>
     </section>
 
-
-    <!-- 上傳畫面，彈跳視窗 -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">上傳課程</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div id="dropArea" class="modal-body d-flex justify-content-center pt-6 pb-6">
-                    <form class="box d-flex flex-column align-items-center" action="" method="GET">
-                        <i class="fa fa-cloud-upload fs-1" aria-hidden="true"></i>
-                        <h3 class="mb-3">將你要上傳的影片拖曳到這裡</h3>
-                        <p class="mb-3">影片在審核通過前會呈現私人狀態</p>
-                        <form action="" method="GET">
-                            <div class="mb-3">
-                                <input class="form-control" type="file" id="fileupload" @change="fileChange()"
-                                       accept="video/*">
-                            </div>
-                        </form>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="btCancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelInputFile()">取消</button>
-                    <button id="nextStep" type="button" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" >下一步</button>
-                    <!-- <button id="nextStep" type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">下一步</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 上傳完畢填寫資料，彈跳視窗 -->
     <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -446,7 +417,10 @@
                         <div class="container-fluid">
                             <div class="row align-items-center">
                                 <div class="col-6">
-                                    <video :src="video.videoupload" id="courseVideo" class="w-100"></video>
+                                    <div id="loadingCircle" class="spinner-border text-primary d-flex justify-content-center" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <video  id="courseVideo" class="w-100 d-none" src="" controls></video>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3 row">
@@ -532,7 +506,37 @@
             </div>
         </div>
     </div>
+</div>
 
+<div id="video">
+    <!-- 上傳畫面，彈跳視窗 -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">上傳課程</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="dropArea" class="modal-body d-flex justify-content-center pt-6 pb-6">
+                    <form class="box d-flex flex-column align-items-center" action="" method="GET">
+                        <i class="fa fa-cloud-upload fs-1" aria-hidden="true"></i>
+                        <h3 class="mb-3">將你要上傳的影片拖曳到這裡</h3>
+                        <p class="mb-3">影片在審核通過前會呈現私人狀態</p>
+                        <form action="" method="GET">
+                            <div class="mb-3">
+                                <input class="form-control" type="file" id="fileupload" @change="fileChange()"
+                                       accept="video/*">
+                            </div>
+                        </form>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btCancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelInputFile()">取消</button>
+                    <button id="nextStep" type="button" class="btn btn-primary disabled" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal" @click="uploadFile()">下一步</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -544,27 +548,11 @@
 <script src="./js/quiz_questions.js"></script>
 <!-- 導覽列顯示購物車商品 -->
 <script src="./js/shoppingNav.js"></script>
-<!--FireBase-->
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyA4-BX-xkWAQZTAJt-KcOIw9lq3OkynA5k",
-        authDomain: "homegym-5ed5f.firebaseapp.com",
-        databaseURL: "https://homegym-5ed5f-default-rtdb.firebaseio.com",
-        projectId: "homegym-5ed5f",
-        storageBucket: "homegym-5ed5f.appspot.com",
-        messagingSenderId: "115618265561",
-        appId: "1:115618265561:web:0674aa37b517b9924581c8",
-        measurementId: "G-BLS7PZPTL4"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-</script>
+<!-- FireBase-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.5.0/firebase-app.min.js" integrity="sha512-X8F0rAwq6reGLayjlh7b+Go15gIu31jJqnMyAxITKwY8mzWJsY72eU0QKMyY/q+GjCYTPKJi2OyeOURmdzH1xQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.5.0/firebase-storage.min.js" integrity="sha512-fcVBVSrxeKkTI+EB5qWFBDOxE/q6rK3BJPTiMxuoxoa575/h3SuZw0Bm0tOEoUq5iWRUCaRsib18hsOhED234w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+<script type="module" src="./Vue/upload.js"></script>
 <!-- Vue -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.js' integrity='sha512-GD/8lMbRBL/mdNprXO8arveCcvbaBqqu2+OVHEuAtPhzO3hdTQ4Lawrm2NoIssnaWAWJkJylXtuweSZs23gtaA==' crossorigin='anonymous'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.1/axios.js' integrity='sha512-LogMNgGlX6xjUWK/hYLh0dPM0hxgmSx/FmoTsBAHVR/XZkMo3+5GLLIhWt4Tb352+vmoa2Boq0KiDq+bskFzXQ==' crossorigin='anonymous'></script>
